@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+    </data>
+
+    <com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout
+            android:id="@+id/refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="vertical"
+                    app:layoutManager="LinearLayoutManager"
+                    android:layoutAnimation="@anim/layout_animation_fall_down"
+                    tools:listitem="@android:layout/simple_expandable_list_item_1">
+
+            </android.support.v7.widget.RecyclerView>
+        </FrameLayout>
+
+    </com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout>
+</layout>

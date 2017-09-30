@@ -1,11 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.ditclear.paonet"
-        minSdkVersion 22
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -17,14 +19,80 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding{
+        enabled = true
+    }
+
+}
+kapt {
+    generateStubs = true
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    mavenCentral()
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.android.support:design:' + rootProject.supportLibVersion
+    compile 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
+    compile 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
+    compile 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
+    compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
+    compile 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
+    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+    compile 'android.arch.paging:runtime:' + rootProject.pagingVersion
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    //data binding
+    kapt "com.android.databinding:compiler:2.3.3"
+
+    //rx android
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.1.3'
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.2.0'
+
+    compile 'com.google.android:flexbox:0.3.0'
+
+
+    //di
+    compile "com.google.dagger:dagger:2.11"
+    kapt "com.google.dagger:dagger-compiler:2.11"
+
+    //retrofit
+    compile 'com.squareup.retrofit2:retrofit:'+rootProject.retrofitVersion
+    compile 'com.squareup.retrofit2:converter-gson:'+rootProject.retrofitVersion
+    compile 'com.squareup.retrofit2:adapter-rxjava2:'+rootProject.retrofitVersion
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.google.code.gson:gson:2.8.0'
+    //6.0permission
+    compile 'pub.devrel:easypermissions:0.2.1'
+    //date
+    compile 'joda-time:joda-time:2.3'
+    //image
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:2.0.1'
+    //字体
+    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
+
+    compile 'com.airbnb.android:lottie:2.2.3'
+
+    compile 'com.jakewharton.timber:timber:4.5.1'
+
+    ///////////unit test///////////////
+    testCompile 'junit:junit:4.12'
+    //////////ui test//////////////////
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:design:26.+'
-    testCompile 'junit:junit:4.12'
+}
+
+//https://github.com/google/dagger/issues/306
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+    }
 }
