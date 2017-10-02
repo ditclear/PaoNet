@@ -13,4 +13,7 @@
     <string name="action_settings">Settings</string>
     <string name="action_notifications">notification</string>
     <string name="action_search">search sth..</string>
+    <string name="thumbnail">缩略图</string>
+    <string name="list_item_response">%d 回复 </string>
+    <string name="intToString">%d</string>
 </resources>

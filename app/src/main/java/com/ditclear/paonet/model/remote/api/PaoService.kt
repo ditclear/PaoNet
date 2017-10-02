@@ -19,5 +19,5 @@ open interface PaoService {
 
 
     @GET("article_detail.php")
-    fun getArticleDetail(@Query("id") id:String):Flowable<Article>
+    fun getArticleDetail(@Query("id") id:Int):Flowable<Article>
 }

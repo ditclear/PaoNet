@@ -44,6 +44,7 @@ dependencies {
     compile 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
     kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
     compile 'android.arch.paging:runtime:' + rootProject.pagingVersion
+    compile 'com.android.support:customtabs:' + rootProject.supportLibVersion
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     //data binding
@@ -80,6 +81,8 @@ dependencies {
     compile 'com.airbnb.android:lottie:2.2.3'
 
     compile 'com.jakewharton.timber:timber:4.5.1'
+
+    compile 'us.feras.mdv:markdownview:1.1.0'
 
     ///////////unit test///////////////
     testCompile 'junit:junit:4.12'

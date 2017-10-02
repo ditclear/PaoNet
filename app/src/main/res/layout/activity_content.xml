@@ -36,7 +36,7 @@
                     app:layoutManager="LinearLayoutManager"
                     android:layoutAnimation="@anim/layout_animation_fall_down"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    tools:listitem="@layout/list_item">
+                    tools:listitem="@layout/article_list_item">
 
             </android.support.v7.widget.RecyclerView>
 

@@ -2,6 +2,7 @@ package com.ditclear.paonet.di.component
 
 import com.ditclear.paonet.ContentFragment
 import com.ditclear.paonet.di.module.AppModule
+import com.ditclear.paonet.view.article.ArticleDetailActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -14,4 +15,6 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(AppModule::class))
 interface AppComponent{
     fun inject(fragment: ContentFragment)
+
+    fun inject(activity: ArticleDetailActivity)
 }

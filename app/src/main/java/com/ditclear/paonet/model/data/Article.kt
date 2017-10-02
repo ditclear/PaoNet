@@ -1,6 +1,7 @@
 package com.ditclear.paonet.model.data
 
 import com.ditclear.paonet.model.data.callback.DiffItemCallBack
+import java.io.Serializable
 import java.util.*
 
 /**
@@ -9,7 +10,7 @@ import java.util.*
  * Created by ditclear on 2017/9/26.
  */
 
-class Article(var title: String?) : DiffItemCallBack<Article>{
+class Article(var title: String?) : DiffItemCallBack<Article>,Serializable{
 
     override fun areItemsTheSame(newItem: Article): Boolean =
             Objects.equals(id, newItem.id) && Objects.equals(title, newItem.title)
@@ -19,6 +20,7 @@ class Article(var title: String?) : DiffItemCallBack<Article>{
     var id: Int = 0
     var user: User? = null
     var content: String? = null
+    var description: String? = null
     var click: Int = 0
     var channel: Int = 0
     var comments: Int = 0
@@ -29,4 +31,10 @@ class Article(var title: String?) : DiffItemCallBack<Article>{
     var pubDate: String? = null
     var thumbnail: String? = null
 
+    ///////////////////////bind view////////////////////////
+
+    /**
+     * @return as 2 days ago · 20 reads
+     */
+    fun getDateAndClicks() = String.format("%s  ·  %d reads",pubDate,click)
 }

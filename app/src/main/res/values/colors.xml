@@ -5,4 +5,8 @@
     <color name="colorAccent">#FFFFFF</color>
     <color name="colorAccentAlpha">#88FFFFFF</color>
     <color name="colorNav">#88FFFFFF</color>
+    <color name="theme">@color/colorPrimary</color>
+    <color name="tools_color">#e5e5e5</color>
+    <color name="divider_color">#e5e5e5</color>
+    <color name="background_item">#ffffff</color>
 </resources>

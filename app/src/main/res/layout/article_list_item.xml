@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+                name="item"
+                type="com.ditclear.paonet.model.data.Article"/>
+
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/background_item"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:stateListAnimator="@animator/active_raise"
+            app:cardElevation="@dimen/xdp_2.0"
+            app:cardCornerRadius="@dimen/xdp_0"
+            >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="?selectableItemBackground"
+                android:onClick="@{()->presenter.onItemClick(item)}"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <ImageView
+                        android:id="@+id/avatar_iv"
+                        android:layout_width="@dimen/xdp_48.0"
+                        android:layout_height="@dimen/xdp_48.0"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/xdp_6.0"
+                        android:scaleType="fitCenter"
+                        app:url="@{item.user.face}"
+                        app:avatar="@{true}"
+                        tools:src="@drawable/ic_face"/>
+
+                <TextView
+                        android:id="@+id/author_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/xdp_24.0"
+                        android:layout_toEndOf="@id/avatar_iv"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:text="@{item.user.nickname}"
+                        tools:text="ditclear"/>
+
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/xdp_24.0"
+                        android:layout_below="@id/author_tv"
+                        android:layout_toEndOf="@id/avatar_iv"
+                        android:text="@{item.dateAndClicks}"
+                        tools:text="2 days ago · 2 min read"/>
+
+            </RelativeLayout>
+            <android.support.v4.widget.Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/activity_vertical_margin"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/xdp_150.0"
+                    android:contentDescription="@string/thumbnail"
+                    bind:url="@{item.thumbnail}"
+                    android:scaleType="centerCrop"
+                    android:duplicateParentState="true"
+                    android:background="?selectableItemBackground"
+                    tools:background="@color/tools_color"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/xsp_18"
+                    android:textStyle="bold"
+                    android:text="@{item.title}"
+                    tools:text="The enginner's guide to not making your app look awful"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="4"
+                    android:ellipsize="end"
+                    android:text="@{item.content}"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    tools:text="A problem that alot of independent app developers face is that they aren't.."/>
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/xdp_0.5"
+                    android:background="@color/divider_color"
+                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/xdp_48.0"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/activity_horizontal_margin"
+                    android:paddingRight="@dimen/activity_horizontal_margin">
+                <android.support.v7.widget.ActionMenuView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="?actionBarItemBackground"
+                        android:onClick="@{()->presenter.onItemClick(item)}"
+                        android:gravity="center_vertical">
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_thumb"
+                            android:layout_marginRight="@dimen/xdp_6.0"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="1K"
+                            android:text="@{@string/intToString(item.upvote)}"/>
+
+                </android.support.v7.widget.ActionMenuView>
+                <android.support.v7.widget.ActionMenuView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="?actionBarItemBackground"
+                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:onClick="@{()->presenter.onItemClick(item)}"
+                        android:gravity="center_vertical">
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:srcCompat="@drawable/ic_thumb_down"
+                            android:layout_marginRight="@dimen/xdp_6.0"/>
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:text="1K"
+                            android:text="@{@string/intToString(item.downvote)}"/>
+
+                </android.support.v7.widget.ActionMenuView>
+                <android.support.v4.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="13 respones ·  "
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:text="@{@string/list_item_response(item.comments)}"/>
+                <android.support.v7.widget.ActionMenuView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="?actionBarItemBackground"
+                        android:onClick="@{()->presenter.onItemClick(item)}"
+                        >
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/ic_bookmark"
+                            android:contentDescription="stow"/>
+                </android.support.v7.widget.ActionMenuView>
+            </LinearLayout>
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+</layout>
