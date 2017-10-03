@@ -11,10 +11,9 @@ import android.support.v4.app.FragmentStatePagerAdapter
  */
 
 abstract class AbstractPagerAdapter(fm: FragmentManager, internal var title: Array<String>) : FragmentStatePagerAdapter(fm) {
-    var list :MutableList<Fragment?>
+    var list :MutableList<Fragment?> = mutableListOf()
 
     init {
-        list= mutableListOf()
         title.iterator().forEach { list.add(null) }
     }
 

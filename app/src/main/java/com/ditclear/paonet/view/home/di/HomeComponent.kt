@@ -1,7 +1,6 @@
-package com.ditclear.paonet.view.home.di.component
+package com.ditclear.paonet.view.home.di
 
 import com.ditclear.paonet.view.home.HomeFragment
-import com.ditclear.paonet.view.home.di.module.HomeModule
 import dagger.Component
 
 /**

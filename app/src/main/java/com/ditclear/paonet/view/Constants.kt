@@ -9,4 +9,8 @@ package com.ditclear.paonet.view
 object Constants {
 
     val KEY_SERIALIZABLE = "serializable"
+
+    val HOST_API="http://api.jcodecraeer.com/"
+
+    val HOST_PAO="http://jcodecraeer.com"
 }

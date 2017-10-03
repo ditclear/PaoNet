@@ -5,8 +5,9 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.MainActivity
-import com.ditclear.paonet.view.home.di.component.DaggerHomeComponent
-import com.ditclear.paonet.view.home.di.module.HomeModule
+import com.ditclear.paonet.view.home.di.DaggerHomeComponent
+import com.ditclear.paonet.view.home.di.HomeModule
+import com.ditclear.paonet.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 /**
@@ -14,12 +15,12 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/9/30.
  */
-class HomeFragment : BaseFragment<HomeFragmentBinding>(){
+class HomeFragment : BaseFragment<BaseViewModel,HomeFragmentBinding>(){
 
     @Inject
     lateinit var pagerAdapter:FragmentStatePagerAdapter
 
-    val component by lazy { DaggerHomeComponent.builder().homeModule(HomeModule(childFragmentManager)).build() }
+    val homeFragment by lazy { DaggerHomeComponent.builder().homeModule(HomeModule(childFragmentManager)).build() }
 
     override fun getLayoutId(): Int = R.layout.home_fragment
 
@@ -29,7 +30,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>(){
 
     override fun initArgs() {
 
-        component.inject(this)
+        homeFragment.inject(this)
     }
 
     override fun initView() {

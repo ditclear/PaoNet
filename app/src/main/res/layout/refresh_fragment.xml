@@ -4,29 +4,34 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+                name="vm"
+                type="com.ditclear.paonet.viewmodel.PagedViewModel"/>
     </data>
 
     <com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:refreshing="@{vm.loading}">
 
         <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
+                    app:loadMore="@{vm.loadMore}"
                     app:layoutManager="LinearLayoutManager"
                     android:layoutAnimation="@anim/layout_animation_fall_down"
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
 
-            </android.support.v7.widget.RecyclerView>
+            </com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView>
         </FrameLayout>
 
     </com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout>

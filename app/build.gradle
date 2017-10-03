@@ -84,6 +84,8 @@ dependencies {
 
     compile 'us.feras.mdv:markdownview:1.1.0'
 
+    compile 'org.jsoup:jsoup:1.10.3'
+
     ///////////unit test///////////////
     testCompile 'junit:junit:4.12'
     //////////ui test//////////////////

@@ -1,7 +1,7 @@
 package com.ditclear.paonet.viewmodel
 
-import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import android.arch.lifecycle.ViewModel
+import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
  * 页面描述：viewModel 基类
@@ -9,10 +9,8 @@ import android.arch.lifecycle.AndroidViewModel
  * Created by ditclear on 2017/9/28.
  */
 
-open class BaseViewModel(application: Application) : AndroidViewModel(application){
+open class BaseViewModel(var lifecycle: LifecycleTransformer<*>) : ViewModel(){
 
+    fun <T> bindToLifecycle() : LifecycleTransformer<T> =lifecycle as LifecycleTransformer<T>
 
-    fun loadData(isRefresh :Boolean){
-
-    }
 }

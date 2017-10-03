@@ -4,8 +4,18 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
+import android.support.annotation.NonNull
+import android.support.v7.widget.Toolbar
+import android.view.MenuItem
 import android.widget.Toast
+import com.ditclear.paonet.PaoApp
+import com.ditclear.paonet.di.component.ActivityComponent
+import com.ditclear.paonet.di.module.ActivityModule
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+
+
+
+
 
 /**
  * 页面描述：
@@ -17,6 +27,17 @@ abstract class BaseActivity <VB:ViewDataBinding>: RxAppCompatActivity() {
     protected lateinit var mBinding :VB
 
     protected lateinit var mContext :Context
+
+    private var activityComponent: ActivityComponent?=null
+
+    @NonNull
+    fun getComponent(): ActivityComponent {
+        if (activityComponent == null) {
+            val mainApplication = application as PaoApp
+            activityComponent = mainApplication.component.plus(ActivityModule(this))
+        }
+        return activityComponent as ActivityComponent
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,4 +57,24 @@ abstract class BaseActivity <VB:ViewDataBinding>: RxAppCompatActivity() {
     abstract fun getLayoutId(): Int
 
     fun toast(msg : String){ Toast.makeText(mContext,msg,Toast.LENGTH_SHORT).show()}
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    fun initBackToolbar(toolbar: Toolbar) {
+        setSupportActionBar(toolbar)
+
+        val bar = supportActionBar
+        if (bar != null) {
+            bar.title=null
+            bar.setDisplayHomeAsUpEnabled(true)
+            bar.setDisplayShowHomeEnabled(true)
+            bar.setDisplayShowTitleEnabled(true)
+            bar.setHomeButtonEnabled(true)
+        }
+    }
 }

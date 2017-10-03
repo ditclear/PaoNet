@@ -5,9 +5,6 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.di.component.AppComponent
-import com.ditclear.paonet.di.component.DaggerAppComponent
-import com.ditclear.paonet.di.module.AppModule
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
@@ -17,10 +14,18 @@ import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.vendor.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.ArticleDetailActivity
+import com.ditclear.paonet.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 
-class ContentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+class ContentFragment : BaseFragment<BaseViewModel,RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+
+
+    @Inject
+    lateinit var paoService:PaoService
+
+    override fun getLayoutId(): Int = R.layout.refresh_fragment
+
     override fun loadData(isRefresh: Boolean) {
         mBinding.refreshLayout.isRefreshing = true
         mAdapter.clear()
@@ -33,19 +38,10 @@ class ContentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresent
                     }
 
                 })    }
-
     override fun initArgs() {
 
     }
 
-
-
-    override fun getLayoutId(): Int = R.layout.refresh_fragment
-
-    @Inject
-    lateinit var paoService:PaoService
-
-    private val component:AppComponent by lazy { DaggerAppComponent.builder().appModule(AppModule(activity.application)).build()}
 
     private val mAdapter :SingleTypeAdapter<Article> by lazy { SingleTypeAdapter<Article>(activity, R.layout.article_list_item) }
     override fun onItemClick(article: Article) {
@@ -56,7 +52,7 @@ class ContentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresent
 
     override fun initView() {
 
-        component.inject(this)
+        getComponent().inject(this)
 
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object :DividerItemDecoration(activity, DividerItemDecoration.VERTICAL){

@@ -19,8 +19,9 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
+                    app:titleTextColor="@color/colorAccent"
                     app:navigationIcon="@drawable/ic_arrow_back"
-                    android:titleTextColor="@color/colorAccent"
+                    app:title="@null"
                     app:layout_scrollFlags="scroll|enterAlways">
 
             </android.support.v7.widget.Toolbar>

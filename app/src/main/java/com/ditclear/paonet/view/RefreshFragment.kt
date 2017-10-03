@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.annotation.LayoutRes
 import com.ditclear.paonet.R
@@ -9,14 +8,14 @@ import com.ditclear.paonet.model.data.callback.DiffItemCallBack
 import com.ditclear.paonet.vendor.recyclerview.BaseViewAdapter
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.vendor.recyclerview.SingleTypeAdapter
-import com.ditclear.paonet.viewmodel.PagingViewModel
+import com.ditclear.paonet.viewmodel.BaseViewModel
 
 /**
  * 页面描述：通用刷新Fragment
  *
  * Created by ditclear on 2017/9/27.
  */
-class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<RefreshFragmentBinding>(){
+class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<BaseViewModel,RefreshFragmentBinding>(){
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -50,7 +49,6 @@ class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<RefreshFragmentBind
         mAdapter= SingleTypeAdapter<T>(mContext,listItemId!!)
         mBinding.recyclerView.adapter=mAdapter
         mAdapter.setPresenter(presenter)
-        val viewModel = ViewModelProviders.of(this).get(PagingViewModel::class.java)
 
     }
 

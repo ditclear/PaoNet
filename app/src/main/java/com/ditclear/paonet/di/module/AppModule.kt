@@ -3,6 +3,7 @@ package com.ditclear.paonet.di.module
 import android.app.Application
 import com.ditclear.paonet.lib.network.NetMgr
 import com.ditclear.paonet.model.remote.api.PaoService
+import com.ditclear.paonet.view.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -17,11 +18,11 @@ import javax.inject.Singleton
 class AppModule(val app:Application){
 
     @Provides @Singleton
-    public fun provideApp() = app
+    fun provideApp() = app
 
     @Singleton
     @Provides
-    fun provideRemoteClient(): Retrofit = NetMgr.getInstance().getRetrofit("http://api.jcodecraeer.com/");
+    fun provideRemoteClient(): Retrofit = NetMgr.getInstance().getRetrofit(Constants.HOST_API);
 
     @Singleton
     @Provides

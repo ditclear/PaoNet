@@ -1,20 +1,18 @@
 package com.ditclear.paonet.view.article
 
 import android.view.View
-import android.webkit.*
+import android.webkit.GeolocationPermissions
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
-import com.ditclear.paonet.di.component.AppComponent
-import com.ditclear.paonet.di.component.DaggerAppComponent
-import com.ditclear.paonet.di.module.AppModule
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.view.BaseActivity
 import com.ditclear.paonet.view.Constants
+import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
+import org.jsoup.Jsoup
 import javax.inject.Inject
-
-
 
 
 /**
@@ -25,10 +23,7 @@ import javax.inject.Inject
 class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(){
 
     @Inject
-    lateinit var paoService:PaoService
-
-    private val component: AppComponent by lazy { DaggerAppComponent.builder().appModule(AppModule(application)).build()}
-
+    lateinit var viewModel:ArticleDetailViewModel
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
@@ -37,21 +32,41 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(){
     override fun loadData() {
         val article: Article? = intent?.extras?.getSerializable(Constants.KEY_SERIALIZABLE) as Article?
         if(article?.id!=null) {
-            paoService.getArticleDetail(article.id).compose(bindToLifecycle()).async()
+            viewModel.loadData(article.id)
+
+                    .compose(bindToLifecycle()).async()
                     .subscribe { t: Article? ->
-                        mBinding.toolbar.title = t?.title
-                        mBinding.webView.loadMarkdown(t?.content,"file:///android_asset/markdown.css")
+                        supportActionBar?.title=t?.title
+                        val data=processImgSrc(t!!.content!!,Constants.HOST_PAO)
+                        mBinding.webView.loadMarkdown(data,"file:///android_asset/markdown.css")
                     }
         }
 
     }
 
+    /**
+     * 将文本中的相对地址转换成对应的绝对地址
+     * @param content
+     * @param baseUrl
+     * @return
+     */
+    private fun processImgSrc(content: String, baseUrl: String): String {
+        val document = Jsoup.parse(content)
+        document.setBaseUri(baseUrl)
+        val elements = document.select("img[src]")
+        for (el in elements) {
+            val imgUrl = el.attr("src")
+            if (imgUrl.trim({ it <= ' ' }).startsWith("/")) {
+                el.attr("src", el.absUrl("src"))
+            }
+        }
+        return document.html()
+    }
+
     override fun initView() {
 
-        component.inject(this)
-        if (supportActionBar==null){
-            setSupportActionBar(mBinding.toolbar)
-        }
+        getComponent().inject(this)
+        initBackToolbar(mBinding.toolbar)
         webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
                 super.onProgressChanged(view, newProgress)
@@ -65,7 +80,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(){
 
             override fun onReceivedTitle(view: WebView, title: String) {
                 super.onReceivedTitle(view, title)
-                mBinding.toolbar.title = title
             }
 
             override fun onGeolocationPermissionsShowPrompt(origin: String,
@@ -74,33 +88,16 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(){
                 super.onGeolocationPermissionsShowPrompt(origin, callback)
             }
         }
-
-        mBinding.webView.webViewClient = object : WebViewClient() {
-            override fun shouldInterceptRequest(view: WebView, url: String): WebResourceResponse {
-                //System.out.println("WebResourceResponse::"+url);
-                if (url.contains("[inject]")) {
-                    val localPath = url.replaceFirst("^http.*inject\\]".toRegex(), "")
-                    println("LocalPath::" + localPath)
-                    try {
-                        val `is` = applicationContext.assets.open(localPath)
-                        return WebResourceResponse("text/javascript", "UTF-8", `is`)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                        return super.shouldInterceptRequest(view, url)
-                    }
-
-                } else {
-                    return super.shouldInterceptRequest(view, url)
-                }
-            }
-        }
+        mBinding.webView.webChromeClient=webChromeClient
+        mBinding.webView.settings.javaScriptEnabled = true;//设置js可用
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinding.webView.onPause();
-        mBinding.webView.destroy();
+        mBinding.webView.onPause()
+        mBinding.webView.destroy()
+        mBinding.scrollView.removeAllViews()
         System.gc();
     }
 
