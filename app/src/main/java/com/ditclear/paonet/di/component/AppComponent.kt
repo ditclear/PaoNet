@@ -7,7 +7,7 @@ import dagger.Component
 import javax.inject.Singleton
 
 /**
- * 页面描述：
+ * 页面描述：AppComponent
  *
  * Created by ditclear on 2017/9/29.
  */

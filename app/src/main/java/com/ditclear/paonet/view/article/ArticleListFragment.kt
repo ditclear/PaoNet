@@ -2,19 +2,21 @@ package com.ditclear.paonet.view.article
 
 import android.content.Context
 import android.graphics.Rect
+import android.os.Bundle
 import android.support.v7.recyclerview.extensions.DiffCallback
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
+import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
-import com.ditclear.paonet.viewmodel.BaseViewModel
+import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
 /**
@@ -22,21 +24,29 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-class ArticleListFragment :BaseFragment<BaseViewModel,RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+@FragmentScope
+class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+
     @Inject
     lateinit var viewModel: ArticleListViewModel
 
+    lateinit var mAdapter : PagedAdapter<Article>
+
     override fun getLayoutId(): Int = R.layout.refresh_fragment
+
+    companion object {
+
+        fun newInstance()= ArticleListFragment()
+    }
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh)
     }
-    override fun initArgs() {
+    override fun initArgs(savedInstanceState: Bundle?) {
 
     }
 
 
-    private lateinit var mAdapter : PagedAdapter<Article>
     override fun onItemClick(article: Article) {
         activity.navigateToActivity(ArticleDetailActivity::class.java,article)
     }
@@ -48,7 +58,6 @@ class ArticleListFragment :BaseFragment<BaseViewModel,RefreshFragmentBinding>(),
     }
 
     override fun initView() {
-
         mAdapter=PagedAdapter<Article>(activity, R.layout.article_list_item,viewModel.obserableList
                 ,object : DiffCallback<Article>(){
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -60,6 +69,7 @@ class ArticleListFragment :BaseFragment<BaseViewModel,RefreshFragmentBinding>(),
             }
 
         })
+        viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL){

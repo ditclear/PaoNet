@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
  * Created by ditclear on 2017/9/30.
  */
 
-abstract class AbstractPagerAdapter(fm: FragmentManager, internal var title: Array<String>) : FragmentStatePagerAdapter(fm) {
+abstract class AbstractPagerAdapter(fm: FragmentManager, var title: Array<String>) : FragmentStatePagerAdapter(fm) {
     var list :MutableList<Fragment?> = mutableListOf()
 
     init {

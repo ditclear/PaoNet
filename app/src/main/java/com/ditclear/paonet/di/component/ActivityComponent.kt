@@ -4,10 +4,12 @@ import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.view.article.ArticleDetailActivity
+import com.ditclear.paonet.view.auth.LoginActivity
+import com.ditclear.paonet.view.code.CodeDetailActivity
 import dagger.Subcomponent
 
 /**
- * 页面描述：
+ * 页面描述：ActivityComponent
  *
  * Created by ditclear on 2017/9/29.
  */
@@ -16,6 +18,10 @@ import dagger.Subcomponent
 interface ActivityComponent {
 
     fun inject(activity: ArticleDetailActivity)
+
+    fun inject(activity: CodeDetailActivity)
+
+    fun inject(activity: LoginActivity)
 
     fun plus(module: FragmentModule):FragmentComponent
 }

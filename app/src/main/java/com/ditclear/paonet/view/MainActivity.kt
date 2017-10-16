@@ -1,14 +1,23 @@
 package com.ditclear.paonet.view
 
 import android.support.design.widget.NavigationView
+import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.MainActivityBinding
+import com.ditclear.paonet.lib.extention.async
+import com.ditclear.paonet.lib.extention.toast
 import com.ditclear.paonet.view.home.HomeFragment
+import com.ditclear.paonet.view.mine.MyArticleFragment
+import com.ditclear.paonet.view.mine.MyCollectFragment
+import io.reactivex.Single
 
 class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -18,7 +27,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
 
     }
 
-    public fun syncToolBar(toolbar:Toolbar){
+    fun syncToolBar(toolbar:Toolbar){
         val toggle = ActionBarDrawerToggle(
                 this, mBinding.drawerLayout,toolbar, R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close)
@@ -26,21 +35,48 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         toggle.syncState()
     }
 
+    fun setupWithViewPager(viewPager: ViewPager){
+        mBinding.tabLayout.setupWithViewPager(viewPager)
+    }
+
+    fun needShowTab(needShow:Boolean,@TabLayout.Mode mode:Int=TabLayout.MODE_SCROLLABLE){
+        mBinding.tabLayout.tabMode=mode
+        if(needShow){
+            mBinding.tabLayout.visibility= View.VISIBLE
+        }else{
+            mBinding.tabLayout.visibility=View.GONE
+        }
+    }
+
     override fun initView() {
 
-
-
+        setSupportActionBar(mBinding.toolbar)
+        syncToolBar(mBinding.toolbar)
+        supportActionBar?.title="Home"
         mBinding.navView.setNavigationItemSelectedListener(this)
 
-        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
+        switchFragment(HomeFragment.newInstance())
     }
+
+    var isQuit = false;
 
     override fun onBackPressed() {
 
         if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             mBinding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            super.onBackPressed()
+            if (!isQuit) {
+                toast(msg = "再按一次退出程序")
+                isQuit = true;
+                //在两秒钟之后isQuit会变成false
+                Single.just(isQuit)
+                        .compose(bindToLifecycle())
+                        .async(2000)
+                        .subscribe { t-> isQuit=false }
+            } else {
+                super.onBackPressed()
+            }
+
         }
     }
 
@@ -63,8 +99,22 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
-
+        when(id){
+            R.id.nav_home -> switchFragment(HomeFragment.newInstance())
+            R.id.nav_article -> switchFragment(MyArticleFragment.newInstance(),"我的文章")
+            R.id.nav_collect -> switchFragment(MyCollectFragment.newInstance(),"我的收藏")
+            R.id.nav_setting -> switchFragment(MyArticleFragment.newInstance(),"Setting")
+        }
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    /**
+     * 切换fragment
+     */
+    private fun switchFragment(fragment: Fragment,title:String = "Home") {
+        supportActionBar?.title=title
+        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+
     }
 }

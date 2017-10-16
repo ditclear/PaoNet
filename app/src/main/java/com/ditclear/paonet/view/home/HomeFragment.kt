@@ -1,13 +1,13 @@
 package com.ditclear.paonet.view.home
 
+import android.content.Context
+import android.os.Bundle
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
+import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.MainActivity
-import com.ditclear.paonet.view.home.di.DaggerHomeComponent
-import com.ditclear.paonet.view.home.di.HomeModule
-import com.ditclear.paonet.viewmodel.BaseViewModel
 import javax.inject.Inject
 
 /**
@@ -15,30 +15,35 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/9/30.
  */
-class HomeFragment : BaseFragment<BaseViewModel,HomeFragmentBinding>(){
+@FragmentScope
+class HomeFragment : BaseFragment<HomeFragmentBinding>(){
+
 
     @Inject
     lateinit var pagerAdapter:FragmentStatePagerAdapter
 
-    val homeFragment by lazy { DaggerHomeComponent.builder().homeModule(HomeModule(childFragmentManager)).build() }
+    companion object {
 
+        fun newInstance()= HomeFragment()
+    }
     override fun getLayoutId(): Int = R.layout.home_fragment
 
     override fun loadData(isRefresh: Boolean) {
 
     }
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
 
-    override fun initArgs() {
+    }
+    override fun initArgs(savedInstanceState: Bundle?) {
 
-        homeFragment.inject(this)
     }
 
     override fun initView() {
-        (activity as MainActivity).setSupportActionBar(mBinding.toolbar)
-        (activity as MainActivity).syncToolBar(mBinding.toolbar)
         mBinding.viewPager.adapter=pagerAdapter
-        mBinding.tabLayout.setupWithViewPager(mBinding.viewPager)
-
+        (activity as MainActivity).needShowTab(true)
+        (activity as MainActivity).setupWithViewPager(mBinding.viewPager)
     }
 
 

@@ -1,6 +1,6 @@
 package com.ditclear.paonet.di.module
 
-import com.trello.rxlifecycle2.LifecycleTransformer
+import com.ditclear.paonet.viewmodel.BaseViewModel
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 import dagger.Module
 import dagger.Provides
@@ -11,11 +11,14 @@ import dagger.Provides
  * Created by ditclear on 2017/9/26.
  */
 @Module
-class ActivityModule(val activity: RxAppCompatActivity){
+class ActivityModule(private val activity: RxAppCompatActivity){
 
     @Provides
     fun provideActivity():RxAppCompatActivity=activity
 
+
     @Provides
-    fun provideLifeCycle(): LifecycleTransformer<Any> = activity.bindToLifecycle()
+    fun provideViewModel():BaseViewModel= BaseViewModel()
+
+
 }

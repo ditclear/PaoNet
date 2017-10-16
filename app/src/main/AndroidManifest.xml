@@ -13,15 +13,17 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".view.MainActivity"
-                android:theme="@style/AppTheme">
+                android:name=".view.auth.LoginActivity"
+                android:theme="@style/FormTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".view.MainActivity"/>
         <activity android:name=".view.article.ArticleDetailActivity"/>
+        <activity android:name=".view.code.CodeDetailActivity"/>
     </application>
 
 </manifest>

@@ -1,12 +1,11 @@
 package com.ditclear.paonet.view.article.viewmodel
 
 import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
+import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.viewmodel.PagedViewModel
-import com.trello.rxlifecycle2.LifecycleTransformer
 import javax.inject.Inject
 
 /**
@@ -14,11 +13,12 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
+@FragmentScope
 class ArticleListViewModel
 @Inject
-constructor(lifecycle: LifecycleTransformer<Article>, private val repo: PaoService) : PagedViewModel(lifecycle) {
+constructor( private val repo: PaoService) : PagedViewModel() {
 
-    val obserableList: ObservableList<Article> = ObservableArrayList<Article>()
+    val obserableList = ObservableArrayList<Article>()
 
     fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
@@ -32,7 +32,6 @@ constructor(lifecycle: LifecycleTransformer<Article>, private val repo: PaoServi
                         return@map items?.let { obserableList.addAll(it) }
                     }
                 }
-                .doOnTerminate { stopLoad() }
-                .subscribe()
+                .subscribe{ t1, t2 -> loading.set(false) }
     }
 }

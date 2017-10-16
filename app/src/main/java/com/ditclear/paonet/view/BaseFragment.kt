@@ -15,7 +15,6 @@ import android.widget.Toast
 import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView
-import com.ditclear.paonet.viewmodel.BaseViewModel
 import com.trello.rxlifecycle2.components.support.RxFragment
 
 
@@ -24,7 +23,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : RxFragment() {
+abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
 
     protected lateinit var mBinding: VB
 
@@ -53,16 +52,20 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : RxFragme
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initArgs(savedInstanceState)
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+        mContext = activity
+        initView()
         return mBinding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mContext = activity
-        initArgs()
-        initView()
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
             lazyLoad();
@@ -99,7 +102,7 @@ abstract class BaseFragment<VM : BaseViewModel, VB : ViewDataBinding> : RxFragme
 
     abstract fun loadData(isRefresh: Boolean)
 
-    abstract fun initArgs()
+    abstract fun initArgs(savedInstanceState: Bundle?)
 
     abstract fun initView()
 

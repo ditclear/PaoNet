@@ -19,9 +19,9 @@ import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
  *
  * Created by ditclear on 2017/10/3.
  */
-class PagedAdapter<T>(context: Context, private val layoutRes: Int, private val mCollection: ObservableList<T>, diffCallback: DiffCallback<T>) : PagedListAdapter<T, BindingViewHolder<ViewDataBinding>>(diffCallback) {
+open class PagedAdapter<T>(context: Context, private val layoutRes: Int, private val mCollection: ObservableList<T>, diffCallback: DiffCallback<T>) : PagedListAdapter<T, BindingViewHolder<ViewDataBinding>>(diffCallback) {
 
-    var mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
+    private var mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     var presenter: ItemClickPresenter<T>? = null
     var decorator: Decorator? = null
 
@@ -50,17 +50,11 @@ class PagedAdapter<T>(context: Context, private val layoutRes: Int, private val 
         })
     }
 
-    override fun getCurrentList(): PagedList<T>? {
-        return super.getCurrentList()
-    }
+    override fun getCurrentList(): PagedList<T>? = super.getCurrentList()
 
-    override fun getItemCount(): Int {
-        return mCollection.size
-    }
+    override fun getItemCount() = mCollection.size
 
-    override fun getItem(position: Int): T? {
-        return mCollection[position]
-    }
+    override fun getItem(position: Int): T? = mCollection[position]
 
     interface Decorator {
         fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int)

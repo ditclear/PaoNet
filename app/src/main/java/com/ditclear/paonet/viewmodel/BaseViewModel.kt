@@ -1,6 +1,6 @@
 package com.ditclear.paonet.viewmodel
 
-import android.arch.lifecycle.ViewModel
+import android.databinding.BaseObservable
 import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
@@ -9,8 +9,13 @@ import com.trello.rxlifecycle2.LifecycleTransformer
  * Created by ditclear on 2017/9/28.
  */
 
-open class BaseViewModel(var lifecycle: LifecycleTransformer<*>) : ViewModel(){
+open class BaseViewModel : BaseObservable(){
 
-    fun <T> bindToLifecycle() : LifecycleTransformer<T> =lifecycle as LifecycleTransformer<T>
+
+
+    var lifecycle : LifecycleTransformer<*> ?=null
+
+    fun <T> bindToLifecycle() :LifecycleTransformer<T> = lifecycle!! as LifecycleTransformer<T>
+
 
 }

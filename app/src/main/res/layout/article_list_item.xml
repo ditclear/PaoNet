@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="4"
                     android:ellipsize="end"
-                    android:text="@{item.content}"
+                    android:text="@{item.description}"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     tools:text="A problem that alot of independent app developers face is that they aren't.."/>

@@ -86,6 +86,10 @@ dependencies {
 
     compile 'org.jsoup:jsoup:1.10.3'
 
+    compile 'com.github.GrenderG:Toasty:1.2.5'
+    
+    compile 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
     ///////////unit test///////////////
     testCompile 'junit:junit:4.12'
     //////////ui test//////////////////

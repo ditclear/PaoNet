@@ -4,8 +4,7 @@ import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.viewmodel.BaseViewModel
-import com.trello.rxlifecycle2.LifecycleTransformer
-import io.reactivex.Flowable
+import io.reactivex.Single
 import javax.inject.Inject
 
 /**
@@ -15,7 +14,7 @@ import javax.inject.Inject
  */
 @ActivityScope
 class ArticleDetailViewModel @Inject
-constructor(lifecycle: LifecycleTransformer<Any>,private val repo: PaoService) : BaseViewModel(lifecycle) {
+constructor(private val repo: PaoService) : BaseViewModel() {
 
-    fun loadData(articleId: Int): Flowable<Article> = repo.getArticleDetail(articleId)
+    fun loadData(articleId: Int): Single<Article> = repo.getArticleDetail(articleId)
 }

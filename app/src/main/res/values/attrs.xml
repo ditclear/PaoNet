@@ -3,4 +3,7 @@
     <declare-styleable name="RecyclerView">
         <attr name="loadMore" format="boolean"/>
     </declare-styleable>
+    <declare-styleable name="TextInputLayout">
+        <attr name="error" format="string"/>
+    </declare-styleable>
 </resources>

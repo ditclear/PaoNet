@@ -7,5 +7,7 @@ package com.ditclear.paonet.viewmodel.callback
  */
 interface ICallBack{
 
-    fun loadFailure(error :Throwable)
+    fun toastFailure(error :Throwable)
+
+    fun toastSuccess(msg:String?)
 }

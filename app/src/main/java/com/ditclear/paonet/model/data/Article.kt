@@ -1,6 +1,7 @@
 package com.ditclear.paonet.model.data
 
 import com.ditclear.paonet.model.data.callback.DiffItemCallBack
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.*
 
@@ -20,6 +21,8 @@ class Article(var title: String?) : DiffItemCallBack<Article>,Serializable{
     var id: Int = 0
     var user: User? = null
     var content: String? = null
+    var readme: String? = null
+    @SerializedName("describe")
     var description: String? = null
     var click: Int = 0
     var channel: Int = 0
@@ -37,4 +40,6 @@ class Article(var title: String?) : DiffItemCallBack<Article>,Serializable{
      * @return as 2 days ago · 20 reads
      */
     fun getDateAndClicks() = String.format("%s  ·  %d reads",pubDate,click)
+
+    fun getCodeDateAndClicks() =String.format("%d查看  %d收藏\t%s",click,stow,pubDate)
 }

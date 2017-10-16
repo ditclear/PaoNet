@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="item"
+                type="com.ditclear.paonet.model.data.Article"/>
+
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:stateListAnimator="@animator/active_raise"
+            app:cardBackgroundColor="@color/background_item"
+            android:background="?selectableItemBackground"
+            android:onClick="@{()->presenter.onItemClick(item)}"
+            app:cardCornerRadius="@dimen/xdp_0"
+            app:cardElevation="@dimen/xdp_2.0"
+            app:contentPaddingTop="@dimen/activity_horizontal_margin"
+            app:contentPaddingRight="@dimen/activity_horizontal_margin"
+            app:contentPaddingBottom="@dimen/activity_horizontal_margin"
+            app:contentPaddingLeft="@dimen/nav_header_vertical_spacing"
+            >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="@dimen/xdp_100.0"
+                    android:layout_height="match_parent"
+                    android:background="?selectableItemBackground"
+                    android:contentDescription="@string/thumbnail"
+                    android:scaleType="centerCrop"
+                    bind:url="@{item.thumbnail}"
+                    tools:src="@color/tools_color"/>
+            <android.support.v4.widget.Space
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent"/>
+            <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@{item.title}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        tools:text="@string/app_name"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/xdp_150.0"
+                        android:ellipsize="end"
+                        android:text="@{item.description}"
+                        android:maxLines="7"
+                        tools:text="泡网第三方客户端 使用MVVM架构，尽力做到最好"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
+                <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="@{item.codeDateAndClicks}"
+                        tools:text="324查看	  	21下载   2017-10-09"
+                        android:ellipsize="end"/>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>

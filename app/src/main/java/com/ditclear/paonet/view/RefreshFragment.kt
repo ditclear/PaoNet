@@ -8,14 +8,13 @@ import com.ditclear.paonet.model.data.callback.DiffItemCallBack
 import com.ditclear.paonet.vendor.recyclerview.BaseViewAdapter
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.vendor.recyclerview.SingleTypeAdapter
-import com.ditclear.paonet.viewmodel.BaseViewModel
 
 /**
  * 页面描述：通用刷新Fragment
  *
  * Created by ditclear on 2017/9/27.
  */
-class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<BaseViewModel,RefreshFragmentBinding>(){
+class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<RefreshFragmentBinding>(){
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -40,7 +39,7 @@ class RefreshFragment <T:DiffItemCallBack<T>> : BaseFragment<BaseViewModel,Refre
         }
     }
 
-    override fun initArgs() {
+    override fun initArgs(savedInstanceState: Bundle?) {
         listItemId=arguments?.getInt(KEY_LIST_ITEM_ID)
         presenter= arguments?.get(KEY_LIST_ITEM_PRESENTER) as BaseViewAdapter.Presenter?
     }

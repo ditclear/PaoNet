@@ -1,14 +1,13 @@
 package com.ditclear.paonet.viewmodel
 
 import android.databinding.ObservableField
-import com.trello.rxlifecycle2.LifecycleTransformer
 
 /**
  * 页面描述：PagedViewModel
  *
  * Created by ditclear on 2017/9/28.
  */
-open class PagedViewModel(lifecycle: LifecycleTransformer<*>) :BaseViewModel(lifecycle){
+open class PagedViewModel :BaseViewModel(){
 
     val loading=ObservableField(false)
 
