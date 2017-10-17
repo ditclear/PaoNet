@@ -14,6 +14,7 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.toast
+import com.ditclear.paonet.view.code.CodeFragment
 import com.ditclear.paonet.view.home.HomeFragment
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
@@ -101,6 +102,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         val id = item.itemId
         when(id){
             R.id.nav_home -> switchFragment(HomeFragment.newInstance())
+            R.id.nav_code -> switchFragment(CodeFragment.newInstance(),"Code")
             R.id.nav_article -> switchFragment(MyArticleFragment.newInstance(),"我的文章")
             R.id.nav_collect -> switchFragment(MyCollectFragment.newInstance(),"我的收藏")
             R.id.nav_setting -> switchFragment(MyArticleFragment.newInstance(),"Setting")

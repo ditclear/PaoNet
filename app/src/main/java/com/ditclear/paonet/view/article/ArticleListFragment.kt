@@ -16,6 +16,7 @@ import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
+import com.ditclear.paonet.view.helper.ArticleType
 import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
@@ -32,18 +33,27 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
 
     lateinit var mAdapter : PagedAdapter<Article>
 
+    var tid :Int=ArticleType.ANDROID
+
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
     companion object {
+        val TID="TID"
+        fun newInstance( tid: Int=ArticleType.ANDROID): ArticleListFragment{
 
-        fun newInstance()= ArticleListFragment()
+            val bundle=Bundle()
+            bundle.putInt(TID,tid)
+            val fragment=ArticleListFragment()
+            fragment.arguments=bundle
+            return fragment
+        }
     }
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh)
     }
     override fun initArgs(savedInstanceState: Bundle?) {
-
+        arguments?.let { tid=arguments.getInt(TID) }
     }
 
 
@@ -70,6 +80,8 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
 
         })
         viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
+        viewModel.tid=tid
+        viewModel.lifecycle
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL){

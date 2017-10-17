@@ -13,13 +13,14 @@ body {
 	line-height: 1.5em;
 	padding: 1em;
 	margin: auto;
-	max-width: 42em;
+	max-width: 36em;
 	background: #fefefe;
 }
 
 a {
 	color: #0645ad;
 	text-decoration: none;
+	max-width: 100%;
 }
 
 a:visited {
@@ -64,6 +65,7 @@ a::selection {
 
 p {
 	margin: 1em 0;
+	max-width: 100%;
 }
 
 img {
@@ -196,6 +198,7 @@ img {
 table {
 	border-collapse: collapse;
 	border-spacing: 0;
+	max-width: 100%;
 }
 
 td {
@@ -231,6 +234,7 @@ td {
 	hr {
 		height: 1px;
 		border: 0;
+		max-width:100%;
 		border-bottom: 1px solid black;
 	}
 	a[href]:after {

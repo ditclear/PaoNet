@@ -39,16 +39,26 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
+    var cate:Int?=null
+
     companion object {
 
-        fun newInstance()= CodeListFragment()
+        val CATE="cate"
+        fun newInstance(cate:Int?):CodeListFragment{
+
+            val bundle=Bundle()
+            cate?.let { bundle.putInt(CATE,cate) }
+            val fragment=CodeListFragment()
+            fragment.arguments=bundle
+            return fragment
+        }
     }
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh)
     }
     override fun initArgs(savedInstanceState: Bundle?) {
-
+        arguments?.let { cate=arguments.getInt(CATE) }
     }
 
 
@@ -76,6 +86,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
         })
         viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
+        viewModel.category=cate
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL){

@@ -43,6 +43,7 @@
                     android:contentDescription="@string/thumbnail"
                     android:scaleType="centerCrop"
                     bind:url="@{item.thumbnail}"
+                    android:elevation="@dimen/xdp_8.0"
                     tools:src="@color/tools_color"/>
             <android.support.v4.widget.Space
                     android:layout_width="8dp"

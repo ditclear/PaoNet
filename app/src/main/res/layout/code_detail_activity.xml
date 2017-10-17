@@ -3,10 +3,17 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.CoordinatorLayout
+    <data>
+        <variable
+                name="vm"
+                type="com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel"/>
+    </data>
+    <com.ditclear.paonet.widget.OverScrollLayout
+            android:id="@+id/over_scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            app:onOverScroll="@{()->vm.onOverScroll()}"
             tools:context="com.ditclear.paonet.view.code.CodeDetailActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -29,8 +36,8 @@
                         android:layout_height="match_parent"
                         android:contentDescription="@string/thumbnail"
                         android:scaleType="centerCrop"
-                        android:duplicateParentState="true"
-                        android:background="?selectableItemBackground"/>
+                        android:fitsSystemWindows="true"
+                        android:duplicateParentState="true"/>
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
@@ -45,8 +52,7 @@
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                >
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                     android:layout_width="match_parent"
@@ -75,7 +81,18 @@
                 android:layout_margin="@dimen/fab_margin"
                 app:layout_anchor="@id/app_bar"
                 app:layout_anchorGravity="bottom|end"
+                android:onClick="@{(v)->vm.onClick(v)}"
                 app:srcCompat="@drawable/ic_bookmark"/>
 
-    </android.support.design.widget.CoordinatorLayout>
+        <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_gravity="bottom|end"
+                android:visibility="gone"
+                android:onClick="@{(v)->vm.onClick(v)}"
+                app:srcCompat="@drawable/ic_arrow_upward"/>
+
+    </com.ditclear.paonet.widget.OverScrollLayout>
 </layout>

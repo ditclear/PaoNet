@@ -57,10 +57,14 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
         initArgs(savedInstanceState)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mContext = activity
         initView()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
         return mBinding.root
     }
 

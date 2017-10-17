@@ -5,6 +5,7 @@ import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
+import com.ditclear.paonet.view.helper.ArticleType
 import com.ditclear.paonet.viewmodel.PagedViewModel
 import javax.inject.Inject
 
@@ -20,9 +21,12 @@ constructor( private val repo: PaoService) : PagedViewModel() {
 
     val obserableList = ObservableArrayList<Article>()
 
+    var tid=ArticleType.ANDROID
+        set
+
     fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
-        repo.getArticleList(page).compose(bindToLifecycle()).async(1000)
+        repo.getArticleList(page,tid).compose(bindToLifecycle()).async(1000)
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {

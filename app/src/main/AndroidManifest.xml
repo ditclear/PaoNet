@@ -13,7 +13,7 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".view.auth.LoginActivity"
+                android:name=".view.MainActivity"
                 android:theme="@style/FormTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".view.MainActivity"/>
+        <activity android:name=".view.auth.LoginActivity"/>
         <activity android:name=".view.article.ArticleDetailActivity"/>
         <activity android:name=".view.code.CodeDetailActivity"/>
     </application>

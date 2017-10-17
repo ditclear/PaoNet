@@ -14,7 +14,7 @@ import retrofit2.http.Query
  interface PaoService {
 
     @GET("article_list.php")
-    fun getArticleList(@Query("p") page: Int): Single<ArticleList>
+    fun getArticleList(@Query("p") page: Int,@Query("tid") tid:Int): Single<ArticleList>
 
 
     @GET("article_detail.php")

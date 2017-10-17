@@ -20,7 +20,7 @@ constructor( private val repo: PaoService) : PagedViewModel() {
 
     val obserableList = ObservableArrayList<Article>()
 
-    //-1 代表全部
+    //null代表全部
     var category :Int ?=null
 
     fun loadData(isRefresh: Boolean) {
