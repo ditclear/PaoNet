@@ -22,7 +22,7 @@
             android:stateListAnimator="@animator/active_raise"
             app:cardBackgroundColor="@color/background_item"
             android:background="?selectableItemBackground"
-            android:onClick="@{()->presenter.onItemClick(item)}"
+            android:onClick="@{(v)->presenter.onItemClick(v,item)}"
             app:cardCornerRadius="@dimen/xdp_0"
             app:cardElevation="@dimen/xdp_2.0"
             app:contentPaddingTop="@dimen/activity_horizontal_margin"
@@ -35,16 +35,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-            <ImageView
+            <android.support.v7.widget.CardView
                     android:layout_width="@dimen/xdp_100.0"
                     android:layout_height="match_parent"
-                    android:background="?selectableItemBackground"
-                    android:contentDescription="@string/thumbnail"
-                    android:scaleType="centerCrop"
-                    bind:url="@{item.thumbnail}"
-                    android:elevation="@dimen/xdp_8.0"
-                    tools:src="@color/tools_color"/>
+                    app:cardElevation="@dimen/xdp_2.0">
+                <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="@dimen/xdp_100.0"
+                        android:layout_height="match_parent"
+                        android:background="?selectableItemBackground"
+                        android:contentDescription="@string/thumbnail"
+                        android:scaleType="centerCrop"
+                        bind:url="@{item.thumbnail}"
+                        android:elevation="@dimen/xdp_8.0"
+                        tools:src="@color/tools_color"/>
+            </android.support.v7.widget.CardView>
+
             <android.support.v4.widget.Space
                     android:layout_width="8dp"
                     android:layout_height="match_parent"/>

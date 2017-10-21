@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
+    <data>
+    </data>
+
+    <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:theme="@style/searchView">
+
+        <View
+                android:id="@+id/scrim"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/scrim"/>
+
+        <FrameLayout
+                android:id="@+id/search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?android:actionBarSize"
+                android:elevation="@dimen/cardview_default_elevation"
+                android:outlineProvider="bounds"
+                android:transitionGroup="false">
+
+            <View
+                    android:id="@+id/search_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorPrimary"/>
+
+            <android.support.v7.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:iconifiedByDefault="false"
+                    android:transitionGroup="true"/>
+
+            <!-- wrapping layout needed for the touch ripple -->
+            <FrameLayout
+                    android:id="@+id/searchback_container"
+                    android:layout_width="96dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:paddingStart="4dp">
+
+                <ImageButton
+                        android:id="@+id/searchback"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:transitionName="@string/transition_search_back"
+                        android:src="@drawable/ic_arrow_back"/>
+
+            </FrameLayout>
+
+        </FrameLayout>
+        <FrameLayout
+                android:id="@+id/results_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="?android:actionBarSize"
+                android:background="@color/scrim"
+                android:elevation="@dimen/cardview_default_elevation">
+
+
+        </FrameLayout>
+    </FrameLayout>
+</layout>

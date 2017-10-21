@@ -36,6 +36,7 @@ constructor( private val repo: PaoService) : PagedViewModel() {
                         return@map items?.let { obserableList.addAll(it) }
                     }
                 }
-                .subscribe{ t1, t2 -> loading.set(false) }
+                .subscribe({t -> stopLoad() },
+                        {t -> stopLoad()  })
     }
 }

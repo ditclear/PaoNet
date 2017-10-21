@@ -35,17 +35,18 @@ class FragmentModule(private val fragment: RxFragment) {
 
         return object : AbstractPagerAdapter(fragment.childFragmentManager, arrayOf( "Recent","ANDROID","程序设计","前端开发","IOS","数据库","开发日志","应用推荐","每日一站")) {
             override fun getItem(pos: Int): Fragment? {
-
-                when (pos) {
-                    0 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
-                    1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
-                    2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.PROGRAME)
-                    3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.FRONT_END)
-                    4 -> list[pos] = ArticleListFragment.newInstance(ArticleType.IOS)
-                    5 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DB)
-                    6 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DEVLOG)
-                    7 -> list[pos] = ArticleListFragment.newInstance(ArticleType.RECOMMAND)
-                    8 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DAILY)
+                if (list[pos]==null) {
+                    when (pos) {
+                        0 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
+                        1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
+                        2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.PROGRAME)
+                        3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.FRONT_END)
+                        4 -> list[pos] = ArticleListFragment.newInstance(ArticleType.IOS)
+                        5 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DB)
+                        6 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DEVLOG)
+                        7 -> list[pos] = ArticleListFragment.newInstance(ArticleType.RECOMMAND)
+                        8 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DAILY)
+                    }
                 }
                 return list[pos]
             }

@@ -18,7 +18,7 @@ class CodeListViewModel
 @Inject
 constructor( private val repo: PaoService) : PagedViewModel() {
 
-    val obserableList = ObservableArrayList<Article>()
+    val observableList = ObservableArrayList<Article>()
 
     //null代表全部
     var category :Int ?=null
@@ -29,12 +29,12 @@ constructor( private val repo: PaoService) : PagedViewModel() {
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {
-                            obserableList.clear()
+                            observableList.clear()
                         }
                         loadMore.set(!incomplete_results)
-                        return@map items?.let { obserableList.addAll(it) }
+                        return@map items?.let { observableList.addAll(it) }
                     }
                 }
-                .subscribe{ t1, t2 -> loading.set(false) }
+                .subscribe({t -> stopLoad()},{t: Throwable? -> stopLoad() })
     }
 }

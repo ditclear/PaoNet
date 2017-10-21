@@ -13,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:onOverScroll="@{()->vm.onOverScroll()}"
             tools:context="com.ditclear.paonet.view.code.CodeDetailActivity">
 
         <android.support.design.widget.AppBarLayout

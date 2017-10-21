@@ -14,4 +14,3 @@ fun MarkdownView.loadMarkdownWithBaseURL(baseUrl: String?, txt: String?, cssFile
     html = "<link rel='stylesheet' type='text/css' href='$cssFileUrl' />$html"
     loadDataWithBaseURL(baseUrl, html, "text/html", "UTF-8", null)
 }
-

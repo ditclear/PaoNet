@@ -11,12 +11,12 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
-import com.ditclear.paonet.lib.extention.navigateToActivity
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.helper.ArticleType
+import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
@@ -27,6 +27,7 @@ import javax.inject.Inject
  */
 @FragmentScope
 class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+
 
     @Inject
     lateinit var viewModel: ArticleListViewModel
@@ -49,6 +50,14 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
         }
     }
 
+    override fun lazyLoad() {
+        if (!isPrepared || !visible||hasLoadOnce) {
+            return
+        }
+        hasLoadOnce=true
+        loadData(true)
+    }
+
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh)
     }
@@ -57,10 +66,9 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
     }
 
 
-    override fun onItemClick(article: Article) {
-        activity.navigateToActivity(ArticleDetailActivity::class.java,article)
+    override fun onItemClick(v: View?, t: Article) {
+        navigateToArticleDetail(activity,v?.findViewById(R.id.thumbnail_iv),article = t)
     }
-
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         getComponent().inject(this)
@@ -68,6 +76,7 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
     }
 
     override fun initView() {
+        lazyLoad=true
         mAdapter=PagedAdapter<Article>(activity, R.layout.article_list_item,viewModel.obserableList
                 ,object : DiffCallback<Article>(){
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -94,6 +103,7 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
         mBinding.refreshLayout.setOnRefreshListener {
             loadData(true)
         }
+        isPrepared=true
     }
 
 }

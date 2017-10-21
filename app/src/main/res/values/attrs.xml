@@ -6,4 +6,19 @@
     <declare-styleable name="TextInputLayout">
         <attr name="error" format="string"/>
     </declare-styleable>
+
+    <declare-styleable name="FabTransform">
+        <attr name="fabColor" format="color" />
+        <attr name="fabIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CircularReveal">
+        <attr name="startRadius" format="dimension" />
+        <attr name="endRadius" format="dimension" />
+        <attr name="centerOn" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="StartAnimatable">
+        <attr name="android:src" />
+    </declare-styleable>
 </resources>

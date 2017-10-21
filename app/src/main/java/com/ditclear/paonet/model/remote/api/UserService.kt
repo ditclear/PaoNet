@@ -2,7 +2,7 @@ package com.ditclear.paonet.model.remote.api
 
 import com.ditclear.paonet.model.data.ArticleList
 import com.ditclear.paonet.model.data.BaseResponse
-import com.ditclear.paonet.model.data.User
+import com.ditclear.paonet.model.data.UserModel
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import retrofit2.http.*
@@ -44,7 +44,7 @@ import retrofit2.http.*
      * 我的个人信息
      */
     @GET("/my_profile.php")
-    fun myProfile(): Single<User>
+    fun myProfile(): Single<UserModel>
 
     /**
      * 我的文章

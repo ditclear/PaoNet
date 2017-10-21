@@ -64,7 +64,32 @@
                 app:itemIconTint="@color/colorPrimary"
                 app:itemTextColor="@color/colorPrimary"
                 app:headerLayout="@layout/nav_header_main"
-                app:menu="@menu/activity_main_drawer"/>
+                app:menu="@menu/activity_main_drawer">
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:orientation="horizontal"
+                    android:background="@color/cardview_light_background"
+                    android:layout_gravity="bottom">
+                <ImageView
+                        android:layout_width="@dimen/xdp_75.0"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerInside"
+                        android:src="@mipmap/ic_j"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/action_settings"/>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:gravity="center_vertical"
+                        android:text="@string/action_about"/>
+            </LinearLayout>
+                </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

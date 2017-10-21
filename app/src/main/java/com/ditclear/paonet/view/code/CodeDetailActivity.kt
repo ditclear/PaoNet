@@ -31,7 +31,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>(), CodeDetail
     }
 
     override fun scrollToTop() {
-        mBinding.scrollView.smoothScrollTo(0, 0)
+        mBinding.scrollView.fullScroll(NestedScrollView.FOCUS_UP)
     }
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity

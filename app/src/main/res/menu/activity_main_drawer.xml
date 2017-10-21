@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
+
 
     <group android:checkableBehavior="single">
         <item
                 android:id="@+id/nav_home"
                 android:title="首页"/>
-
         <item android:id="@+id/nav_code"
               android:title="代码"/>
         <item
                 android:id="@+id/nav_article"
-                android:title="文章"/>
+                android:actionViewClass="android.widget.TextView"
+                android:title="我的文章"/>
         <item
                 android:id="@+id/nav_collect"
-                android:title="收藏"/>
+                android:actionViewClass="android.widget.TextView"
+                android:title="我的收藏"/>
         <item
                 android:id="@+id/nav_setting"
                 android:title="设置"/>

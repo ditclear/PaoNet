@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
@@ -15,9 +16,9 @@ import com.ditclear.paonet.lib.extention.navigateToActivity
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.code.CodeDetailActivity
+import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
@@ -62,12 +63,12 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         collectionType=arguments.getInt(COLLECTION_TYPE,1)
     }
 
-
-    override fun onItemClick(article: Article) {
+    @SingleClick
+    override fun onItemClick(v: View?, t: Article) {
         if(collectionType==1) {
-            activity.navigateToActivity(ArticleDetailActivity::class.java, article)
+            navigateToArticleDetail(activity, v?.findViewById(R.id.thumbnail_iv), t)
         }else{
-            activity.navigateToActivity(CodeDetailActivity::class.java,article)
+            activity.navigateToActivity(CodeDetailActivity::class.java, t)
         }
     }
 

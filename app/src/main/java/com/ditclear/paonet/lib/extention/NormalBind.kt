@@ -1,10 +1,11 @@
 package com.ditclear.paonet.lib.extention
 
 import android.databinding.BindingAdapter
+import android.support.design.widget.FloatingActionButton
+import android.view.View
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.ditclear.paonet.R
-import jp.wasabeef.glide.transformations.CropCircleTransformation
+import com.ditclear.paonet.view.helper.ImageUtil
 
 /**
  * 页面描述：normal bind class
@@ -13,16 +14,15 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation
  */
 
 @BindingAdapter(value = *arrayOf("url","avatar"),requireAll = false)
-fun bindUrl(imageView: ImageView, url: String,isAvatar:Boolean?) {
-    if (isAvatar==null||isAvatar==false) {
-        Glide.with(imageView.context).load(url)
-                .placeholder(R.color.tools_color)
-                .error(R.color.tools_color).into(imageView)
-    }else{
-        Glide.with(imageView.context).load(url)
-                .bitmapTransform(CropCircleTransformation(imageView.context))
-                .placeholder(R.drawable.ic_face)
-                .error(R.drawable.ic_face).into(imageView)
-    }
+fun bindUrl(imageView: ImageView, url: String?,isAvatar:Boolean?) {
+
+    ImageUtil.load(url,imageView,isAvatar=isAvatar?:false)
 }
 
+@BindingAdapter(value = *arrayOf("start_color","icon"),requireAll = false)
+fun bindTransitionArgs(v: View, color:Int,icon:Int?){
+    v.setTag(R.integer.start_color,color)
+    if (v is FloatingActionButton) {
+        icon?.let { v.setTag(R.integer.fab_icon, icon) }
+    }
+}

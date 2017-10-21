@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="item"
+                type="com.ditclear.paonet.model.data.User"/>
+    </data>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -11,30 +18,31 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark">
+            android:background="@android:color/white">
 
         <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:scaleType="fitCenter"
+                bind:url="@{item.face}"
+                bind:avatar="@{true}"
                 app:srcCompat="@drawable/ic_face"/>
 
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:text="ditclear"
+                android:text='@{item.navHeaderName,default="请登录"}'
                 android:textColor="@color/colorPrimary"
-
                 android:letterSpacing="0.2"/>
 
         <TextView
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:text="ditclear@qq.com"/>
+                android:textColor="@color/tools_color"
+                android:text='@{item.qianming,default="还什么都没写"}'/>
 
     </LinearLayout>
 </layout>

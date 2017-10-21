@@ -38,4 +38,8 @@ class User :Serializable{
     var qianming: String? = null
     var fans: Int = 0
     var guanzhu: Int = 0
+
+
+    //////////////////bind view/////////////
+    fun getNavHeaderName():String=nickname?:"请登录"
 }

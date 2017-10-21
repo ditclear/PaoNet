@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
@@ -47,7 +48,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         fun newInstance(cate:Int?):CodeListFragment{
 
             val bundle=Bundle()
-            cate?.let { bundle.putInt(CATE,cate) }
+            cate?.let { bundle.putInt(CATE,it) }
             val fragment=CodeListFragment()
             fragment.arguments=bundle
             return fragment
@@ -58,11 +59,11 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         viewModel.loadData(isRefresh)
     }
     override fun initArgs(savedInstanceState: Bundle?) {
-        arguments?.let { cate=arguments.getInt(CATE) }
+        arguments?.let { cate=it.getInt(CATE) }
     }
 
-
-    override fun onItemClick(code: Article) {
+    @SingleClick
+    override fun onItemClick(view: View?,code: Article) {
         activity.navigateToActivity(CodeDetailActivity::class.java,code)
 
     }
@@ -74,7 +75,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     override fun initView() {
-        mAdapter= PagedAdapter<Article>(activity, R.layout.code_list_item, viewModel.obserableList
+        mAdapter= PagedAdapter<Article>(activity, R.layout.code_list_item, viewModel.observableList
                 , object : DiffCallback<Article>() {
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
                 return oldItem.id == newItem.id

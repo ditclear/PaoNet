@@ -1,8 +1,6 @@
 package com.ditclear.paonet.view.article
 
-import android.support.v4.widget.NestedScrollView
 import android.view.View
-import android.webkit.GeolocationPermissions
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import com.ditclear.paonet.R
@@ -24,15 +22,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/1.
  */
-class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(),ArticleDetailViewModel.CallBack {
-    override fun scrollToTop() {
-        mBinding.scrollView.smoothScrollTo(0,0)
-    }
-
-    override fun onOverScroll() {
-        finish()
-        overridePendingTransition(0, 0)
-    }
+class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), ArticleDetailViewModel.CallBack {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
@@ -74,19 +64,20 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(),Artic
     }
 
     override fun initView() {
+
         val article: Article? = intent?.extras?.getSerializable(Constants.KEY_SERIALIZABLE) as Article?
         if (article == null) {
             toast("文章不存在", ToastType.WARNING)
             finish()
-            overridePendingTransition(0,0)
         }
+
         getComponent().inject(this)
 
         viewModel.lifecycle = bindToLifecycle<ActivityEvent>()
 
         viewModel.article = article!!
         viewModel.attachView(this)
-        mBinding.vm=viewModel
+        mBinding.vm = viewModel
         initBackToolbar(mBinding.toolbar)
         webChromeClient = object : WebChromeClient() {
             override fun onProgressChanged(view: WebView, newProgress: Int) {
@@ -98,37 +89,19 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(),Artic
                     mBinding.progressBar.visibility = View.GONE
                 }
             }
-
-            override fun onReceivedTitle(view: WebView, title: String) {
-                super.onReceivedTitle(view, title)
-            }
-
-            override fun onGeolocationPermissionsShowPrompt(origin: String,
-                                                            callback: GeolocationPermissions.Callback) {
-                callback.invoke(origin, true, false)
-                super.onGeolocationPermissionsShowPrompt(origin, callback)
-            }
         }
         mBinding.webView.webChromeClient = webChromeClient
-        mBinding.webView.settings.javaScriptEnabled = true;//设置js可用
-
-        mBinding.scrollView.setOnScrollChangeListener { v: NestedScrollView?, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
-            if(scrollY>400&&!mBinding.fabBottom.isShown){
-                mBinding.fabBottom.show()
-            }else if (scrollY<=400&&mBinding.fabBottom.isShown){
-                mBinding.fabBottom.hide()
-            }
-        }
-
 
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+
+        mBinding.webView.clearHistory()
         mBinding.webView.onPause()
         mBinding.webView.destroy()
         mBinding.scrollView.removeAllViews()
         System.gc();
+        super.onDestroy()
     }
 
 }

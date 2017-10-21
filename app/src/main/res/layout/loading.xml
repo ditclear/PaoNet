@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+    </data>
+
+    <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/xdp_64.0"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/deep_sky_blue"
+            android:indeterminateTintMode="src_in" />
+
+</layout>

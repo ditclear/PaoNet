@@ -33,6 +33,15 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
 
     protected var visible = false
 
+    /**
+     * 标志位，标志已经初始化完成
+     */
+    protected var isPrepared: Boolean = false
+    /**
+     * 是否已被加载过一次，第二次就不再去请求数据了
+     */
+    protected var hasLoadOnce: Boolean = false
+
 
     private var fragmentComponent: FragmentComponent? = null
 
@@ -57,19 +66,10 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
         initArgs(savedInstanceState)
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        mContext = activity
-        initView()
-    }
-
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
-        return mBinding.root
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        mContext = activity
+        initView()
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
             lazyLoad();
@@ -77,6 +77,11 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
             // 加载数据
             loadData(true);
         }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+        return mBinding.root
     }
 
     /**
@@ -102,7 +107,7 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
     }
 
 
-    fun lazyLoad() {}
+    open fun lazyLoad() {}
 
     abstract fun loadData(isRefresh: Boolean)
 

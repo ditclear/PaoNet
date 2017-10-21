@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
@@ -62,8 +63,8 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         showTab=arguments.getBoolean(SHOW_TAB,false)
     }
 
-
-    override fun onItemClick(article: Article) {
+    @SingleClick
+    override fun onItemClick(v:View?,article: Article) {
         activity.navigateToActivity(ArticleDetailActivity::class.java,article)
     }
 

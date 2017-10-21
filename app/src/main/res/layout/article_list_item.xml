@@ -21,8 +21,9 @@
             app:cardBackgroundColor="@color/background_item"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:stateListAnimator="@animator/active_raise"
-            app:cardElevation="@dimen/xdp_2.0"
+            app:cardElevation="@dimen/xdp_0"
             app:cardCornerRadius="@dimen/xdp_0"
+            android:onClick="@{(v)->presenter.onItemClick(v,item)}"
             >
 
         <LinearLayout
@@ -30,7 +31,6 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:background="?selectableItemBackground"
-                android:onClick="@{()->presenter.onItemClick(item)}"
                 android:orientation="vertical">
 
             <RelativeLayout
@@ -72,13 +72,15 @@
                     android:layout_height="@dimen/activity_vertical_margin"/>
 
             <ImageView
+                    android:id="@+id/thumbnail_iv"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/xdp_150.0"
                     android:contentDescription="@string/thumbnail"
                     bind:url="@{item.thumbnail}"
                     android:scaleType="centerCrop"
                     android:duplicateParentState="true"
-                    android:background="?selectableItemBackground"
+                    android:transitionName="@string/transition_image"
+                    android:background="?selectableItemBackgroundBorderless"
                     tools:background="@color/tools_color"/>
 
             <TextView
@@ -122,8 +124,6 @@
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="?actionBarItemBackground"
-                        android:onClick="@{()->presenter.onItemClick(item)}"
                         android:gravity="center_vertical">
                     <ImageView
                             android:layout_width="wrap_content"
@@ -140,9 +140,7 @@
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:background="?actionBarItemBackground"
                         android:layout_marginLeft="@dimen/activity_vertical_margin"
-                        android:onClick="@{()->presenter.onItemClick(item)}"
                         android:gravity="center_vertical">
                     <ImageView
                             android:layout_width="wrap_content"
@@ -168,10 +166,7 @@
                         android:text="@{@string/list_item_response(item.comments)}"/>
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="?actionBarItemBackground"
-                        android:onClick="@{()->presenter.onItemClick(item)}"
-                        >
+                        android:layout_height="match_parent">
                     <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"

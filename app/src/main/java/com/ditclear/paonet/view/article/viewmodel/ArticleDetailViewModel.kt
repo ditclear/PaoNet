@@ -2,6 +2,8 @@ package com.ditclear.paonet.view.article.viewmodel
 
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.CheckLogin
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.getOriginData
@@ -32,19 +34,12 @@ constructor(private val repo: PaoService,private val userRepo:UserService) : Bas
             .async().subscribe({t -> mView.toastSuccess(t.message) }
             ,{t: Throwable? -> mView.toastFailure(t?:Exception("收藏失败")) })
 
+    @CheckLogin
+    @SingleClick
     fun onClick(view : View){
         when(view.id){
             R.id.fab -> stow()
-            R.id.fab_bottom -> scrollToTop()
         }
-    }
-
-    private fun scrollToTop() {
-        mView.scrollToTop()
-    }
-
-    fun onOverScroll(){
-        mView.onOverScroll()
     }
 
 
@@ -57,8 +52,5 @@ constructor(private val repo: PaoService,private val userRepo:UserService) : Bas
 
     interface CallBack : ICallBack {
 
-        fun onOverScroll()
-
-        fun scrollToTop()
     }
 }

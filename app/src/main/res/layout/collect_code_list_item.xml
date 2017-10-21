@@ -27,7 +27,7 @@
             app:contentPaddingRight="@dimen/activity_horizontal_margin"
             app:contentPaddingTop="@dimen/activity_horizontal_margin"
             android:background="?selectableItemBackground"
-            android:onClick="@{()->presenter.onItemClick(item)}"
+            android:onClick="@{(v)->presenter.onItemClick(v,item)}"
             >
 
         <LinearLayout

@@ -77,10 +77,10 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallB
     }
 
     override fun toastSuccess(msg: String?) {
-        msg?.let { toast(msg,ToastType.SUCCESS) }
+        msg?.let { toast(it,ToastType.SUCCESS) }
     }
 
     override fun toastFailure(error: Throwable) {
-        error.message?.let { it -> toast(it,ToastType.ERROR) }
+        error.message?.let { toast(it,ToastType.ERROR) }
     }
 }
