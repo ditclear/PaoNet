@@ -24,7 +24,7 @@ constructor( private val repo: PaoService) : PagedViewModel() {
     var tid=ArticleType.ANDROID
         set
 
-    fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
         repo.getArticleList(page,tid).compose(bindToLifecycle()).async(1000)
                 .map { articleList ->

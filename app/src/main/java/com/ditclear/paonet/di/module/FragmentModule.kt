@@ -52,19 +52,4 @@ class FragmentModule(private val fragment: RxFragment) {
             }
         }
     }
-
-//    @Provides @Named("collect")
-//    fun provideMyCollectPagerAdapter(): FragmentStatePagerAdapter {
-//
-//        return object : AbstractPagerAdapter(fragment.childFragmentManager, arrayOf("文章", "代码")) {
-//            override fun getItem(pos: Int): Fragment? {
-//                when (pos) {
-//                    0 -> list[pos] = MyArticleFragment.newInstance()
-//                    1 -> list[pos] = MyArticleFragment.newInstance()
-//                }
-//                return list[pos]
-//            }
-//        }
-//    }
-
 }

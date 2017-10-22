@@ -14,3 +14,7 @@ fun MarkdownView.loadMarkdownWithBaseURL(baseUrl: String?, txt: String?, cssFile
     html = "<link rel='stylesheet' type='text/css' href='$cssFileUrl' />$html"
     loadDataWithBaseURL(baseUrl, html, "text/html", "UTF-8", null)
 }
+
+fun MarkdownView.setMarkdown(markdown : String?){
+    loadMarkdown(markdown,"file:///android_asset/markdown.css")
+}

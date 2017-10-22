@@ -20,7 +20,7 @@ constructor( private val repo: UserService) : PagedViewModel() {
 
     val obserableList = ObservableArrayList<Article>()
 
-    fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
         repo.myArticle(page).compose(bindToLifecycle()).async(1000)
                 .map { articleList ->

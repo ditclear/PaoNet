@@ -6,6 +6,7 @@
     <data>
 
     </data>
+
     <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
@@ -28,26 +29,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:background="?attr/colorPrimary"
-                        app:title="@string/app_name"
                         app:layout_scrollFlags="scroll|enterAlways"
-                        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                        app:popupTheme="@style/AppTheme.PopupOverlay"
+                        app:title="@string/app_name"/>
+
                 <android.support.design.widget.TabLayout
                         android:id="@+id/tab_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:tabIndicatorColor="@color/colorAccent"
                         app:tabMode="scrollable"
                         app:tabPaddingStart="@dimen/activity_horizontal_margin"
                         app:tabSelectedTextColor="@color/colorAccent"
-                        app:tabIndicatorColor="@color/colorAccent"
                         app:tabTextColor="@color/colorAccentAlpha">
                 </android.support.design.widget.TabLayout>
             </android.support.design.widget.AppBarLayout>
 
             <FrameLayout
                     android:id="@+id/container"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             </FrameLayout>
 
@@ -60,36 +62,46 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:fitsSystemWindows="true"
-                app:theme="@style/AlertDialog.AppCompat.Light"
+                app:headerLayout="@layout/nav_header_main"
                 app:itemIconTint="@color/colorPrimary"
                 app:itemTextColor="@color/colorPrimary"
-                app:headerLayout="@layout/nav_header_main"
-                app:menu="@menu/activity_main_drawer">
+                app:menu="@menu/activity_main_drawer"
+                app:theme="@style/AlertDialog.AppCompat.Light">
+
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize"
-                    android:orientation="horizontal"
+                    android:layout_gravity="bottom"
                     android:background="@color/cardview_light_background"
-                    android:layout_gravity="bottom">
+                    android:orientation="horizontal">
+
                 <ImageView
                         android:layout_width="@dimen/xdp_75.0"
                         android:layout_height="match_parent"
                         android:scaleType="centerInside"
                         android:src="@mipmap/ic_j"/>
-                <TextView
+
+                <Button
+                        android:id="@+id/setting_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center_vertical"
-                        android:text="@string/action_settings"/>
-                <TextView
+                        android:text="@string/action_settings"
+                        android:textAllCaps="false"/>
+
+                <Button
+                        android:id="@+id/about_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center_vertical"
-                        android:text="@string/action_about"/>
+                        android:text="@string/action_about"
+                        android:textAllCaps="false"/>
             </LinearLayout>
-                </android.support.design.widget.NavigationView>
+        </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

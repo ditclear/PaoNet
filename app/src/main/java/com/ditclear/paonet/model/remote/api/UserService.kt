@@ -13,7 +13,7 @@ import retrofit2.http.*
  *
  * Created by ditclear on 2017/9/29.
  */
- interface UserService {
+interface UserService {
 
     /**
      * 登录
@@ -74,6 +74,14 @@ import retrofit2.http.*
      */
     @GET("/stow.php")
     fun stow(@Query("id") id: Int): Single<BaseResponse>
+
+    /**
+     * 是否收藏
+     * @param id 文章/代码id
+     */
+    @GET("/is_stow.php")
+    fun isStow(@Query("id") id: Int): Single<BaseResponse>
+
 
     /**
      * 点赞

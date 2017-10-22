@@ -55,6 +55,15 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         }
     }
 
+    override fun lazyLoad() {
+        if (!isPrepared || !visible||hasLoadOnce) {
+            return
+        }
+        hasLoadOnce=true
+        loadData(true)
+    }
+
+
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh)
     }
@@ -75,6 +84,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     override fun initView() {
+        lazyLoad=true
         mAdapter= PagedAdapter<Article>(activity, R.layout.code_list_item, viewModel.observableList
                 , object : DiffCallback<Article>() {
             override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
@@ -95,11 +105,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect?.top=activity.dpToPx(R.dimen.xdp_12_0)
             }})
-        initRecyclerView(mBinding.recyclerView,viewModel.loadMore)
         mAdapter.presenter=this
-        mBinding.refreshLayout.setOnRefreshListener {
-            loadData(true)
-        }
+        isPrepared=true
     }
 
 }

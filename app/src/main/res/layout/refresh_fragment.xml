@@ -4,15 +4,17 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
                 name="vm"
                 type="com.ditclear.paonet.viewmodel.PagedViewModel"/>
     </data>
 
-    <com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:onRefresh="@{vm}"
             app:refreshing="@{vm.loading}">
 
         <FrameLayout
@@ -20,19 +22,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView
+            <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layoutAnimation="@anim/layout_animation_fall_down"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
-                    app:loadMore="@{vm.loadMore}"
-                    app:layoutManager="LinearLayoutManager"
-                    android:layoutAnimation="@anim/layout_animation_fall_down"
+                    app:loadMore="@{vm}"
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
-
-            </com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView>
+            </android.support.v7.widget.RecyclerView>
         </FrameLayout>
 
-    </com.ditclear.paonet.widget.ScrollChildSwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

@@ -11,19 +11,52 @@ import retrofit2.http.Query
  *
  * Created by ditclear on 2017/9/29.
  */
- interface PaoService {
+interface PaoService {
 
+    /**
+     * 轮播图数据
+     */
+    @GET("/slider.php")
+    fun getSlider(): Single<ArticleList>
+
+    /**
+     * 文章列表
+     */
     @GET("article_list.php")
-    fun getArticleList(@Query("p") page: Int,@Query("tid") tid:Int): Single<ArticleList>
+    fun getArticleList(@Query("p") page: Int, @Query("tid") tid: Int?=null): Single<ArticleList>
 
-
+    /**
+     * 文章详情
+     */
     @GET("article_detail.php")
-    fun getArticleDetail(@Query("id") id:Int):Single<Article>
+    fun getArticleDetail(@Query("id") id: Int): Single<Article>
 
+    /**
+     * 代码列表
+     */
     @GET("code_list.php")
-    fun getCodeList(@Query("cate") category: Int?=null,@Query("p") page: Int): Single<ArticleList>
+    fun getCodeList(@Query("cate") category: Int? = null, @Query("p") page: Int): Single<ArticleList>
 
-
+    /**
+     * 代码详情
+     */
     @GET("code_detail.php")
-    fun getCodeDetail(@Query("id") id:Int):Single<Article>
+    fun getCodeDetail(@Query("id") id: Int): Single<Article>
+
+    /**
+     * 文章搜索
+     * @param key 关键词
+     * @param p 分页数
+     */
+    @GET("/article_list.php")
+    fun getSearchArticles(@Query("key") key: String, @Query("p") p: Int): Single<ArticleList>
+
+    /**
+     * 代码搜索
+     * @param p 分页数
+     * @param cate 代码分类
+     * @param key 关键词
+     */
+    @GET("/code_list.php")
+    fun getSearchCode(@Query("p") p: Int, @Query("cate") cate: Int, @Query("key") key: String): Single<ArticleList>
 }

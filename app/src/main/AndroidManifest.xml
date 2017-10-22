@@ -12,8 +12,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity
-                android:name=".view.MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -29,9 +28,12 @@
         <activity
                 android:name=".view.search.SearchActivity"
                 android:theme="@style/AppTheme.Translucent.Search"/>
-        <activity
-                android:name=".view.article.ArticleDetailActivity"/>
+        <activity android:name=".view.article.ArticleDetailActivity"/>
         <activity android:name=".view.code.CodeDetailActivity"/>
+        <activity
+                android:name=".view.setting.SettingsActivity"
+                android:label="@string/title_activity_settings">
+        </activity>
     </application>
 
 </manifest>

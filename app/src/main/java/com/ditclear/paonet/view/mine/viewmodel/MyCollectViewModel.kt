@@ -23,7 +23,7 @@ constructor( private val repo: UserService) : PagedViewModel() {
     //1 ：文章；-19 ：代码
     var type=1
 
-    fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
         repo.collectionArticle(page,type).compose(bindToLifecycle()).async(1000)
                 .map { articleList ->

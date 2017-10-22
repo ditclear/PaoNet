@@ -6,14 +6,13 @@ import android.webkit.WebView
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.lib.extention.ToastType
-import com.ditclear.paonet.lib.extention.async
+import com.ditclear.paonet.lib.extention.getCompactColor
 import com.ditclear.paonet.lib.extention.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.BaseActivity
-import com.ditclear.paonet.view.Constants
+import com.ditclear.paonet.view.helper.Constants
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.trello.rxlifecycle2.android.ActivityEvent
-import org.jsoup.Jsoup
 import javax.inject.Inject
 
 
@@ -23,6 +22,7 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/1.
  */
 class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), ArticleDetailViewModel.CallBack {
+
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
@@ -34,33 +34,18 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), Arti
     override fun loadData() {
 
         viewModel.loadData()
-                .compose(bindToLifecycle()).async()
-                .subscribe { t: Article? ->
-                    supportActionBar?.title = t?.user?.nickname ?: t?.title
-                    val data = processImgSrc(t!!.content!!, Constants.HOST_PAO)
-                    mBinding.webView.loadMarkdown(data, "file:///android_asset/markdown.css")
-                }
-
 
     }
 
-    /**
-     * 将文本中的相对地址转换成对应的绝对地址
-     * @param content
-     * @param baseUrl
-     * @return
-     */
-    private fun processImgSrc(content: String, baseUrl: String): String {
-        val document = Jsoup.parse(content)
-        document.setBaseUri(baseUrl)
-        val elements = document.select("img[src]")
-        for (el in elements) {
-            val imgUrl = el.attr("src")
-            if (imgUrl.trim({ it <= ' ' }).startsWith("/")) {
-                el.attr("src", el.absUrl("src"))
-            }
-        }
-        return document.html()
+
+    //是否收藏过
+    override fun isStow(stow: Boolean) {
+        mBinding.fab.drawable.setTint(
+                if (stow){
+                    getCompactColor(R.color.stow_color)
+                }else{
+                    getCompactColor(R.color.tools_color)
+                })
     }
 
     override fun initView() {

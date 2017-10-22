@@ -11,6 +11,7 @@
         <!-- 允许使用transitions -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        <item name="android:windowAllowEnterTransitionOverlap">false</item>
         <item name="android:windowSharedElementsUseOverlay">false</item>
 
     </style>
@@ -24,7 +25,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-
     </style>
 
 
@@ -51,6 +51,7 @@
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
         <item name="android:colorControlActivated">?android:colorAccent</item>
         <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowEnterAnimation">@null</item>
         <item name="android:colorPrimary">@android:color/holo_blue_bright</item>
         <item name="android:colorAccent">@android:color/holo_blue_bright</item>
         <item name="android:colorButtonNormal">@android:color/holo_blue_bright</item>

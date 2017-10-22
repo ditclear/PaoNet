@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.NonNull
 import android.support.customtabs.CustomTabsIntent
@@ -14,7 +15,7 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import com.ditclear.paonet.R
 import com.ditclear.paonet.model.data.BaseResponse
-import com.ditclear.paonet.view.Constants
+import com.ditclear.paonet.view.helper.Constants
 import es.dmoral.toasty.Toasty
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit
  * Created by ditclear on 2017/9/29.
  */
 
+fun Activity.getCompactColor(@ColorRes colorRes: Int):Int=ContextCompat.getColor(this,colorRes)
 
 fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @ToastType type: Int = ToastType.NORMAL) {
     when (type) {
@@ -42,12 +44,14 @@ fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @Toast
 
 fun Activity.dpToPx(@DimenRes resID: Int): Int = this.resources.getDimensionPixelOffset(resID)
 
-fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable) {
+fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable?=null) {
     val intent = Intent()
-    val bundle = Bundle()
-    bundle.putSerializable(Constants.KEY_SERIALIZABLE, serializable)
+    serializable?.let {
+        val bundle = Bundle()
+        bundle.putSerializable(Constants.KEY_SERIALIZABLE, it)
+        intent.putExtras(bundle)
+    }
     intent.setClass(this, c)
-    intent.putExtras(bundle)
     startActivity(intent)
 }
 

@@ -48,12 +48,19 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         fun newInstance(type:Int=1): CollectionListFragment {
             val bundle= Bundle()
             bundle.putInt(COLLECTION_TYPE,type)
-            var fragment= CollectionListFragment()
+            val fragment= CollectionListFragment()
             fragment.arguments=bundle
             return fragment
         }
     }
 
+    override fun lazyLoad() {
+        if (!isPrepared || !visible||hasLoadOnce) {
+            return
+        }
+        hasLoadOnce=true
+        loadData(true)
+    }
 
 
     override fun loadData(isRefresh: Boolean) {
@@ -80,19 +87,18 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
     }
 
     override fun initView() {
+        lazyLoad=true
         var layoutItemId=R.layout.article_list_item
         if (collectionType!=1){
             layoutItemId=R.layout.collect_code_list_item
         }
         mAdapter= PagedAdapter<Article>(activity, layoutItemId, viewModel.obserableList
                 , object : DiffCallback<Article>() {
-            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem.id == newItem.id
-            }
+            override fun areContentsTheSame(oldItem: Article, newItem: Article)=
+                    oldItem.id == newItem.id
 
-            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem.id == newItem.id
-            }
+            override fun areItemsTheSame(oldItem: Article, newItem: Article) =
+                    oldItem.id == newItem.id
 
         })
         viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
@@ -104,11 +110,8 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect?.top=activity.dpToPx(R.dimen.xdp_12_0)
             }})
-        initRecyclerView(mBinding.recyclerView,viewModel.loadMore)
         mAdapter.presenter=this
-        mBinding.refreshLayout.setOnRefreshListener {
-            loadData(true)
-        }
+        isPrepared=true
     }
 
 }

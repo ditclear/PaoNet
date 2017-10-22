@@ -35,7 +35,6 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-//        getComponent().inject(this)
 
     }
 
@@ -48,14 +47,14 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
     }
 
     override fun initView() {
-        pagerAdapter = object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
-                    override fun getItem(pos: Int): Fragment? {
-                        when (pos) {
-                            0 -> list[pos] = CollectionListFragment.newInstance(1)
-                            1 -> list[pos] = CollectionListFragment.newInstance(-19)
-                        }
-                        return list[pos]
+        pagerAdapter= object :AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
+                override fun getItem(pos: Int): Fragment? {
+                    when (pos) {
+                        0 -> list[pos] = CollectionListFragment.newInstance(1)
+                        1 -> list[pos] = CollectionListFragment.newInstance(-19)
                     }
+                    return list[pos]
+                }
         }
 
         mBinding.viewPager.adapter = pagerAdapter

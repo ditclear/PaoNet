@@ -25,6 +25,8 @@ open class PagedViewModel :BaseViewModel(){
         loading.set(true)
     }
 
+    open fun loadData(isRefresh: Boolean){}
+
     fun stopLoad(){
         loading.set(false)
     }

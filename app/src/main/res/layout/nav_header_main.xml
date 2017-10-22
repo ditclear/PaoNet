@@ -4,45 +4,61 @@
         xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
                 name="item"
                 type="com.ditclear.paonet.model.data.User"/>
     </data>
 
-    <LinearLayout
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/nav_header_height"
-            android:gravity="bottom"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin"
-            android:background="@android:color/white">
+            android:layout_height="wrap_content">
 
-        <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:scaleType="fitCenter"
-                bind:url="@{item.face}"
-                bind:avatar="@{true}"
-                app:srcCompat="@drawable/ic_face"/>
-
-        <TextView
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:text='@{item.navHeaderName,default="请登录"}'
-                android:textColor="@color/colorPrimary"
-                android:letterSpacing="0.2"/>
+                android:layout_height="@dimen/nav_header_height"
+                android:background="@android:color/white"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin">
 
-        <TextView
-                android:id="@+id/textView"
+            <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_face"
+                    bind:avatar="@{true}"
+                    bind:url="@{item.face}"/>
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.2"
+                    android:paddingTop="@dimen/nav_header_vertical_spacing"
+                    android:text='@{item.navHeaderName,default="请登录"}'
+                    android:textColor="@color/colorPrimary"/>
+
+            <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{item.qianming,default="还什么都没写"}'
+                    android:textColor="@color/tools_color"/>
+
+        </LinearLayout>
+        <Button
+                android:id="@+id/toggle_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/tools_color"
-                android:text='@{item.qianming,default="还什么都没写"}'/>
-
-    </LinearLayout>
+                android:text='@{item.loginBtnText,default="LOG IN"}'
+                android:background="@color/hint_highlight"
+                android:transitionName="@string/transition_login"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:textAppearance="@style/TextAppearance.DarkButton"
+                android:layout_gravity="center_vertical|end"/>
+    </FrameLayout>
 </layout>

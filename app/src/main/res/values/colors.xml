@@ -10,6 +10,7 @@
     <color name="divider_color">#DCDCDC</color>
     <color name="background_item">#ffffff</color>
     <color name="error_color">#fa364e</color>
+    <color name="stow_color">#fa364e</color>
     <color name="hint_highlight">#b303a9f4</color>
     <color name="disable_color">@color/tools_color</color>
     <color name="background_light">#ffffffff</color>

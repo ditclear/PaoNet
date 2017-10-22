@@ -69,7 +69,8 @@
                 <us.feras.mdv.MarkdownView
                         android:id="@+id/web_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        app:markdown="@{vm.markdown}"/>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
@@ -82,16 +83,6 @@
                 app:layout_anchorGravity="bottom|end"
                 android:onClick="@{(v)->vm.onClick(v)}"
                 app:srcCompat="@drawable/ic_bookmark"/>
-
-        <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_bottom"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:layout_gravity="bottom|end"
-                android:visibility="gone"
-                android:onClick="@{(v)->vm.onClick(v)}"
-                app:srcCompat="@drawable/ic_arrow_upward"/>
 
     </com.ditclear.paonet.widget.OverScrollLayout>
 </layout>

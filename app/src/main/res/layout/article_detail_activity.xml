@@ -75,6 +75,7 @@
                         android:id="@+id/web_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        app:markdown="@{vm.markdown}"
                         android:visibility="visible"/>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

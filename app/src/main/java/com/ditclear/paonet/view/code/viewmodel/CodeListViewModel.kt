@@ -23,7 +23,7 @@ constructor( private val repo: PaoService) : PagedViewModel() {
     //null代表全部
     var category :Int ?=null
 
-    fun loadData(isRefresh: Boolean) {
+    override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
         repo.getCodeList(category,page).compose(bindToLifecycle()).async(1000)
                 .map { articleList ->

@@ -96,11 +96,7 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect?.top=activity.dpToPx(R.dimen.xdp_12_0)
             }})
-        initRecyclerView(mBinding.recyclerView,viewModel.loadMore)
         mAdapter.presenter=this
-        mBinding.refreshLayout.setOnRefreshListener {
-            loadData(true)
-        }
     }
 
 }

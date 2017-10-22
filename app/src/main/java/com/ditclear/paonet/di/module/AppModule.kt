@@ -4,7 +4,7 @@ import android.app.Application
 import com.ditclear.paonet.lib.network.NetMgr
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.model.remote.api.UserService
-import com.ditclear.paonet.view.Constants
+import com.ditclear.paonet.view.helper.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

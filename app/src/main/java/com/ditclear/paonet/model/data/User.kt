@@ -41,5 +41,7 @@ class User :Serializable{
 
 
     //////////////////bind view/////////////
-    fun getNavHeaderName():String=nickname?:"请登录"
+    fun getNavHeaderName():String=nickname?:""
+
+    fun getLoginBtnText()=if (nickname==null) "LOG IN" else "LOG OUT"
 }

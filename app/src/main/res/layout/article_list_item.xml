@@ -41,8 +41,8 @@
                         android:id="@+id/avatar_iv"
                         android:layout_width="@dimen/xdp_48.0"
                         android:layout_height="@dimen/xdp_48.0"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:layout_marginRight="@dimen/xdp_6.0"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginEnd="@dimen/xdp_6.0"
                         android:scaleType="fitCenter"
                         app:url="@{item.user.face}"
                         app:avatar="@{true}"
@@ -80,7 +80,6 @@
                     android:scaleType="centerCrop"
                     android:duplicateParentState="true"
                     android:transitionName="@string/transition_image"
-                    android:background="?selectableItemBackgroundBorderless"
                     tools:background="@color/tools_color"/>
 
             <TextView
@@ -129,7 +128,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_thumb"
-                            android:layout_marginRight="@dimen/xdp_6.0"/>
+                            android:layout_marginEnd="@dimen/xdp_6.0"/>
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -140,7 +139,7 @@
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_vertical_margin"
                         android:gravity="center_vertical">
                     <ImageView
                             android:layout_width="wrap_content"
@@ -155,14 +154,14 @@
 
                 </android.support.v7.widget.ActionMenuView>
                 <android.support.v4.widget.Space
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="13 respones ·  "
-                        android:layout_marginRight="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:text="@{@string/list_item_response(item.comments)}"/>
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
