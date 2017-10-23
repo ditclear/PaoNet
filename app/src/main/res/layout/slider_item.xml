@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="item"
+                type="com.ditclear.paonet.model.data.Article"/>
+
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
+    </data>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/xdp_200.0"
+            android:background="?selectableItemBackgroundBorderless"
+            android:onClick="@{(v)->presenter.onItemClick(v,item)}">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                bind:url="@{item.thumbnail}"
+                tools:src="@color/tools_color"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@{item.title}"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+                tools:text="@string/thumbnail"/>
+    </FrameLayout>
+</layout>

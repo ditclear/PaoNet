@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.helper.ArticleType
+import com.ditclear.paonet.view.home.RecentFragment
 import com.trello.rxlifecycle2.components.support.RxFragment
 import dagger.Module
 import dagger.Provides
@@ -37,7 +38,7 @@ class FragmentModule(private val fragment: RxFragment) {
             override fun getItem(pos: Int): Fragment? {
                 if (list[pos]==null) {
                     when (pos) {
-                        0 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
+                        0 -> list[pos] = RecentFragment.newInstance()
                         1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
                         2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.PROGRAME)
                         3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.FRONT_END)

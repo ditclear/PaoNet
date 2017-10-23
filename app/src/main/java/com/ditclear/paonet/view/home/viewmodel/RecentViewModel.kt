@@ -1,8 +1,12 @@
 package com.ditclear.paonet.view.home.viewmodel
 
-import com.ditclear.paonet.model.data.ArticleList
+import android.databinding.ObservableArrayList
+import android.util.Log
+import com.ditclear.paonet.lib.extention.async
+import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
-import com.ditclear.paonet.viewmodel.BaseViewModel
+import com.ditclear.paonet.viewmodel.PagedViewModel
+import com.ditclear.paonet.viewmodel.callback.ICallBack
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -12,14 +16,47 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentViewModel @Inject constructor(private val repo:PaoService) :BaseViewModel(){
+class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedViewModel() {
 
-    fun loadData(isRefresh : Boolean=true){
+    val sliders = ObservableArrayList<Article>()
+    val obserableList = ObservableArrayList<Article>()
 
+    override fun loadData(isRefresh: Boolean) {
+        startLoad(true)
         repo.getSlider().compose(bindToLifecycle())
-                .subscribeOn(Schedulers.io())
-                .flatMap { repo.getArticleList(page = 0) }
+                .async()
+                .doOnSuccess { t ->
+                    Log.d("thread------",Thread.currentThread().name)
+                    sliders.clear()
+                    with(t) {
+                        items?.let { sliders.addAll(it) }
+                    }
+                }
+                .observeOn(Schedulers.io())
+                .flatMap {
+                    Log.d("thread------",Thread.currentThread().name)
+                    repo.getArticleList(page = 0) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({t: ArticleList? ->  })
+                .doAfterTerminate{ stopLoad()}
+                .subscribe({ articleList ->
+                    Log.d("thread------",Thread.currentThread().name)
+                    with(articleList) {
+                        if (isRefresh) {
+                            obserableList.clear()
+                        }
+                        items?.let { obserableList.addAll(it) }
+                    }
+                }, { t: Throwable? -> t?.let { mView.toastFailure(t) } })
+    }
+
+    private lateinit var mView: CallBack
+
+    fun attachView(v: CallBack) {
+        this.mView = v
+    }
+
+
+    interface CallBack : ICallBack {
+
     }
 }

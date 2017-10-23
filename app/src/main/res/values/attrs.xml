@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="RecyclerView">
         <attr name="loadMore" format="boolean"/>
+        <attr name="vertical" format="boolean"/>
+
     </declare-styleable>
 
     <declare-styleable name="TextInputLayout">

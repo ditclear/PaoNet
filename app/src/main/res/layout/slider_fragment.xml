@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+                name="thumbnail"
+                type="String"/>
+        <variable
+                name="title"
+                type="String"/>
+    </data>
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/xdp_200.0">
+
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                bind:url="@{thumbnail}"
+                android:scaleType="centerCrop"
+                tools:src="@color/tools_color"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/activity_horizontal_margin"
+                android:text="@{title}"
+                android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
+                tools:text="@string/thumbnail"/>
+
+        <include layout="@layout/loading"/>
+    </FrameLayout>
+</layout>

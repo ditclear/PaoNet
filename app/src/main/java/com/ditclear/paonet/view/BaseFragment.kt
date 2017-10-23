@@ -2,19 +2,18 @@ package com.ditclear.paonet.view
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.databinding.ObservableField
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.NonNull
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
-import com.ditclear.paonet.vendor.recyclerview.LoadMoreRecyclerView
+import com.ditclear.paonet.lib.extention.ToastType
+import com.ditclear.paonet.lib.extention.toast
+import com.ditclear.paonet.viewmodel.callback.ICallBack
 import com.trello.rxlifecycle2.components.support.RxFragment
 
 
@@ -23,7 +22,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
+abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack {
 
     protected lateinit var mBinding: VB
 
@@ -121,24 +120,12 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment() {
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
     }
 
+    override fun toastSuccess(msg: String?) {
+        msg?.let { activity.toast(it, ToastType.SUCCESS) }
+    }
 
-    protected fun initRecyclerView(view: LoadMoreRecyclerView?, loadMore: ObservableField<Boolean>) {
-        view?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (recyclerView!!.layoutManager is LinearLayoutManager) {
-                    //表示是否能向上滚动，false表示已经滚动到底部
-
-                    if (!recyclerView.canScrollVertically(1)) {
-                        if (loadMore.get()) {
-                            loadData(false)
-                            //防止多次拉取同样的数据
-                            loadMore.set(false)
-                        }
-                    }
-                }
-            }
-        })
+    override fun toastFailure(error: Throwable) {
+        error.message?.let { activity.toast(it,ToastType.ERROR) }
     }
 
 }

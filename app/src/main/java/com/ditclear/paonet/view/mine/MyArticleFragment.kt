@@ -48,7 +48,7 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         fun newInstance(showTab:Boolean=false):MyArticleFragment{
             val bundle=Bundle()
             bundle.putBoolean(SHOW_TAB,showTab)
-            var fragment=MyArticleFragment()
+            val fragment=MyArticleFragment()
             fragment.arguments=bundle
             return fragment
         }
@@ -64,8 +64,8 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     @SingleClick
-    override fun onItemClick(v:View?,article: Article) {
-        activity.navigateToActivity(ArticleDetailActivity::class.java,article)
+    override fun onItemClick(v:View?,t: Article) {
+        activity.navigateToActivity(ArticleDetailActivity::class.java,t)
     }
 
     override fun onAttach(context: Context?) {

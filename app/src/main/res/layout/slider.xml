@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:bind="http://schemas.android.com/apk/res-auto">
 
-    <android.support.v4.view.ViewPager
+    <data>
+
+        <variable
+                name="item"
+                type="android.support.v7.widget.RecyclerView.Adapter"/>
+    </data>
+
+    <android.support.v7.widget.RecyclerView
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            bind:adapter="@{item}"
+            bind:vertical="@{false}">
 
-    </android.support.v4.view.ViewPager>
+    </android.support.v7.widget.RecyclerView>
+
 </layout>

@@ -16,7 +16,6 @@
             android:layout_height="match_parent"
             app:onRefresh="@{vm}"
             app:refreshing="@{vm.loading}">
-
         <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"

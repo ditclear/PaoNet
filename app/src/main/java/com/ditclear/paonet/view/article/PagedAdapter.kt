@@ -7,9 +7,11 @@ import android.databinding.DataBindingUtil
 import android.databinding.ObservableList
 import android.databinding.ViewDataBinding
 import android.support.v7.recyclerview.extensions.DiffCallback
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.ditclear.paonet.BR
+import com.ditclear.paonet.R
 import com.ditclear.paonet.vendor.recyclerview.BindingViewHolder
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 
@@ -24,8 +26,13 @@ open class PagedAdapter<T>(context: Context, private val layoutRes: Int, private
     private var mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
     var presenter: ItemClickPresenter<T>? = null
     var decorator: Decorator? = null
+    private var viewPool: RecyclerView.RecycledViewPool? = null
+    var needPool: Boolean = false
 
     init {
+        if (needPool) {
+            viewPool = RecyclerView.RecycledViewPool()
+        }
         mCollection.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
             override fun onChanged(contributorViewModels: ObservableList<T>) {
                 notifyDataSetChanged()
@@ -61,8 +68,15 @@ open class PagedAdapter<T>(context: Context, private val layoutRes: Int, private
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingViewHolder<ViewDataBinding> {
-        return BindingViewHolder(
-                DataBindingUtil.inflate(mLayoutInflater, layoutRes, parent, false))
+        val binding = DataBindingUtil.inflate<ViewDataBinding>(mLayoutInflater, layoutRes, parent, false)
+        if (needPool != null && needPool) {
+            //如果item有recyclerView 设置单一的 view pool
+            // @link{http://www.jcodecraeer.com/a/anzhuokaifa/androidkaifa/2017/0914/8514.html}
+            if (binding?.root?.findViewById<RecyclerView>(R.id.recycler_view) != null) {
+                binding?.root?.findViewById<RecyclerView>(R.id.recycler_view)?.recycledViewPool = viewPool
+            }
+        }
+        return BindingViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: BindingViewHolder<ViewDataBinding>?, position: Int) {

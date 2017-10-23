@@ -4,6 +4,7 @@ import android.databinding.BindingAdapter
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PagerSnapHelper
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.ImageView
@@ -63,4 +64,19 @@ fun bindLoadMore(v: RecyclerView, vm:PagedViewModel){
 @BindingAdapter(value = "onRefresh")
 fun bindOnRefresh(v:SwipeRefreshLayout,vm: PagedViewModel){
     v.setOnRefreshListener { vm.loadData(true) }
+}
+
+@BindingAdapter(value = *arrayOf("adapter","vertical"),requireAll = false)
+fun bindSlider(v:RecyclerView,adapter: RecyclerView.Adapter<*>,vertical:Boolean=true){
+
+    if (vertical){
+        v.layoutManager=LinearLayoutManager(v.context,LinearLayoutManager.VERTICAL,false)
+    }else{
+        v.layoutManager=LinearLayoutManager(v.context,LinearLayoutManager.HORIZONTAL,false)
+    }
+    if(v.onFlingListener==null) {
+        PagerSnapHelper().attachToRecyclerView(v)
+    }
+    v.adapter=adapter
+
 }
