@@ -17,16 +17,24 @@ import javax.inject.Inject
 @FragmentScope
 class ArticleListViewModel
 @Inject
-constructor( private val repo: PaoService) : PagedViewModel() {
+constructor(private val repo: PaoService) : PagedViewModel() {
 
     val obserableList = ObservableArrayList<Article>()
 
-    var tid=ArticleType.ANDROID
+    var tid = ArticleType.ANDROID
+        set
+
+    var keyWord: String? = null
         set
 
     override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
-        repo.getArticleList(page,tid).compose(bindToLifecycle()).async(1000)
+
+        if (keyWord != null) {
+            repo.getSearchArticles(page, keyWord!!)
+        } else {
+            repo.getArticleList(page, tid)
+        }.compose(bindToLifecycle()).async(1000)
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {
@@ -36,7 +44,7 @@ constructor( private val repo: PaoService) : PagedViewModel() {
                         return@map items?.let { obserableList.addAll(it) }
                     }
                 }
-                .subscribe({t -> stopLoad() },
-                        {t -> stopLoad()  })
+                .subscribe({ t -> stopLoad() },
+                        { t -> stopLoad() })
     }
 }

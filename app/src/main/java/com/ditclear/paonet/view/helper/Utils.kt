@@ -1,6 +1,12 @@
 package com.ditclear.paonet.view.helper
 
+import android.content.Context
+import android.support.v4.os.ResultReceiver
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import org.jsoup.Jsoup
+
+
 
 /**
  * 页面描述：Utils
@@ -26,5 +32,25 @@ object Utils{
             }
         }
         return document.html()
+    }
+
+    fun showIme(view: View) {
+        val imm = view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // the public methods don't seem to work for me, so… reflection.
+        try {
+            val showSoftInputUnchecked = InputMethodManager::class.java.getMethod(
+                    "showSoftInputUnchecked", Int::class.javaPrimitiveType, ResultReceiver::class.java)
+            showSoftInputUnchecked.isAccessible = true
+            showSoftInputUnchecked.invoke(imm, 0, null)
+        } catch (e: Exception) {
+            // ho hum
+        }
+
+    }
+
+    fun hideIme(view: View) {
+        val imm = view.context.getSystemService(Context
+                .INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

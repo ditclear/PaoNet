@@ -36,14 +36,26 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
 
     var tid :Int=ArticleType.ANDROID
 
+    var keyWord :String ?=null
+
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
     companion object {
-        val TID="TID"
+        val KEY_TID="TID"
+        val KEY_KEYWORD="keyWord"
         fun newInstance( tid: Int=ArticleType.ANDROID): ArticleListFragment{
 
             val bundle=Bundle()
-            bundle.putInt(TID,tid)
+            bundle.putInt(KEY_TID,tid)
+            val fragment=ArticleListFragment()
+            fragment.arguments=bundle
+            return fragment
+        }
+
+        fun newInstance( keyWord: String): ArticleListFragment{
+
+            val bundle=Bundle()
+            bundle.putString(KEY_KEYWORD,keyWord)
             val fragment=ArticleListFragment()
             fragment.arguments=bundle
             return fragment
@@ -62,7 +74,10 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
         viewModel.loadData(isRefresh)
     }
     override fun initArgs(savedInstanceState: Bundle?) {
-        arguments?.let { tid=arguments.getInt(TID) }
+        arguments?.let {
+            tid=arguments.getInt(KEY_TID)
+            keyWord=arguments.getString(KEY_KEYWORD)
+        }
     }
 
 
@@ -90,6 +105,7 @@ class ArticleListFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPres
         })
         viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
         viewModel.tid=tid
+        viewModel.keyWord=keyWord
         viewModel.lifecycle
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter

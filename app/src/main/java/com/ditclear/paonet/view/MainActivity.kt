@@ -34,6 +34,7 @@ import com.ditclear.paonet.view.setting.SettingsActivity
 import io.reactivex.Single
 import javax.inject.Inject
 
+
 class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
@@ -87,7 +88,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         mBinding.navView.setNavigationItemSelectedListener(this)
         switchFragment(HomeFragment.newInstance())
 
-        mBinding.drawerLayout.addDrawerListener(object :DrawerLayout.SimpleDrawerListener(){
+        mBinding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerClosed(drawerView: View?) {
                 super.onDrawerClosed(drawerView)
 
@@ -145,7 +146,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         val id = item.itemId
         when (id) {
             R.id.action_search -> {
-                navigateToSearch(this, mBinding.toolbar.findViewById(R.id.action_search))
+                navigateToSearch(this)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -42,13 +42,25 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     var cate:Int?=null
 
+    var keyWord :String ?=null
+
     companion object {
 
-        val CATE="cate"
+        val KEY_CATE ="cate"
+        val KEY_KEYWORD="keyWord"
         fun newInstance(cate:Int?):CodeListFragment{
 
             val bundle=Bundle()
-            cate?.let { bundle.putInt(CATE,it) }
+            cate?.let { bundle.putInt(KEY_CATE,it) }
+            val fragment=CodeListFragment()
+            fragment.arguments=bundle
+            return fragment
+        }
+
+        fun newInstance( keyWord: String): CodeListFragment {
+
+            val bundle=Bundle()
+            bundle.putString(KEY_KEYWORD,keyWord)
             val fragment=CodeListFragment()
             fragment.arguments=bundle
             return fragment
@@ -68,7 +80,11 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         viewModel.loadData(isRefresh)
     }
     override fun initArgs(savedInstanceState: Bundle?) {
-        arguments?.let { cate=it.getInt(CATE) }
+        arguments?.let {
+            cate=it.getInt(KEY_CATE)
+            keyWord=it.getString(KEY_KEYWORD)
+
+        }
     }
 
     @SingleClick
@@ -98,6 +114,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         })
         viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
         viewModel.category=cate
+        viewModel.keyWord=keyWord
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL){

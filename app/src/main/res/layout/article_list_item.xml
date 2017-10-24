@@ -46,6 +46,8 @@
                         android:scaleType="fitCenter"
                         app:url="@{item.user.face}"
                         app:avatar="@{true}"
+                        android:duplicateParentState="false"
+                        android:foreground="?selectableItemBackground"
                         tools:src="@drawable/ic_face"/>
 
                 <TextView
@@ -78,7 +80,8 @@
                     android:contentDescription="@string/thumbnail"
                     bind:url="@{item.thumbnail}"
                     android:scaleType="centerCrop"
-                    android:duplicateParentState="true"
+                    android:duplicateParentState="false"
+                    android:background="?selectableItemBackground"
                     android:transitionName="@string/transition_image"
                     tools:background="@color/tools_color"/>
 
@@ -129,6 +132,9 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_thumb"
                             android:layout_marginEnd="@dimen/xdp_6.0"/>
+                    <android.support.v4.widget.Space
+                            android:layout_width="@dimen/xdp_6.0"
+                            android:layout_height="wrap_content"/>
                     <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -136,23 +142,7 @@
                             android:text="@{@string/intToString(item.upvote)}"/>
 
                 </android.support.v7.widget.ActionMenuView>
-                <android.support.v7.widget.ActionMenuView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="@dimen/activity_vertical_margin"
-                        android:gravity="center_vertical">
-                    <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:srcCompat="@drawable/ic_thumb_down"
-                            android:layout_marginRight="@dimen/xdp_6.0"/>
-                    <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            tools:text="1K"
-                            android:text="@{@string/intToString(item.downvote)}"/>
 
-                </android.support.v7.widget.ActionMenuView>
                 <android.support.v4.widget.Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

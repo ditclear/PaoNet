@@ -4,70 +4,60 @@
         >
 
     <data>
+        <variable
+                name="item"
+                type="java.util.Date"/>
     </data>
 
-    <FrameLayout
-            android:id="@+id/container"
+
+    <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:theme="@style/searchView">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
-        <View
-                android:id="@+id/scrim"
+        <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/scrim"/>
+                android:layout_height="wrap_content"
+                app:theme="@style/AppTheme.PopupOverlay">
+
+            <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:contentInsetStart="@dimen/xdp_0"
+                    app:contentInsetStartWithNavigation="@dimen/xdp_0"
+                    app:navigationIcon="@drawable/ic_arrow_back_black">
+
+                <android.support.v7.widget.SearchView
+                        android:id="@+id/search_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="?actionBarSize"
+                        app:iconifiedByDefault="false"
+                        app:queryBackground="@null"
+                        app:queryHint="@string/search_hint"
+                        app:searchIcon="@null"
+                        app:showDividers="none"
+                        app:submitBackground="@null">
+
+                </android.support.v7.widget.SearchView>
+            </android.support.v7.widget.Toolbar>
+
+            <android.support.design.widget.TabLayout
+                    android:id="@+id/tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/xdp_48.0"
+                    app:tabMode="fixed"
+                    android:visibility="gone">
+
+            </android.support.design.widget.TabLayout>
+        </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
-                android:id="@+id/search_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?android:actionBarSize"
-                android:elevation="@dimen/cardview_default_elevation"
-                android:outlineProvider="bounds"
-                android:transitionGroup="false">
-
-            <View
-                    android:id="@+id/search_background"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/colorPrimary"/>
-
-            <android.support.v7.widget.SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                    android:iconifiedByDefault="false"
-                    android:transitionGroup="true"/>
-
-            <!-- wrapping layout needed for the touch ripple -->
-            <FrameLayout
-                    android:id="@+id/searchback_container"
-                    android:layout_width="96dp"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:paddingStart="4dp">
-
-                <ImageButton
-                        android:id="@+id/searchback"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:transitionName="@string/transition_search_back"
-                        android:src="@drawable/ic_arrow_back"/>
-
-            </FrameLayout>
-
-        </FrameLayout>
-        <FrameLayout
-                android:id="@+id/results_container"
+                android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="?android:actionBarSize"
-                android:background="@color/scrim"
-                android:elevation="@dimen/cardview_default_elevation">
-
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         </FrameLayout>
-    </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

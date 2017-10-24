@@ -16,16 +16,23 @@ import javax.inject.Inject
 @FragmentScope
 class CodeListViewModel
 @Inject
-constructor( private val repo: PaoService) : PagedViewModel() {
+constructor(private val repo: PaoService) : PagedViewModel() {
 
     val observableList = ObservableArrayList<Article>()
 
     //null代表全部
-    var category :Int ?=null
+    var category: Int? = null
+        set
+    var keyWord: String? = null
+        set
 
     override fun loadData(isRefresh: Boolean) {
         startLoad(isRefresh)
-        repo.getCodeList(category,page).compose(bindToLifecycle()).async(1000)
+        if (keyWord!=null){
+            repo.getSearchCode(page,key = keyWord!!)
+        }else{
+            repo.getCodeList(category, page)
+        }.compose(bindToLifecycle()).async(1000)
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {
@@ -35,6 +42,6 @@ constructor( private val repo: PaoService) : PagedViewModel() {
                         return@map items?.let { observableList.addAll(it) }
                     }
                 }
-                .subscribe({t -> stopLoad()},{t: Throwable? -> stopLoad() })
+                .subscribe({ t -> stopLoad() }, { t: Throwable? -> stopLoad() })
     }
 }

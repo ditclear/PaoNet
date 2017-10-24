@@ -49,7 +49,7 @@ interface PaoService {
      * @param p 分页数
      */
     @GET("/article_list.php")
-    fun getSearchArticles(@Query("key") key: String, @Query("p") p: Int): Single<ArticleList>
+    fun getSearchArticles( @Query("p") p: Int,@Query("key") key: String): Single<ArticleList>
 
     /**
      * 代码搜索
@@ -58,5 +58,5 @@ interface PaoService {
      * @param key 关键词
      */
     @GET("/code_list.php")
-    fun getSearchCode(@Query("p") p: Int, @Query("cate") cate: Int, @Query("key") key: String): Single<ArticleList>
+    fun getSearchCode(@Query("p") p: Int, @Query("cate") cate: Int?=null, @Query("key") key: String): Single<ArticleList>
 }

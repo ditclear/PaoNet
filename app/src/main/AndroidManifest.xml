@@ -26,8 +26,7 @@
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-                android:name=".view.search.SearchActivity"
-                android:theme="@style/AppTheme.Translucent.Search"/>
+                android:name=".view.search.SearchActivity" android:theme="@style/AppTheme.Secondary"/>
         <activity android:name=".view.article.ArticleDetailActivity"/>
         <activity android:name=".view.code.CodeDetailActivity"/>
         <activity

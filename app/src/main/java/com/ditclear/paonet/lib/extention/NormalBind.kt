@@ -72,10 +72,10 @@ fun bindSlider(v:RecyclerView,adapter: RecyclerView.Adapter<*>,vertical:Boolean=
     if (vertical){
         v.layoutManager=LinearLayoutManager(v.context,LinearLayoutManager.VERTICAL,false)
     }else{
+        if(v.onFlingListener==null) {
+            PagerSnapHelper().attachToRecyclerView(v)
+        }
         v.layoutManager=LinearLayoutManager(v.context,LinearLayoutManager.HORIZONTAL,false)
-    }
-    if(v.onFlingListener==null) {
-        PagerSnapHelper().attachToRecyclerView(v)
     }
     v.adapter=adapter
 
