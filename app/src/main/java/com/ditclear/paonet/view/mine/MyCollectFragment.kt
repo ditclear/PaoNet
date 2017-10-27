@@ -2,7 +2,6 @@ package com.ditclear.paonet.view.mine
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
@@ -28,6 +27,7 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
     }
 
     override fun getLayoutId(): Int = R.layout.home_fragment
+
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -60,9 +60,20 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
         }
 
         mBinding.viewPager.adapter = pagerAdapter
-        (activity as MainActivity).needShowTab(true, TabLayout.MODE_FIXED)
-        (activity as MainActivity).setupWithViewPager(mBinding.viewPager)
+        show()
     }
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            show()
+        }
+    }
+     fun show(){
+        (activity as MainActivity).needShowTab(true)
+        (activity as MainActivity).setupWithViewPager(getViewPager())
+    }
+
+    fun getViewPager()=mBinding.viewPager
 
 
 }

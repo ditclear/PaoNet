@@ -22,7 +22,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack {
+abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack, View.OnClickListener {
 
     protected lateinit var mBinding: VB
 
@@ -101,18 +101,18 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack {
 
     }
 
-    protected fun onVisible() {
+    open protected fun onVisible() {
         lazyLoad()
     }
 
 
     open fun lazyLoad() {}
 
-    abstract fun loadData(isRefresh: Boolean)
 
     abstract fun initArgs(savedInstanceState: Bundle?)
 
     abstract fun initView()
+    abstract fun loadData(isRefresh:Boolean)
 
     abstract fun getLayoutId(): Int
 
@@ -126,6 +126,9 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack {
 
     override fun toastFailure(error: Throwable) {
         error.message?.let { activity.toast(it,ToastType.ERROR) }
+    }
+
+    override fun onClick(v: View?) {
     }
 
 }

@@ -3,6 +3,7 @@ package com.ditclear.paonet.view.auth
 import android.support.v4.content.ContextCompat
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.LoginActivityBinding
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.BaseActivity
@@ -10,7 +11,6 @@ import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.view.helper.SpUtil
 import com.ditclear.paonet.view.transitions.FabTransform
 import com.ditclear.paonet.view.transitions.MorphTransform
-import com.trello.rxlifecycle2.android.ActivityEvent
 import javax.inject.Inject
 
 /**
@@ -18,25 +18,27 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/10.
  */
-class LoginActivity :BaseActivity<LoginActivityBinding>(),LoginViewModel.CallBack{
+class LoginActivity : BaseActivity<LoginActivityBinding>() {
 
     @Inject
-    lateinit var viewModel:LoginViewModel
+    lateinit var viewModel: LoginViewModel
 
     //login success
-    override fun onLoginSuccess(user: User?) {
+    fun onLoginSuccess(user: User?) {
 
-        user?.let { SpUtil.user=user }
+        user?.let { SpUtil.user = user }
         dismiss(null)
     }
+
     override fun loadData() {
     }
 
     override fun initView() {
         getComponent().inject(this)
-        viewModel.attachView(this)
-        viewModel.lifecycle=bindToLifecycle<ActivityEvent>()
-        mBinding.vm=viewModel
+        mBinding.run {
+            vm = viewModel
+            presenter=this@LoginActivity
+        }
 
         if (!FabTransform.setup(this, mBinding.container)) {
             MorphTransform.setup(this, mBinding.container,
@@ -45,15 +47,27 @@ class LoginActivity :BaseActivity<LoginActivityBinding>(),LoginViewModel.CallBac
         }
     }
 
-    override fun getLayoutId(): Int= R.layout.login_activity
+    override fun getLayoutId(): Int = R.layout.login_activity
 
-    fun dismiss(v: View?){
-        mBinding.formLayout.visibility=View.INVISIBLE
+    fun dismiss(v: View?) {
+        mBinding.formLayout.visibility = View.INVISIBLE
         finishAfterTransition()
     }
 
     override fun onBackPressed() {
         dismiss(null)
     }
+
+    @SingleClick
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.login -> viewModel.attemptToLogIn().compose(bindToLifecycle())
+                    .subscribe({ t: User? -> t.let { onLoginSuccess(it) } }
+                            , { t: Throwable? -> t?.let { toastFailure(it) } })
+            R.id.super_container -> dismiss(v)
+        }
+
+    }
+
 
 }

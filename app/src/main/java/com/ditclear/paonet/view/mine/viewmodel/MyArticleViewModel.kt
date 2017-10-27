@@ -16,22 +16,20 @@ import javax.inject.Inject
 @FragmentScope
 class MyArticleViewModel
 @Inject
-constructor( private val repo: UserService) : PagedViewModel() {
+constructor(private val repo: UserService) : PagedViewModel() {
 
     val obserableList = ObservableArrayList<Article>()
 
-    override fun loadData(isRefresh: Boolean) {
-        startLoad(isRefresh)
-        repo.myArticle(page).compose(bindToLifecycle()).async(1000)
-                .map { articleList ->
-                    with(articleList) {
-                        if (isRefresh) {
-                            obserableList.clear()
+    fun loadData(isRefresh: Boolean) =
+            repo.myArticle(getPage(isRefresh)).async(1000)
+                    .map { articleList ->
+                        with(articleList) {
+                            if (isRefresh) {
+                                obserableList.clear()
+                            }
+                            loadMore.set(!incomplete_results)
+                            return@map items?.let { obserableList.addAll(it) }
                         }
-                        loadMore.set(!incomplete_results)
-                        return@map items?.let { obserableList.addAll(it) }
-                    }
-                }
-                .subscribe{ t1, t2 -> loading.set(false) }
-    }
+                    }.doOnSubscribe { startLoad() }.doFinally { stopLoad() }
+
 }

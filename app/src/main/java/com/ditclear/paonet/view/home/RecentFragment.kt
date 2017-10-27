@@ -1,6 +1,7 @@
 package com.ditclear.paonet.view.home
 
 import android.content.Context
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
 import android.graphics.Rect
 import android.os.Bundle
@@ -18,9 +19,9 @@ import com.ditclear.paonet.vendor.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.helper.ItemType
+import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
-import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
 /**
@@ -28,7 +29,10 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentFragment : BaseFragment<RefreshFragmentBinding>(), RecentViewModel.CallBack, ItemClickPresenter<Article> {
+class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article>,ListPresenter {
+    override val loadMore: ObservableBoolean
+        get() = viewModel.loadMore
+
     override fun onItemClick(v: View?, t: Article) {
         navigateToArticleDetail(activity, v, t)
     }
@@ -54,7 +58,13 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), RecentViewModel.C
     }
 
 
-    val adapter: MultiTypeAdapter by lazy { MultiTypeAdapter(mContext) }
+    val mAdapter: MultiTypeAdapter by lazy {
+        MultiTypeAdapter(mContext)
+                .apply {
+                    addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
+                    addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
+                }
+    }
 
     override fun getLayoutId() = R.layout.refresh_fragment
 
@@ -69,9 +79,13 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), RecentViewModel.C
     }
 
     override fun loadData(isRefresh: Boolean) {
-        adapter.clear()
-        adapter.add(0, sliderAdapter, ItemType.HEADER)
-        viewModel.loadData(true)
+        mAdapter.clear()
+        mAdapter.add(0, sliderAdapter, ItemType.HEADER)
+        viewModel.loadData(true).compose(bindToLifecycle())
+                .doOnError { t: Throwable? -> t?.let { toastFailure(it) } }
+                .subscribe()
+
+
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -80,57 +94,57 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), RecentViewModel.C
 
     override fun initView() {
 
-        mBinding.vm = viewModel.apply {
-            lifecycle = this@RecentFragment.bindToLifecycle<FragmentEvent>()
-            attachView(this@RecentFragment)
-        }
+        mBinding.run {
+            vm = viewModel
+            presenter = this@RecentFragment
 
-        mBinding.recyclerView.adapter = adapter.apply {
-            addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
-            addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
-            setPresenter(this@RecentFragment)
-        }
-        mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
+            recyclerView.run {
+                adapter = mAdapter
+                addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
 
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                super.getItemOffsets(outRect, view, parent, state)
-                if (parent == null || view == null || state == null) {
-                    return
-                }
-                val layoutManager = parent.layoutManager
-                val lastPos = state.itemCount - 1
-                val current = parent.getChildLayoutPosition(view)
-                if (current == -1) {
-                    return
-                }
-                if (layoutManager is LinearLayoutManager) {
-                    if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
-                        if (current != 0) {
-                            outRect?.bottom = activity.dpToPx(R.dimen.xdp_12_0)
+                    override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                        super.getItemOffsets(outRect, view, parent, state)
+                        if (parent == null || view == null || state == null) {
+                            return
+                        }
+                        val layoutManager = parent.layoutManager
+                        val lastPos = state.itemCount - 1
+                        val current = parent.getChildLayoutPosition(view)
+                        if (current == -1) {
+                            return
+                        }
+                        if (layoutManager is LinearLayoutManager) {
+                            if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
+                                if (current != 0) {
+                                    outRect?.bottom = activity.dpToPx(R.dimen.xdp_12_0)
+                                }
+                            }
                         }
                     }
-                }
+                })
             }
-        })
+
+        }
+
         viewModel.obserableList.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<Article>>() {
             override fun onItemRangeChanged(sender: ObservableList<Article>?, positionStart: Int, itemCount: Int) {
-                sender?.let { adapter.notifyItemRangeChanged(1, positionStart, itemCount) }
+                sender?.let { mAdapter.notifyItemRangeChanged(1, positionStart, itemCount) }
             }
 
             override fun onChanged(sender: ObservableList<Article>?) {
-                sender?.let { adapter.notifyItemRangeChanged(1, sender.size) }
+                sender?.let { mAdapter.notifyItemRangeChanged(1, sender.size) }
             }
 
             override fun onItemRangeRemoved(sender: ObservableList<Article>?, positionStart: Int, itemCount: Int) {
-                sender?.let { adapter.notifyItemRangeRemoved(positionStart + 1, itemCount) }
+                sender?.let { mAdapter.notifyItemRangeRemoved(positionStart + 1, itemCount) }
             }
 
             override fun onItemRangeMoved(sender: ObservableList<Article>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                adapter.notifyItemMoved(fromPosition, toPosition)
+                mAdapter.notifyItemMoved(fromPosition, toPosition)
             }
 
             override fun onItemRangeInserted(sender: ObservableList<Article>?, positionStart: Int, itemCount: Int) {
-                sender?.let { adapter.addAll(sender, ItemType.ITEM) }
+                sender?.let { mAdapter.addAll(sender, ItemType.ITEM) }
             }
 
         })

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
         >
 
 
     <group android:checkableBehavior="single">
         <item
                 android:id="@+id/nav_home"
+                android:icon="@drawable/ic_home"
+                android:checked="true"
                 android:title="首页"/>
-        <item android:id="@+id/nav_code"
-              android:title="代码"/>
+        <item
+                android:id="@+id/nav_code"
+                android:icon="@drawable/ic_code"
+                android:title="代码"/>
         <item
                 android:id="@+id/nav_article"
-                android:actionViewClass="android.widget.TextView"
+                android:icon="@drawable/ic_list"
                 android:title="我的文章"/>
         <item
                 android:id="@+id/nav_collect"
-                android:actionViewClass="android.widget.TextView"
+                android:icon="@drawable/ic_collections"
                 android:title="我的收藏"/>
-        <item
-                android:id="@+id/nav_setting"
-                android:title="设置"/>
 
     </group>
 

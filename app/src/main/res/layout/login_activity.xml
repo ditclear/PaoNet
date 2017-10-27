@@ -9,14 +9,18 @@
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.auth.viewmodel.LoginViewModel"/>
+        <variable
+                name="presenter"
+                type="android.view.View.OnClickListener"/>
     </data>
 
     <FrameLayout
+            android:id="@+id/super_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.auth.LoginActivity"
             android:fitsSystemWindows="true"
-            android:onClick="dismiss">
+            android:onClick="@{(v)->presenter.onClick(v)}">
 
         <android.support.v7.widget.CardView
                 android:id="@+id/container"
@@ -94,7 +98,7 @@
                         android:layout_gravity="end"
                         android:layout_marginTop="@dimen/spacing_normal"
                         android:text="@string/login_action"
-                        android:onClick="@{(v)->vm.onClick(v)}"
+                        android:onClick="@{(v)->presenter.onClick(v)}"
                         android:visibility="@{vm.loginVisibility}"
                         android:textAppearance="@style/TextAppearance.DarkButton"/>
 

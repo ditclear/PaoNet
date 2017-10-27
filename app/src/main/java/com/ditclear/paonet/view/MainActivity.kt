@@ -17,10 +17,7 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.databinding.NavHeaderMainBinding
-import com.ditclear.paonet.lib.extention.async
-import com.ditclear.paonet.lib.extention.getOriginData
-import com.ditclear.paonet.lib.extention.navigateToActivity
-import com.ditclear.paonet.lib.extention.toast
+import com.ditclear.paonet.lib.extention.*
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.remote.api.UserService
 import com.ditclear.paonet.view.code.CodeFragment
@@ -41,6 +38,13 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
     lateinit var repo: UserService
 
     override fun getLayoutId(): Int = R.layout.main_activity
+
+    var temp :Fragment ?=null
+
+    val homeFragment by lazy { HomeFragment.newInstance() }
+    val codeFragment by lazy { CodeFragment.newInstance() }
+    val myArticleFragment by lazy { MyArticleFragment.newInstance() }
+    val myCollectFragment by lazy { MyCollectFragment.newInstance() }
 
     val defaultUser: User by lazy { User() }
 
@@ -86,8 +90,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         mBinding.aboutBtn.setOnClickListener { toast("about") }
         navHeaderBinding.toggleBtn.setOnClickListener { view -> toggleLog(view) }
         mBinding.navView.setNavigationItemSelectedListener(this)
-        switchFragment(HomeFragment.newInstance())
 
+        changeFragment(homeFragment)
         mBinding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerClosed(drawerView: View?) {
                 super.onDrawerClosed(drawerView)
@@ -158,31 +162,34 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         val id = item.itemId
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
         when (id) {
-            R.id.nav_home -> switchFragment(HomeFragment.newInstance())
-            R.id.nav_code -> switchFragment(CodeFragment.newInstance(), "Code")
+            R.id.nav_home -> {
+                changeFragment(homeFragment)
+            }
+            R.id.nav_code -> {
+                changeFragment(codeFragment, "Code")
+            }
             R.id.nav_article -> switchMyArticle(mBinding.navView.findViewById(id))
             R.id.nav_collect -> switchMyCollect(item.actionView)
-            R.id.nav_setting -> switchFragment(MyArticleFragment.newInstance(), "Setting")
         }
         return true
     }
 
     @CheckLogin
     private fun switchMyArticle(v: View?) {
-        switchFragment(MyArticleFragment.newInstance(), "我的文章")
+        changeFragment(myArticleFragment, "我的文章")
     }
 
     @CheckLogin
     private fun switchMyCollect(v: View?) {
-        switchFragment(MyCollectFragment.newInstance(), "我的收藏")
+        changeFragment(myCollectFragment, "我的收藏")
     }
 
     /**
      * 切换fragment
      */
-    private fun switchFragment(fragment: Fragment, title: String = "泡在网上的日子") {
+    private fun changeFragment(fragment: Fragment, title: String = "泡在网上的日子") {
         supportActionBar?.title = title
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
-
+        switchFragment(temp,fragment)
+        temp=fragment
     }
 }

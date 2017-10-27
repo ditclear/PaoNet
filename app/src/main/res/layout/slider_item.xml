@@ -14,10 +14,11 @@
                 type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
     </data>
 
-    <FrameLayout
-            android:layout_width="match_parent"
+    <android.support.v7.widget.CardView
+            android:layout_width="300dp"
             android:layout_height="@dimen/xdp_200.0"
-            android:background="?selectableItemBackgroundBorderless"
+            android:foreground="@drawable/mid_grey_ripple"
+            android:elevation="@dimen/padding_large"
             android:onClick="@{(v)->presenter.onItemClick(v,item)}">
 
         <ImageView
@@ -35,5 +36,5 @@
                 android:text="@{item.title}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
                 tools:text="@string/thumbnail"/>
-    </FrameLayout>
+    </android.support.v7.widget.CardView>
 </layout>

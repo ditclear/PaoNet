@@ -16,7 +16,11 @@
     <string name="action_search">search sth..</string>
     <string name="thumbnail">缩略图</string>
     <string name="list_item_response">%d 回复 </string>
+    <string name="detail_likes">%d 喜欢 </string>
+    <string name="detail_views">%d 查看 </string>
+    <string name="detail_comments">%d 回复 </string>
     <string name="intToString">%d</string>
+    <string name="github_link">GitHub:%s</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"

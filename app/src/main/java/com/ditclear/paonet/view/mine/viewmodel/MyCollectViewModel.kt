@@ -23,9 +23,8 @@ constructor( private val repo: UserService) : PagedViewModel() {
     //1 ：文章；-19 ：代码
     var type=1
 
-    override fun loadData(isRefresh: Boolean) {
-        startLoad(isRefresh)
-        repo.collectionArticle(page,type).compose(bindToLifecycle()).async(1000)
+    fun loadData(isRefresh: Boolean) =
+        repo.collectionArticle(getPage(isRefresh),type).async(1000)
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {
@@ -34,7 +33,6 @@ constructor( private val repo: UserService) : PagedViewModel() {
                         loadMore.set(!incomplete_results)
                         return@map items?.let { obserableList.addAll(it) }
                     }
-                }
-                .subscribe{ t1, t2 -> loading.set(false) }
-    }
+                }.doOnSubscribe { startLoad() }.doFinally { stopLoad() }
+
 }

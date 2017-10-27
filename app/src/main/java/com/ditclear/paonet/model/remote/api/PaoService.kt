@@ -2,6 +2,7 @@ package com.ditclear.paonet.model.remote.api
 
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.ArticleList
+import com.ditclear.paonet.model.data.TagList
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -16,7 +17,7 @@ interface PaoService {
     /**
      * 轮播图数据
      */
-    @GET("/slider.php")
+    @GET("slider.php")
     fun getSlider(): Single<ArticleList>
 
     /**
@@ -48,7 +49,7 @@ interface PaoService {
      * @param key 关键词
      * @param p 分页数
      */
-    @GET("/article_list.php")
+    @GET("article_list.php")
     fun getSearchArticles( @Query("p") p: Int,@Query("key") key: String): Single<ArticleList>
 
     /**
@@ -57,6 +58,12 @@ interface PaoService {
      * @param cate 代码分类
      * @param key 关键词
      */
-    @GET("/code_list.php")
+    @GET("code_list.php")
     fun getSearchCode(@Query("p") p: Int, @Query("cate") cate: Int?=null, @Query("key") key: String): Single<ArticleList>
+
+    /**
+     * 获取热门搜索
+     */
+    @GET("hot_search.php")
+    fun getHotSearch() : Single<TagList>
 }

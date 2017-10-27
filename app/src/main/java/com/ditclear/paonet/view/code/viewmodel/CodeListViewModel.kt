@@ -26,22 +26,21 @@ constructor(private val repo: PaoService) : PagedViewModel() {
     var keyWord: String? = null
         set
 
-    override fun loadData(isRefresh: Boolean) {
-        startLoad(isRefresh)
-        if (keyWord!=null){
-            repo.getSearchCode(page,key = keyWord!!)
-        }else{
-            repo.getCodeList(category, page)
-        }.compose(bindToLifecycle()).async(1000)
-                .map { articleList ->
-                    with(articleList) {
-                        if (isRefresh) {
-                            observableList.clear()
+    fun loadData(isRefresh: Boolean) =
+            if (keyWord != null) {
+                repo.getSearchCode(getPage(isRefresh), key = keyWord!!)
+            } else {
+                repo.getCodeList(category, getPage(isRefresh))
+            }.async(1000)
+                    .map { articleList ->
+                        with(articleList) {
+                            if (isRefresh) {
+                                observableList.clear()
+                            }
+                            loadMore.set(!incomplete_results)
+                            return@map items?.let { observableList.addAll(it) }
                         }
-                        loadMore.set(!incomplete_results)
-                        return@map items?.let { observableList.addAll(it) }
-                    }
-                }
-                .subscribe({ t -> stopLoad() }, { t: Throwable? -> stopLoad() })
-    }
+                    }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }
+
+
 }

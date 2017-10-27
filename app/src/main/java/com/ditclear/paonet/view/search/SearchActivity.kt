@@ -31,18 +31,29 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         mBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
-                    switchFragment(SearchResultFragment.newInstance(this))
+                    switchFragment(SearchResultFragment.newInstance(query))
                 }
                 Utils.hideIme(mBinding.searchView)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    needShowTab(false)
+                    switchFragment(RecentSearchFragment.newInstance())
+                }
                 return true
             }
 
         })
 
+    }
+
+    fun setQuery(keyWord: String?) {
+        keyWord?.run {
+            mBinding.searchView.setQuery(keyWord, false)
+            Utils.hideIme(mBinding.searchView)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

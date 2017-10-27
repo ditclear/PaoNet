@@ -6,7 +6,6 @@ import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.viewmodel.PagedViewModel
-import com.ditclear.paonet.viewmodel.callback.ICallBack
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
@@ -21,9 +20,8 @@ class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedV
     val sliders = ObservableArrayList<Article>()
     val obserableList = ObservableArrayList<Article>()
 
-    override fun loadData(isRefresh: Boolean) {
-        startLoad(true)
-        repo.getSlider().compose(bindToLifecycle())
+    fun loadData(isRefresh: Boolean) =
+        repo.getSlider()
                 .async()
                 .doOnSuccess { t ->
                     Log.d("thread------",Thread.currentThread().name)
@@ -32,13 +30,15 @@ class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedV
                         items?.let { sliders.addAll(it) }
                     }
                 }
+                .doOnSubscribe { startLoad() }
                 .observeOn(Schedulers.io())
                 .flatMap {
                     Log.d("thread------",Thread.currentThread().name)
                     repo.getArticleList(page = 0) }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate{ stopLoad()}
-                .subscribe({ articleList ->
+                .doFinally{ stopLoad()}
+                .doOnSuccess {  }
+                .doOnSuccess{ articleList ->
                     Log.d("thread------",Thread.currentThread().name)
                     with(articleList) {
                         if (isRefresh) {
@@ -46,17 +46,7 @@ class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedV
                         }
                         items?.let { obserableList.addAll(it) }
                     }
-                }, { t: Throwable? -> t?.let { mView.toastFailure(t) } })
-    }
-
-    private lateinit var mView: CallBack
-
-    fun attachView(v: CallBack) {
-        this.mView = v
-    }
+                }
 
 
-    interface CallBack : ICallBack {
-
-    }
 }

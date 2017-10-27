@@ -3,13 +3,12 @@ package com.ditclear.paonet.view.auth.viewmodel
 import android.databinding.Bindable
 import android.view.View
 import com.ditclear.paonet.BR
-import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.lib.extention.getOriginData
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.data.UserModel
 import com.ditclear.paonet.model.remote.api.UserService
 import com.ditclear.paonet.viewmodel.BaseViewModel
-import com.ditclear.paonet.viewmodel.callback.ICallBack
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -61,38 +60,16 @@ constructor(private val repo: UserService) : BaseViewModel() {
     var loginVisibility = View.VISIBLE
         @Bindable("showLogin") get () = if (showLogin) View.VISIBLE else View.GONE
 
-    fun attemptToLogIn() {
-        showLogin = false
-        repo.login(email, password)
+    fun attemptToLogIn():Single<User?> {
+
+        return repo.login(email, password)
                 .subscribeOn(Schedulers.io())
                 .delay(1,TimeUnit.SECONDS)
                 .getOriginData()
-                .compose(bindToLifecycle())
                 .flatMap { repo.myProfile().map { t: UserModel -> t.model } }
                 .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate { showLogin = true }
-                .subscribe({ t: User? -> t.let { mView.onLoginSuccess(it) } }
-                        , { t: Throwable? -> t?.let { mView.toastFailure(it) } })
+                .doOnSubscribe { showLogin = false }
+                .doFinally { showLogin = true }
 
     }
-
-    @SingleClick
-    fun onClick(v: View) {
-        attemptToLogIn()
-    }
-
-
-    private lateinit var mView: CallBack
-
-    fun attachView(v: CallBack) {
-        this.mView = v
-    }
-
-
-    interface CallBack : ICallBack {
-
-        fun onLoginSuccess(response: User?)
-
-    }
-
 }

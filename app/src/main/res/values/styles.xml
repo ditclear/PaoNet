@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppTheme.Secondary">
-        <item name="colorPrimaryDark">@color/colorAccentAlpha</item>
+        <item name="colorPrimaryDark">@color/tools_color</item>
         <item name="colorPrimary">@color/background_light</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorHint">@color/tools_color</item>
@@ -81,6 +81,14 @@
     <style name="TextAppearance.FloatLabelHint"
            parent="@android:style/TextAppearance.Material.Caption">
         <item name="android:textColor">?android:colorAccent</item>
+    </style>
+
+    <style name="Widget.Code.InlineActionButton" parent="@android:style/Widget.Material.Button">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
+        <item name="android:drawablePadding">@dimen/spacing_micro</item>
+        <item name="android:stateListAnimator">@animator/active_raise</item>
+        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
     </style>
 
 

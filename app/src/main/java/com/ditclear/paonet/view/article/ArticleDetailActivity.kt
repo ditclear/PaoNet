@@ -1,18 +1,17 @@
 package com.ditclear.paonet.view.article
 
+import android.support.v4.widget.NestedScrollView
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebView
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.lib.extention.ToastType
 import com.ditclear.paonet.lib.extention.getCompactColor
 import com.ditclear.paonet.lib.extention.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.BaseActivity
-import com.ditclear.paonet.view.helper.Constants
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
-import com.trello.rxlifecycle2.android.ActivityEvent
+import com.ditclear.paonet.view.helper.Constants
 import javax.inject.Inject
 
 
@@ -21,29 +20,29 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/1.
  */
-class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), ArticleDetailViewModel.CallBack {
+class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
-
-    private lateinit var webChromeClient: WebChromeClient
 
     @Inject
     lateinit var viewModel: ArticleDetailViewModel
 
     override fun loadData() {
 
-        viewModel.loadData()
+        viewModel.loadData().compose(bindToLifecycle())
+                .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
+                        { t: Throwable? -> toastFailure(t!!) })
 
     }
 
 
     //是否收藏过
-    override fun isStow(stow: Boolean) {
+    private fun isStow(stow: Boolean) {
         mBinding.fab.drawable.setTint(
-                if (stow){
+                if (stow) {
                     getCompactColor(R.color.stow_color)
-                }else{
+                } else {
                     getCompactColor(R.color.tools_color)
                 })
     }
@@ -58,25 +57,21 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), Arti
 
         getComponent().inject(this)
 
-        viewModel.lifecycle = bindToLifecycle<ActivityEvent>()
-
         viewModel.article = article!!
-        viewModel.attachView(this)
-        mBinding.vm = viewModel
-        initBackToolbar(mBinding.toolbar)
-        webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                mBinding.progressBar.progress = newProgress
-                if (newProgress == 0) {
-                    mBinding.progressBar.visibility = View.VISIBLE
-                } else if (newProgress == 100) {
-                    mBinding.progressBar.visibility = View.GONE
-                }
-            }
+        mBinding.vm = viewModel.apply {
+            this.article=article
         }
-        mBinding.webView.webChromeClient = webChromeClient
+        mBinding.presenter=this
 
+        initBackToolbar(mBinding.toolbar)
+
+        mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY-oldScrollY>10){
+                mBinding.fab.hide()
+            }else if(scrollY-oldScrollY<-10){
+                mBinding.fab.show()
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -87,6 +82,19 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>(), Arti
         mBinding.scrollView.removeAllViews()
         System.gc();
         super.onDestroy()
+    }
+
+    @SingleClick
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.fab -> stow()
+        }
+    }
+
+    private fun stow() {
+        viewModel.stow().compose(bindToLifecycle())
+                .subscribe({ t -> toastSuccess(t.message) }
+                        , { t: Throwable? -> t?.run { toastFailure(this) } })
     }
 
 }

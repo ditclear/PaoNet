@@ -21,7 +21,7 @@
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:stateListAnimator="@animator/active_raise"
             app:cardBackgroundColor="@color/background_item"
-            android:background="?selectableItemBackground"
+            android:foreground="@drawable/mid_grey_ripple"
             android:onClick="@{(v)->presenter.onItemClick(v,item)}"
             app:cardCornerRadius="@dimen/xdp_0"
             app:cardElevation="@dimen/xdp_2.0"

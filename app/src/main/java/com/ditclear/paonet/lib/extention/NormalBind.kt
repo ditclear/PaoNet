@@ -1,6 +1,7 @@
 package com.ditclear.paonet.lib.extention
 
 import android.databinding.BindingAdapter
+import android.graphics.Rect
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -10,7 +11,7 @@ import android.view.View
 import android.widget.ImageView
 import com.ditclear.paonet.R
 import com.ditclear.paonet.view.helper.ImageUtil
-import com.ditclear.paonet.viewmodel.PagedViewModel
+import com.ditclear.paonet.view.helper.ListPresenter
 import us.feras.mdv.MarkdownView
 
 /**
@@ -40,8 +41,13 @@ fun bindMarkDown(v:MarkdownView,markdown:String?){
     }
 }
 
+@BindingAdapter(value="visible")
+fun bindVisibility(v: View,visible:Boolean){
+    v.visibility=if (visible) View.VISIBLE else View.GONE
+}
+
 @BindingAdapter(value = "loadMore")
-fun bindLoadMore(v: RecyclerView, vm:PagedViewModel){
+fun bindLoadMore(v: RecyclerView, presenter:ListPresenter){
     v.layoutManager=LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -50,10 +56,10 @@ fun bindLoadMore(v: RecyclerView, vm:PagedViewModel){
                 //表示是否能向上滚动，false表示已经滚动到底部
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    if (vm.loadMore.get()) {
-                        vm.loadData(false)
+                    if (presenter.loadMore.get()) {
+                        presenter.loadData(false)
                         //防止多次拉取同样的数据
-                        vm.loadMore.set(false)
+                        presenter.loadMore.set(false)
                     }
                 }
             }
@@ -62,11 +68,11 @@ fun bindLoadMore(v: RecyclerView, vm:PagedViewModel){
 }
 
 @BindingAdapter(value = "onRefresh")
-fun bindOnRefresh(v:SwipeRefreshLayout,vm: PagedViewModel){
-    v.setOnRefreshListener { vm.loadData(true) }
+fun bindOnRefresh(v:SwipeRefreshLayout,presenter: ListPresenter){
+    v.setOnRefreshListener { presenter.loadData(true) }
 }
 
-@BindingAdapter(value = *arrayOf("adapter","vertical"),requireAll = false)
+@BindingAdapter(value = *arrayOf("rv_adapter","vertical"),requireAll = false)
 fun bindSlider(v:RecyclerView,adapter: RecyclerView.Adapter<*>,vertical:Boolean=true){
 
     if (vertical){
@@ -76,6 +82,12 @@ fun bindSlider(v:RecyclerView,adapter: RecyclerView.Adapter<*>,vertical:Boolean=
             PagerSnapHelper().attachToRecyclerView(v)
         }
         v.layoutManager=LinearLayoutManager(v.context,LinearLayoutManager.HORIZONTAL,false)
+        v.addItemDecoration(object :RecyclerView.ItemDecoration(){
+            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                super.getItemOffsets(outRect, view, parent, state)
+                outRect?.right=20
+            }
+        })
     }
     v.adapter=adapter
 

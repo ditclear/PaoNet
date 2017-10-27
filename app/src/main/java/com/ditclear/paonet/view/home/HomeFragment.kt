@@ -28,6 +28,8 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>(){
     }
     override fun getLayoutId(): Int = R.layout.home_fragment
 
+    fun getViewPager()=mBinding.viewPager
+
     override fun loadData(isRefresh: Boolean) {
 
     }
@@ -40,11 +42,21 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>(){
 
     }
 
-    override fun initView() {
-        mBinding.viewPager.adapter=pagerAdapter
-        mBinding.viewPager.offscreenPageLimit=pagerAdapter.count
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            show()
+        }
+    }
+
+    fun show(){
         (activity as MainActivity).needShowTab(true)
         (activity as MainActivity).setupWithViewPager(mBinding.viewPager)
+    }
+
+    override fun initView() {
+        mBinding.viewPager.adapter=pagerAdapter
+        show()
     }
 
 

@@ -27,14 +27,12 @@ constructor(private val repo: PaoService) : PagedViewModel() {
     var keyWord: String? = null
         set
 
-    override fun loadData(isRefresh: Boolean) {
-        startLoad(isRefresh)
-
+    fun loadData(isRefresh: Boolean)=
         if (keyWord != null) {
-            repo.getSearchArticles(page, keyWord!!)
+            repo.getSearchArticles(getPage(isRefresh), keyWord!!)
         } else {
-            repo.getArticleList(page, tid)
-        }.compose(bindToLifecycle()).async(1000)
+            repo.getArticleList(getPage(isRefresh), tid)
+        }.async(1000)
                 .map { articleList ->
                     with(articleList) {
                         if (isRefresh) {
@@ -43,8 +41,6 @@ constructor(private val repo: PaoService) : PagedViewModel() {
                         loadMore.set(!incomplete_results)
                         return@map items?.let { obserableList.addAll(it) }
                     }
-                }
-                .subscribe({ t -> stopLoad() },
-                        { t -> stopLoad() })
-    }
+                }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }
+
 }

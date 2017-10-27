@@ -5,9 +5,14 @@
         xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.ditclear.paonet.R"/>
+        <import type="android.view.View"/>
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel"/>
+
+        <variable
+                name="presenter"
+                type="android.view.View.OnClickListener"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/over_scroll_layout"
@@ -63,14 +68,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/xdp_1.0"
-                        android:progress="20"
-                        android:progressDrawable="@android:color/holo_blue_dark"/>
+                <include
+                        layout="@layout/loading"
+                        android:visibility="@{vm.loading?View.VISIBLE:View.GONE}"/>
                 <us.feras.mdv.MarkdownView
                         android:id="@+id/web_view"
                         android:layout_width="match_parent"
@@ -85,11 +85,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
-                app:layout_anchor="@id/app_bar"
                 bind:start_color="@{R.color.colorAccent}"
                 bind:icon="@{R.drawable.ic_bookmark}"
-                android:onClick="@{(v)->vm.onClick(v)}"
-                app:layout_anchorGravity="bottom|end"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:layout_gravity="bottom|end"
                 android:transitionName="@string/transition_login"
                 app:srcCompat="@drawable/ic_bookmark"/>
 

@@ -1,33 +1,34 @@
 package com.ditclear.paonet.viewmodel
 
-import android.databinding.ObservableField
+import android.databinding.ObservableBoolean
 
 /**
  * 页面描述：PagedViewModel
  *
  * Created by ditclear on 2017/9/28.
  */
-open class PagedViewModel :BaseViewModel(){
+open class PagedViewModel : BaseViewModel() {
 
-    val loading=ObservableField(false)
+    val loading = ObservableBoolean(false)
 
-    val loadMore=ObservableField(false)
+    val loadMore = ObservableBoolean(false)
 
-    var page =0
+    var page = 0
 
-    fun startLoad(isRefresh :Boolean){
-        if (isRefresh){
-            page=0
-        }else{
+    fun getPage(isRefresh: Boolean): Int {
+        if (isRefresh) {
+            page = 0
+        } else {
             page++
         }
+        return page
+    }
 
+    fun startLoad() {
         loading.set(true)
     }
 
-    open fun loadData(isRefresh: Boolean){}
-
-    fun stopLoad(){
+    fun stopLoad() {
         loading.set(false)
     }
 

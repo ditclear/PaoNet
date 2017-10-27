@@ -1,6 +1,7 @@
 package com.ditclear.paonet.view.mine
 
 import android.content.Context
+import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.recyclerview.extensions.DiffCallback
@@ -18,9 +19,9 @@ import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.code.CodeDetailActivity
+import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
-import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
 /**
@@ -29,52 +30,57 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/15.
  */
 @FragmentScope
-class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article>, ListPresenter {
+    override val loadMore: ObservableBoolean
+        get() = viewModel.loadMore
 
 
     @Inject
     lateinit var viewModel: MyCollectViewModel
 
-    lateinit var mAdapter : PagedAdapter<Article>
+    lateinit var mAdapter: PagedAdapter<Article>
 
-    var collectionType:Int=1
+    var collectionType: Int = 1
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
     companion object {
 
-        private val COLLECTION_TYPE="type"
+        private val COLLECTION_TYPE = "type"
 
-        fun newInstance(type:Int=1): CollectionListFragment {
-            val bundle= Bundle()
-            bundle.putInt(COLLECTION_TYPE,type)
-            val fragment= CollectionListFragment()
-            fragment.arguments=bundle
+        fun newInstance(type: Int = 1): CollectionListFragment {
+            val bundle = Bundle()
+            bundle.putInt(COLLECTION_TYPE, type)
+            val fragment = CollectionListFragment()
+            fragment.arguments = bundle
             return fragment
         }
     }
 
     override fun lazyLoad() {
-        if (!isPrepared || !visible||hasLoadOnce) {
+        if (!isPrepared || !visible || hasLoadOnce) {
             return
         }
-        hasLoadOnce=true
+        hasLoadOnce = true
         loadData(true)
     }
 
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh)
+        viewModel.loadData(isRefresh).compose(bindToLifecycle())
+                .doOnError { t: Throwable? -> t?.let { toastFailure(it) } }
+                .subscribe()
     }
+
     override fun initArgs(savedInstanceState: Bundle?) {
-        collectionType=arguments.getInt(COLLECTION_TYPE,1)
+        collectionType = arguments.getInt(COLLECTION_TYPE, 1)
     }
 
     @SingleClick
     override fun onItemClick(v: View?, t: Article) {
-        if(collectionType==1) {
+        if (collectionType == 1) {
             navigateToArticleDetail(activity, v?.findViewById(R.id.thumbnail_iv), t)
-        }else{
+        } else {
             activity.navigateToActivity(CodeDetailActivity::class.java, t)
         }
     }
@@ -87,31 +93,36 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
     }
 
     override fun initView() {
-        lazyLoad=true
-        var layoutItemId=R.layout.article_list_item
-        if (collectionType!=1){
-            layoutItemId=R.layout.collect_code_list_item
+        lazyLoad = true
+        var layoutItemId = R.layout.article_list_item
+        if (collectionType != 1) {
+            layoutItemId = R.layout.collect_code_list_item
         }
-        mAdapter= PagedAdapter<Article>(activity, layoutItemId, viewModel.obserableList
+        mAdapter = PagedAdapter<Article>(activity, layoutItemId, viewModel.obserableList
                 , object : DiffCallback<Article>() {
-            override fun areContentsTheSame(oldItem: Article, newItem: Article)=
+            override fun areContentsTheSame(oldItem: Article, newItem: Article) =
                     oldItem.id == newItem.id
 
             override fun areItemsTheSame(oldItem: Article, newItem: Article) =
                     oldItem.id == newItem.id
 
-        })
-        viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
-        viewModel.type=collectionType
-        mBinding.vm=viewModel
-        mBinding.recyclerView.adapter = mAdapter
-        mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL){
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                super.getItemOffsets(outRect, view, parent, state)
-                outRect?.top=activity.dpToPx(R.dimen.xdp_12_0)
-            }})
-        mAdapter.presenter=this
-        isPrepared=true
+        }).apply {
+            presenter = this@CollectionListFragment
+        }
+        mBinding.run {
+            vm = viewModel.apply {
+                type = collectionType
+            }
+            recyclerView.adapter = mAdapter
+            recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL) {
+                override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                    super.getItemOffsets(outRect, view, parent, state)
+                    outRect?.top = activity.dpToPx(R.dimen.xdp_12_0)
+                }
+            })
+        }
+
+        isPrepared = true
     }
 
 }

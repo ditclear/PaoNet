@@ -4,11 +4,19 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
+        <import type="android.view.View"/>
+
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel"/>
+
+        <variable
+                name="presenter"
+                type="android.view.View.OnClickListener"/>
     </data>
-    <com.ditclear.paonet.widget.OverScrollLayout
+
+    <android.support.design.widget.CoordinatorLayout
             android:id="@+id/over_scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -28,15 +36,19 @@
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     app:contentScrim="?attr/colorPrimary"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    app:title="@{vm.article.title}">
+
                 <ImageView
                         android:id="@+id/thumbnail_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/thumbnail"
-                        android:scaleType="centerCrop"
+                        android:duplicateParentState="true"
                         android:fitsSystemWindows="true"
-                        android:duplicateParentState="true"/>
+                        app:url="@{vm.article.url}"
+                        android:scaleType="centerCrop"/>
+
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
@@ -57,14 +69,111 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
+                <android.support.v4.widget.Space
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/spacing_large"/>
 
-                <ProgressBar
-                        android:id="@+id/progress_bar"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/xdp_1.0"
-                        android:progress="20"
-                        android:progressDrawable="@android:color/holo_blue_dark"/>
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                            android:id="@+id/player_avatar"
+                            android:layout_width="@dimen/xdp_36.0"
+                            android:layout_height="@dimen/xdp_36.0"
+                            android:scaleType="centerCrop"
+                            app:avatar="@{true}"
+                            app:url="@{vm.article.user.face}"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            tools:src="@drawable/ic_face"/>
+
+                    <TextView
+                            android:id="@+id/player_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{vm.nameAndDate}"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            tools:text="ditclear\n七天以前"/>
+
+
+                </LinearLayout>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:autoLink="web"
+                        android:textColorLink="@color/deep_sky_blue"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:text="@{@string/github_link(vm.article.url)}"
+                        android:fontFamily="serif"
+                        tools:text="github:"/>
+                <TextView
+                        android:id="@+id/description_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/padding_normal"
+                        android:paddingStart="@dimen/activity_horizontal_margin"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
+                        android:paddingTop="@dimen/padding_normal"
+                        android:layout_marginBottom="@dimen/spacing_normal"
+                        android:text="@{vm.article.description}"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                        android:textColorLink="@color/deep_sky_blue"
+                        tools:text="empty content"/>
+
+
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingTop="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/padding_normal"
+                        android:paddingStart="@dimen/padding_normal">
+
+                    <Button
+                            android:id="@+id/upvote_btn"
+                            style="@style/Widget.Code.InlineActionButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:drawableTint="@color/colorPrimary"
+                            android:drawableTop="@drawable/ic_thumb"
+                            android:text="@{@string/detail_likes(vm.article.upvote)}"
+                            tools:text="33 likes"/>
+
+
+                    <Button
+                            android:id="@+id/comments_btn"
+                            style="@style/Widget.Code.InlineActionButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_weight="1"
+                            android:drawableTop="@drawable/ic_comment"
+                            android:text="@{@string/detail_comments(vm.article.comments)}"
+                            tools:text="2 comments"/>
+
+                    <Button
+                            style="@style/Widget.Code.InlineActionButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:drawableTop="@drawable/ic_visibility"
+                            android:text="@{@string/detail_views(vm.article.click)}"
+                            tools:text="33 views"/>
+
+                </LinearLayout>
+
+
+                <include
+                        layout="@layout/loading"
+                        android:visibility="@{vm.loading?View.VISIBLE:View.GONE}"/>
 
                 <us.feras.mdv.MarkdownView
                         android:id="@+id/web_view"
@@ -78,11 +187,10 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
                 android:layout_margin="@dimen/fab_margin"
-                app:layout_anchor="@id/app_bar"
-                app:layout_anchorGravity="bottom|end"
-                android:onClick="@{(v)->vm.onClick(v)}"
+                android:onClick="@{(v)->presenter.onClick(v)}"
                 app:srcCompat="@drawable/ic_bookmark"/>
 
-    </com.ditclear.paonet.widget.OverScrollLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

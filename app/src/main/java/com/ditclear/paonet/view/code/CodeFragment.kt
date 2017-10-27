@@ -28,6 +28,19 @@ class CodeFragment : BaseFragment<HomeFragmentBinding>(){
     }
     override fun getLayoutId(): Int = R.layout.home_fragment
 
+    fun getViewPager()=mBinding.viewPager
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            show()
+        }
+    }
+    fun show(){
+        (activity as MainActivity).needShowTab(true)
+        (activity as MainActivity).setupWithViewPager(getViewPager())
+    }
+
     override fun loadData(isRefresh: Boolean) {
 
     }
@@ -94,8 +107,7 @@ class CodeFragment : BaseFragment<HomeFragmentBinding>(){
         }
 
         mBinding.viewPager.adapter=pagerAdapter
-        (activity as MainActivity).needShowTab(true)
-        (activity as MainActivity).setupWithViewPager(mBinding.viewPager)
+        show()
     }
 
 

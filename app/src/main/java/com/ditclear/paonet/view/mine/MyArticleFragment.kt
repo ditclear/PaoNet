@@ -1,6 +1,7 @@
 package com.ditclear.paonet.view.mine
 
 import android.content.Context
+import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.recyclerview.extensions.DiffCallback
@@ -19,8 +20,8 @@ import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.MainActivity
 import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.article.PagedAdapter
+import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
-import com.trello.rxlifecycle2.android.FragmentEvent
 import javax.inject.Inject
 
 /**
@@ -29,7 +30,9 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/15.
  */
 @FragmentScope
-class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> {
+class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article> , ListPresenter {
+    override val loadMore: ObservableBoolean
+        get() = viewModel.loadMore
 
 
     @Inject
@@ -57,7 +60,8 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh)
+        viewModel.loadData(isRefresh).compose(bindToLifecycle())
+                .doOnError { t: Throwable? -> t?.let { toastFailure(it) } }.subscribe()
     }
     override fun initArgs(savedInstanceState: Bundle?) {
         showTab=arguments.getBoolean(SHOW_TAB,false)
@@ -87,8 +91,7 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 return oldItem.id==newItem.id
             }
 
-        })
-        viewModel.lifecycle=bindToLifecycle<FragmentEvent>()
+        }).apply { presenter=this@MyArticleFragment }
         mBinding.vm=viewModel
         mBinding.recyclerView.adapter = mAdapter
         mBinding.recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL){
@@ -96,7 +99,17 @@ class MyArticleFragment :BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect?.top=activity.dpToPx(R.dimen.xdp_12_0)
             }})
-        mAdapter.presenter=this
+        show()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden){
+            show()
+        }
+    }
+    fun show(){
+        (activity as MainActivity).needShowTab(false)
     }
 
 }

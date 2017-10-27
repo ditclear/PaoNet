@@ -4,16 +4,18 @@
         >
 
     <data>
+
         <variable
                 name="item"
                 type="java.util.Date"/>
     </data>
 
 
-    <android.support.design.widget.CoordinatorLayout
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fitsSystemWindows="true">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
@@ -46,8 +48,8 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/xdp_48.0"
-                    app:tabMode="fixed"
-                    android:visibility="gone">
+                    android:visibility="gone"
+                    app:tabMode="fixed">
 
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>
@@ -55,9 +57,8 @@
         <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_height="match_parent">
 
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>

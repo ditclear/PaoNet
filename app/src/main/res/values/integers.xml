@@ -2,4 +2,13 @@
 <resources>
     <integer name="start_color">1</integer>
     <integer name="fab_icon">2</integer>
+    <integer-array name="hot_search_bg">
+        <item>@color/spectrum_cyan</item>
+        <item>@color/spectrum_yellow</item>
+        <item>@color/shadow</item>
+        <item>@color/google_blue</item>
+        <item>@color/google_red</item>
+        <item>@color/google_green</item>
+        <item>@color/google_yellow</item>
+    </integer-array>
 </resources>

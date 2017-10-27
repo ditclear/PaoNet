@@ -23,6 +23,7 @@
             android:stateListAnimator="@animator/active_raise"
             app:cardElevation="@dimen/xdp_0"
             app:cardCornerRadius="@dimen/xdp_0"
+            android:foreground="@drawable/mid_grey_ripple"
             android:onClick="@{(v)->presenter.onItemClick(v,item)}"
             >
 
@@ -30,7 +31,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                android:background="?selectableItemBackground"
                 android:orientation="vertical">
 
             <RelativeLayout

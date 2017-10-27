@@ -24,4 +24,15 @@
     <declare-styleable name="StartAnimatable">
         <attr name="android:src" />
     </declare-styleable>
+
+    <declare-styleable name="CardSlider">
+        <!-- Active card offset from start of RecyclerView. Default value is 50dp. -->
+        <attr name="activeCardLeftOffset" format="dimension"/>
+        <!-- Card width. Default value is 148dp. -->
+        <attr name="cardWidth" format="dimension"/>
+        <!-- Distance between cards. Default value is 12dp. -->
+        <attr name="cardsGap" format="dimension"/>
+        <!-- ViewUpdater implementation class. If not set, DefaultViewUpdater class is used. -->
+        <attr name="viewUpdater" format="string"/>
+    </declare-styleable>
 </resources>

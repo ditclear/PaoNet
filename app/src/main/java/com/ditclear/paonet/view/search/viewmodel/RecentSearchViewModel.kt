@@ -1,8 +1,9 @@
 package com.ditclear.paonet.view.search.viewmodel
 
 import android.databinding.ObservableArrayList
-import com.ditclear.paonet.model.data.Article
+import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.data.Tag
+import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.viewmodel.PagedViewModel
 import javax.inject.Inject
 
@@ -11,14 +12,25 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentSearchViewModel @Inject constructor() : PagedViewModel(){
+class RecentSearchViewModel @Inject constructor(val repo: PaoService) : PagedViewModel() {
 
     val hotTags = ObservableArrayList<Tag>()
-    val obserableList = ObservableArrayList<Article>()
+    val obserableList = ObservableArrayList<String>()
 
 
-    override fun loadData(isRefresh: Boolean) {
+    fun loadData(isRefresh: Boolean) =
+            repo.getHotSearch()
+                    .async()
+                    .map { t ->
 
-    }
+                        t.items?.map { tag -> tag.keyword }
+                    }
+                    .doOnSuccess { t ->
+                        if (isRefresh) {
+                            obserableList.clear()
+                        }
+                        t?.run { obserableList.addAll(this) }
+                    }
+
 
 }

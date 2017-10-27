@@ -10,6 +10,7 @@ import android.support.annotation.NonNull
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.webkit.URLUtil
 import android.widget.Toast
@@ -31,7 +32,7 @@ import java.util.concurrent.TimeUnit
  * Created by ditclear on 2017/9/29.
  */
 
-fun Activity.getCompactColor(@ColorRes colorRes: Int):Int=ContextCompat.getColor(this,colorRes)
+fun Activity.getCompactColor(@ColorRes colorRes: Int): Int = ContextCompat.getColor(this, colorRes)
 
 fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @ToastType type: Int = ToastType.NORMAL) {
     when (type) {
@@ -42,9 +43,18 @@ fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @Toast
     }
 }
 
+fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment) {
+    val ft = supportFragmentManager.beginTransaction()
+    current?.run { ft.hide(this) }
+    if (!targetFg.isAdded)
+        ft.add(R.id.container, targetFg);
+    ft.show(targetFg);
+    ft.commitAllowingStateLoss();
+}
+
 fun Activity.dpToPx(@DimenRes resID: Int): Int = this.resources.getDimensionPixelOffset(resID)
 
-fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable?=null) {
+fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable? = null) {
     val intent = Intent()
     serializable?.let {
         val bundle = Bundle()

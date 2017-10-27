@@ -1,19 +1,18 @@
 package com.ditclear.paonet.view.code
 
+import android.support.v4.widget.NestedScrollView
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import com.bumptech.glide.Glide
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.CheckLogin
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.CodeDetailActivityBinding
 import com.ditclear.paonet.lib.extention.ToastType
 import com.ditclear.paonet.lib.extention.getCompactColor
 import com.ditclear.paonet.lib.extention.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.BaseActivity
-import com.ditclear.paonet.view.helper.Constants
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
-import com.trello.rxlifecycle2.android.ActivityEvent
+import com.ditclear.paonet.view.helper.Constants
 import javax.inject.Inject
 
 /**
@@ -21,24 +20,21 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/1.
  */
-class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>(), CodeDetailViewModel.CallBack {
+class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
-
-    private lateinit var webChromeClient: WebChromeClient
 
     @Inject
     lateinit var viewModel: CodeDetailViewModel
 
     override fun loadData() {
-        val article: Article? = intent?.extras?.getSerializable(Constants.KEY_SERIALIZABLE) as Article?
-        Glide.with(mContext).load(article?.thumbnail).into(mBinding.thumbnailIv)
 
-        viewModel.loadData()
+        viewModel.loadData().compose(bindToLifecycle()).subscribe({ t: Boolean? -> t?.let { isStow(it) } },
+                { t: Throwable? -> t?.let {toastFailure(it) } })
     }
 
-    override fun isStow(stow: Boolean) {
+    fun isStow(stow: Boolean) {
         mBinding.fab.drawable.setTint(
                 if (stow){
                     getCompactColor(R.color.stow_color)
@@ -56,24 +52,30 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>(), CodeDetail
             overridePendingTransition(0, 0)
         }
         getComponent().inject(this)
-        viewModel.lifecycle = bindToLifecycle<ActivityEvent>()
-        viewModel.article = article!!
-        viewModel.attachView(this)
-        mBinding.vm = viewModel
-        initBackToolbar(mBinding.toolbar)
-        webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                mBinding.progressBar.progress = newProgress
-                if (newProgress == 0) {
-                    mBinding.progressBar.visibility = View.VISIBLE
-                } else if (newProgress == 100) {
-                    mBinding.progressBar.visibility = View.GONE
+        viewModel.article=article
+        mBinding.run {
+            vm=viewModel
+            presenter=this@CodeDetailActivity
+            scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (scrollY-oldScrollY>10){
+                    mBinding.fab.hide()
+                }else if(scrollY-oldScrollY<-10){
+                    mBinding.fab.show()
                 }
-            }
+            })
         }
-        mBinding.webView.webChromeClient = webChromeClient
-        mBinding.webView.settings.javaScriptEnabled = true;//设置js可用
+        initBackToolbar(mBinding.toolbar)
+
+    }
+
+    @CheckLogin
+    @SingleClick
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.fab -> viewModel.stow().compose(bindToLifecycle())
+                    .subscribe({ t -> toastSuccess(t.message) }
+                            , { t: Throwable? -> toastFailure(t ?: Exception("收藏失败")) })
+        }
     }
 
     override fun onDestroy() {

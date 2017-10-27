@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.annotation.NonNull
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.view.View
 import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.di.component.ActivityComponent
 import com.ditclear.paonet.di.module.ActivityModule
@@ -21,7 +22,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallBack {
+abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallBack,View.OnClickListener {
 
     protected lateinit var mBinding: VB
 
@@ -82,5 +83,9 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallB
 
     override fun toastFailure(error: Throwable) {
         error.message?.let { toast(it,ToastType.ERROR) }
+    }
+
+    override fun onClick(v: View?) {
+
     }
 }

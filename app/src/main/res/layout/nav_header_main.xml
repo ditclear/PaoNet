@@ -12,7 +12,8 @@
 
     <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         <LinearLayout
                 android:layout_width="match_parent"
@@ -20,11 +21,7 @@
                 android:background="@android:color/white"
                 android:gravity="bottom"
                 android:orientation="vertical"
-                android:fitsSystemWindows="true"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
                     android:id="@+id/imageView"
@@ -58,7 +55,7 @@
                 android:text='@{item.loginBtnText,default="LOG IN"}'
                 android:background="@color/hint_highlight"
                 android:transitionName="@string/transition_login"
-                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.DarkButton"
                 android:layout_gravity="center_vertical|end"/>
     </FrameLayout>
