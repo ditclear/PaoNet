@@ -1,8 +1,11 @@
 package com.ditclear.paonet.view.article
 
 import android.support.v4.widget.NestedScrollView
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.lib.extention.ToastType
@@ -59,19 +62,32 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
         viewModel.article = article!!
         mBinding.vm = viewModel.apply {
-            this.article=article
+            this.article = article
         }
-        mBinding.presenter=this
+        mBinding.presenter = this
 
         initBackToolbar(mBinding.toolbar)
 
-        mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY-oldScrollY>10){
+        mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY - oldScrollY > 10) {
                 mBinding.fab.hide()
-            }else if(scrollY-oldScrollY<-10){
+            } else if (scrollY - oldScrollY < -10) {
                 mBinding.fab.show()
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_attention, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+
+            R.id.action_attention -> onClick(mBinding.toolbar.findViewById(item.itemId))
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
@@ -84,17 +100,27 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
         super.onDestroy()
     }
 
+
+    @CheckLogin
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab -> stow()
+            R.id.action_attention -> attentionTo()
         }
+    }
+
+    private fun attentionTo() {
+        viewModel.attentionTo().compose(bindToLifecycle())
+                .subscribe { t1: Any?, t2: Throwable? ->
+                    t2?.let { toastFailure(it) }
+                }
     }
 
     private fun stow() {
         viewModel.stow().compose(bindToLifecycle())
                 .subscribe({ t -> toastSuccess(t.message) }
-                        , { t: Throwable? -> t?.run { toastFailure(this) } })
+                        , { t: Throwable? -> t?.let { toastFailure(it) } })
     }
 
 }

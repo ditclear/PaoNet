@@ -3,12 +3,13 @@ package com.ditclear.paonet.view.search
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
-import android.transition.Slide
 import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SearchActivityBinding
+import com.ditclear.paonet.lib.extention.switchFragment
 import com.ditclear.paonet.view.BaseActivity
+import com.ditclear.paonet.view.helper.SystemBarHelper
 import com.ditclear.paonet.view.helper.Utils
 
 
@@ -21,17 +22,20 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
 
     override fun getLayoutId() = R.layout.search_activity
 
+    val recentSearch by lazy { RecentSearchFragment.newInstance() }
+
     override fun loadData() {
     }
 
     override fun initView() {
-        window.enterTransition = Slide().apply { duration = 1000 }
+
+        SystemBarHelper.setStatusBarDarkMode(this)
         setSupportActionBar(mBinding.toolbar)
 
         mBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
-                    switchFragment(SearchResultFragment.newInstance(query))
+                    changeFragment(SearchResultFragment.newInstance(this))
                 }
                 Utils.hideIme(mBinding.searchView)
                 return true
@@ -40,18 +44,18 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
                     needShowTab(false)
-                    switchFragment(RecentSearchFragment.newInstance())
+                    changeFragment(recentSearch)
                 }
                 return true
             }
 
         })
-
+        changeFragment(recentSearch)
     }
 
     fun setQuery(keyWord: String?) {
         keyWord?.run {
-            mBinding.searchView.setQuery(keyWord, false)
+            mBinding.searchView.setQuery(keyWord, true)
             Utils.hideIme(mBinding.searchView)
         }
     }
@@ -63,12 +67,14 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
+    var temp :Fragment ?=null
     /**
      * 切换fragment
      */
-    private fun switchFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.container, fragment).commit()
+    private fun changeFragment(fragment: Fragment) {
 
+        switchFragment(temp,fragment)
+        temp=fragment
     }
 
     fun setupWithViewPager(viewPager: ViewPager) {

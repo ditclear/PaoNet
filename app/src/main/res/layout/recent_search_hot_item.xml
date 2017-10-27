@@ -14,17 +14,20 @@
                 type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
     </data>
 
+
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:background="@drawable/bg_hot"
-            android:foreground="@drawable/mid_grey_ripple"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:background="@color/hint_highlight"
+            android:fontFamily="sans-serif"
             android:gravity="center"
             android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+            android:padding="@dimen/spacing_normal"
             android:stateListAnimator="@animator/active_raise"
             android:text="@{item}"
-            android:textColor="@color/background_light"
+            android:textColor="@color/colorPrimary"
             app:layout_flexGrow="1"
-            tools:text="asda"/>
+            tools:text="asdaasdadasdada"/>
+
 </layout>

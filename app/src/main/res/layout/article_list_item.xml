@@ -8,7 +8,7 @@
 
         <variable
                 name="item"
-                type="com.ditclear.paonet.model.data.Article"/>
+                type="com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel"/>
 
         <variable
                 name="presenter"
@@ -44,7 +44,7 @@
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:layout_marginEnd="@dimen/xdp_6.0"
                         android:scaleType="fitCenter"
-                        app:url="@{item.user.face}"
+                        app:url="@{item.face}"
                         app:avatar="@{true}"
                         android:duplicateParentState="false"
                         android:foreground="?selectableItemBackground"
@@ -57,7 +57,7 @@
                         android:layout_toEndOf="@id/avatar_iv"
                         android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:text="@{item.user.nickname}"
+                        android:text="@{item.nickname}"
                         tools:text="ditclear"/>
 
                 <TextView
@@ -139,7 +139,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             tools:text="1K"
-                            android:text="@{@string/intToString(item.upvote)}"/>
+                            android:text="@{item.upvote}"/>
 
                 </android.support.v7.widget.ActionMenuView>
 
@@ -152,7 +152,7 @@
                         android:layout_height="wrap_content"
                         tools:text="13 respones ·  "
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
-                        android:text="@{@string/list_item_response(item.comments)}"/>
+                        android:text="@{item.articleListResponses}"/>
                 <android.support.v7.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">

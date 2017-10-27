@@ -13,7 +13,6 @@ import com.ditclear.paonet.di.component.ActivityComponent
 import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.lib.extention.ToastType
 import com.ditclear.paonet.lib.extention.toast
-import com.ditclear.paonet.viewmodel.callback.ICallBack
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
 
@@ -22,7 +21,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallBack,View.OnClickListener {
+abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),View.OnClickListener {
 
     protected lateinit var mBinding: VB
 
@@ -77,15 +76,16 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),ICallB
         }
     }
 
-    override fun toastSuccess(msg: String?) {
+    fun toastSuccess(msg: String?) {
         msg?.let { toast(it,ToastType.SUCCESS) }
     }
 
-    override fun toastFailure(error: Throwable) {
+    fun toastFailure(error: Throwable) {
         error.message?.let { toast(it,ToastType.ERROR) }
     }
 
     override fun onClick(v: View?) {
 
     }
+
 }

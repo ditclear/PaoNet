@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
  *
  * Created by ditclear on 2017/10/11.
  */
-class BaseResponse{
+open class BaseResponse{
     /**
      * sucess : 1
      * message : 成功登录

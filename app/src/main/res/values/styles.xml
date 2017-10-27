@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <!--<item name="android:textColorHint">@color/disable_color</item>-->
+        <item name="android:textColorHint">@color/tools_color</item>
         <!-- 允许使用transitions -->
         <item name="android:windowContentTransitions">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppTheme.Secondary">
-        <item name="colorPrimaryDark">@color/tools_color</item>
+        <item name="colorPrimaryDark">@color/background_light</item>
         <item name="colorPrimary">@color/background_light</item>
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textColorHint">@color/tools_color</item>

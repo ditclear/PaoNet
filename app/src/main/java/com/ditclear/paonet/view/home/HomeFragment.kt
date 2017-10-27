@@ -7,7 +7,6 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.MainActivity
 import javax.inject.Inject
 
 /**

@@ -8,8 +8,8 @@ import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.MainActivity
 import com.ditclear.paonet.view.helper.CodeType
+import com.ditclear.paonet.view.home.MainActivity
 
 /**
  * 页面描述：代码

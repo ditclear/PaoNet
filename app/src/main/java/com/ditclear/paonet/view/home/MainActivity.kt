@@ -1,4 +1,4 @@
-package com.ditclear.paonet.view
+package com.ditclear.paonet.view.home
 
 import android.databinding.DataBindingUtil
 import android.support.design.widget.NavigationView
@@ -12,39 +12,35 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
+import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.databinding.NavHeaderMainBinding
-import com.ditclear.paonet.lib.extention.*
+import com.ditclear.paonet.lib.extention.async
+import com.ditclear.paonet.lib.extention.switchFragment
+import com.ditclear.paonet.lib.extention.toast
 import com.ditclear.paonet.model.data.User
-import com.ditclear.paonet.model.remote.api.UserService
+import com.ditclear.paonet.view.BaseActivity
 import com.ditclear.paonet.view.code.CodeFragment
 import com.ditclear.paonet.view.helper.SpUtil
 import com.ditclear.paonet.view.helper.navigateToSearch
 import com.ditclear.paonet.view.helper.needsLogin
-import com.ditclear.paonet.view.home.HomeFragment
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
-import com.ditclear.paonet.view.setting.SettingsActivity
 import io.reactivex.Single
-import javax.inject.Inject
 
 
 class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavigationItemSelectedListener {
 
-    @Inject
-    lateinit var repo: UserService
-
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    var temp :Fragment ?=null
+    var temp: Fragment? = null
 
-    val homeFragment by lazy { HomeFragment.newInstance() }
-    val codeFragment by lazy { CodeFragment.newInstance() }
-    val myArticleFragment by lazy { MyArticleFragment.newInstance() }
-    val myCollectFragment by lazy { MyCollectFragment.newInstance() }
+    private val homeFragment = HomeFragment.newInstance()
+    private val codeFragment = CodeFragment.newInstance()
+    private val myArticleFragment = MyArticleFragment.newInstance()
+    private val myCollectFragment = MyCollectFragment.newInstance()
 
     val defaultUser: User by lazy { User() }
 
@@ -82,13 +78,14 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
     }
 
     override fun initView() {
-        getComponent().inject(this)
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
         supportActionBar?.title = "泡在网上的日子"
-        mBinding.settingBtn.setOnClickListener { navigateToActivity(SettingsActivity::class.java) }
-        mBinding.aboutBtn.setOnClickListener { toast("about") }
+//        mBinding.settingBtn.setOnClickListener { navigateToActivity(SettingsActivity::class.java) }
+//        mBinding.aboutBtn.setOnClickListener { toast("about") }
+
         navHeaderBinding.toggleBtn.setOnClickListener { view -> toggleLog(view) }
+
         mBinding.navView.setNavigationItemSelectedListener(this)
 
         changeFragment(homeFragment)
@@ -100,19 +97,9 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
         })
     }
 
-
+    @SingleClick
     fun toggleLog(v: View) {
-        val text = (v as Button).text.toString()
-        if (text.contentEquals("LOG IN")) {
-            //登入
-            needsLogin(R.color.hint_highlight, v, this)
-        } else {
-            //登出
-            SpUtil.logout()
-            repo.logout().getOriginData().compose(bindToLifecycle()).async()
-                    .subscribe({ navHeaderBinding?.item = SpUtil.user ?: defaultUser },
-                            { t: Throwable? -> t?.let { toastFailure(t) } })
-        }
+        needsLogin(R.color.hint_highlight, v, this,radius = 0)
     }
 
     var isQuit = false;
@@ -129,7 +116,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
                 Single.just(isQuit)
                         .compose(bindToLifecycle())
                         .async(2000)
-                        .subscribe { t -> isQuit = false }
+                        .subscribe { t1, _ -> t1.let { isQuit = false } }
             } else {
                 super.onBackPressed()
             }
@@ -138,15 +125,11 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         val id = item.itemId
         when (id) {
             R.id.action_search -> {
@@ -189,7 +172,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
      */
     private fun changeFragment(fragment: Fragment, title: String = "泡在网上的日子") {
         supportActionBar?.title = title
-        switchFragment(temp,fragment)
-        temp=fragment
+        switchFragment(temp, fragment)
+        temp = fragment
     }
 }

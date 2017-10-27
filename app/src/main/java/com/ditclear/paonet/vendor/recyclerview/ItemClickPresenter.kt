@@ -8,5 +8,5 @@ import android.view.View
  * Created by ditclear on 2017/9/28.
  */
 interface  ItemClickPresenter<Any> : BaseViewAdapter.Presenter{
-    fun onItemClick(v: View?=null, t:Any)
+    fun onItemClick(v: View?=null, item:Any)
 }

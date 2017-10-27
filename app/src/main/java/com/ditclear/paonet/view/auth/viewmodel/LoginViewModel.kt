@@ -3,12 +3,11 @@ package com.ditclear.paonet.view.auth.viewmodel
 import android.databinding.Bindable
 import android.view.View
 import com.ditclear.paonet.BR
+import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.getOriginData
-import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.data.UserModel
 import com.ditclear.paonet.model.remote.api.UserService
 import com.ditclear.paonet.viewmodel.BaseViewModel
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -36,6 +35,16 @@ constructor(private val repo: UserService) : BaseViewModel() {
         set(value) {
             field = value
             notifyPropertyChanged(BR.showLogin)
+            notifyPropertyChanged(BR.showLogout)
+        }
+
+    var showLogout = false
+        @Bindable get
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.showLogout)
+            notifyPropertyChanged(BR.showLogin)
+
         }
 
     var email = ""
@@ -57,19 +66,35 @@ constructor(private val repo: UserService) : BaseViewModel() {
                 || !passwordPattern.matcher(password).matches())
     }
 
+    var loading = View.GONE
+        @Bindable("showLogin", "showLogout") get() = if (showLogin || showLogout) View.GONE else View.VISIBLE
+
     var loginVisibility = View.VISIBLE
         @Bindable("showLogin") get () = if (showLogin) View.VISIBLE else View.GONE
 
-    fun attemptToLogIn():Single<User?> {
+    var logoutVisibility=View.GONE
+        @Bindable("showLogout") get () = if (showLogout) View.VISIBLE else View.GONE
 
-        return repo.login(email, password)
-                .subscribeOn(Schedulers.io())
-                .delay(1,TimeUnit.SECONDS)
-                .getOriginData()
-                .flatMap { repo.myProfile().map { t: UserModel -> t.model } }
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showLogin = false }
-                .doFinally { showLogin = true }
 
-    }
+    fun attemptToLogIn() = repo.login(email, password)
+            .subscribeOn(Schedulers.io())
+            .delay(1, TimeUnit.SECONDS)
+            .getOriginData()
+            .flatMap { repo.myProfile().map { t: UserModel -> t.model } }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSubscribe {
+                showLogin = false
+                showLogout = false
+            }
+            .doFinally { showLogin = true }!!
+
+
+    fun attemptToLogout() = repo.logout().getOriginData().async(1000)
+            .doOnSubscribe {
+                showLogin = false
+                showLogout = false
+            }
+            .doFinally { showLogout = true }!!
+
+
 }

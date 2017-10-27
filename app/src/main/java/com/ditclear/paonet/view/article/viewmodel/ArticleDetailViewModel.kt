@@ -2,10 +2,6 @@ package com.ditclear.paonet.view.article.viewmodel
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import android.view.View
-import com.ditclear.paonet.R
-import com.ditclear.paonet.aop.annotation.CheckLogin
-import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.getOriginData
 import com.ditclear.paonet.model.data.Article
@@ -43,30 +39,21 @@ constructor(private val repo: PaoService, private val userRepo: UserService) : B
                 markdown.set(data)
                 loading.set(false)
             }.flatMap {
-                if (SpUtil.user == null) {
-                    return@flatMap Single.just(false)
-                } else {
-                    return@flatMap userRepo.isStow(article.id).getOriginData()
-                            .map { t :BaseResponse?->t?.data?.contentEquals("1") }
-                }
-            }.observeOn(AndroidSchedulers.mainThread())
+        if (SpUtil.user == null) {
+            return@flatMap Single.just(false)
+        } else {
+            return@flatMap userRepo.isStow(article.id).getOriginData()
+                    .map { t: BaseResponse? -> t?.data?.contentEquals("1") }
+        }
+    }.observeOn(AndroidSchedulers.mainThread())!!
 
 
-
-
+    //关注
+    fun attentionTo() = (article.user?.id?.let { userRepo.followUser(it).getOriginData().async() } ?: Single.error<Any> { NullPointerException("用户不存在") })!!
 
 
     //收藏
-    fun stow() = userRepo.stow(article.id).getOriginData()
-            .async()
-
-    @CheckLogin
-    @SingleClick
-    fun onClick(view: View) {
-        when (view.id) {
-            R.id.fab -> stow()
-        }
-    }
+    fun stow() = userRepo.stow(article.id).getOriginData().async()
 
 
 }

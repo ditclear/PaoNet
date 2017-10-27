@@ -4,7 +4,6 @@ import android.content.Context
 import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.recyclerview.extensions.DiffCallback
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -14,11 +13,10 @@ import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
-import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.PagedAdapter
+import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.helper.ListPresenter
 import javax.inject.Inject
@@ -29,28 +27,17 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/3.
  */
 @FragmentScope
-class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Article>, ListPresenter {
+class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
     override val loadMore: ObservableBoolean
         get() = viewModel.loadMore
 
     @Inject
     lateinit var viewModel: CodeListViewModel
 
-    @Inject
-    lateinit var paoService: PaoService
 
-    val mAdapter: PagedAdapter<Article> by lazy {
-        PagedAdapter<Article>(activity, R.layout.code_list_item, viewModel.observableList
-                , object : DiffCallback<Article>() {
-            override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-        }).apply {
+    private val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
+        PagedAdapter<ArticleItemViewModel>(activity, R.layout.code_list_item, viewModel.observableList
+                , ArticleItemViewModel.Companion.DiffCallBack()).apply {
             presenter = this@CodeListFragment
         }
     }
@@ -95,8 +82,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).compose(bindToLifecycle())
-                .doOnError { t: Throwable? -> t?.run { toastFailure(this) } }
-                .subscribe()
+                .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -108,8 +94,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     @SingleClick
-    override fun onItemClick(view: View?, code: Article) {
-        activity.navigateToActivity(CodeDetailActivity::class.java, code)
+    override fun onItemClick(v: View?, item: ArticleItemViewModel) {
+        activity.navigateToActivity(CodeDetailActivity::class.java, item.article)
 
     }
 
@@ -126,7 +112,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
             vm = viewModel.apply {
                 category = cate
-                keyWord = keyWord
+                keyWord = this@CodeListFragment.keyWord
             }
             presenter=this@CodeListFragment
             recyclerView.apply {

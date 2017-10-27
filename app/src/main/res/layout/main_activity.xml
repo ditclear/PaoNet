@@ -85,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@string/action_settings"
                         android:textAllCaps="false"/>
 
@@ -96,7 +96,7 @@
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_marginRight="@dimen/activity_horizontal_margin"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center_vertical"
+                        android:gravity="center"
                         android:text="@string/action_about"
                         android:textAllCaps="false"/>
             </LinearLayout>

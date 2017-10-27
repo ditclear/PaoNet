@@ -13,7 +13,6 @@ import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.lib.extention.ToastType
 import com.ditclear.paonet.lib.extention.toast
-import com.ditclear.paonet.viewmodel.callback.ICallBack
 import com.trello.rxlifecycle2.components.support.RxFragment
 
 
@@ -22,7 +21,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack, View.OnClickListener {
+abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(), View.OnClickListener {
 
     protected lateinit var mBinding: VB
 
@@ -120,11 +119,11 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(),ICallBack, Vie
         Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun toastSuccess(msg: String?) {
+    fun toastSuccess(msg: String?) {
         msg?.let { activity.toast(it, ToastType.SUCCESS) }
     }
 
-    override fun toastFailure(error: Throwable) {
+    fun toastFailure(error: Throwable) {
         error.message?.let { activity.toast(it,ToastType.ERROR) }
     }
 

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
-import com.ditclear.paonet.lib.extention.switchFragment
 import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.vendor.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
@@ -24,19 +23,18 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/24.
  */
-class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(),ItemClickPresenter<String>,ListPresenter {
+class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemClickPresenter<String>, ListPresenter {
     override val loadMore: ObservableBoolean
         get() = viewModel.loadMore
 
-    override fun onItemClick(v: View?, keyWord: String) {
-        (activity as SearchActivity).setQuery(keyWord)
-        (activity as SearchActivity).switchFragment(this,SearchResultFragment.newInstance(keyWord))
+    override fun onItemClick(v: View?, item: String) {
+        (activity as SearchActivity).setQuery(keyWord = item)
     }
 
     @Inject
     lateinit var viewModel: RecentSearchViewModel
 
-    val colorArray by lazy { ColorBrewer.Accent.getColorPalette(20) }
+    private val colorArray by lazy { ColorBrewer.Pastel2.getColorPalette(20) }
 
     companion object {
         fun newInstance() = RecentSearchFragment()
@@ -48,8 +46,8 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(),ItemCli
             addViewTypeToLayoutMap(ItemType.ITEM, R.layout.recent_search_hot_item)
             addViewTypeToLayoutMap(ItemType.FOOTER, R.layout.recent_search_item)
             setDecorator { holder, position, _ ->
-                if (position>0) {
-                    holder.binding.root.setBackgroundColor(colorArray[position])
+                if (position > 0) {
+                    holder.binding.root.background.setTint(colorArray[position])
                 }
             }
             setPresenter(this@RecentSearchFragment)
@@ -58,8 +56,8 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(),ItemCli
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).compose(bindToLifecycle())
-                .doOnError { t: Throwable? -> t?.let { toastFailure(it) } }.subscribe()
-        adapter.add(0,"热门搜索:",ItemType.HEADER)
+                .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
+        adapter.add(0, "热门搜索:", ItemType.HEADER)
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -75,7 +73,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(),ItemCli
         mBinding.recyclerView.run {
             adapter = this@RecentSearchFragment.adapter
             layoutManager = FlexboxLayoutManager(mContext).apply {
-                justifyContent= JustifyContent.SPACE_AROUND
+                justifyContent = JustifyContent.SPACE_AROUND
             }
         }
         viewModel.obserableList.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<String>>() {

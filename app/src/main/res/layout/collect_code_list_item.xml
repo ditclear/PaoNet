@@ -7,7 +7,7 @@
 
         <variable
                 name="item"
-                type="com.ditclear.paonet.model.data.Article"/>
+                type="com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel"/>
 
         <variable
                 name="presenter"
@@ -44,13 +44,13 @@
                         android:layout_height="@dimen/xdp_48.0"
                         android:layout_marginRight="@dimen/xdp_6.0"
                         android:scaleType="fitCenter"
-                        app:url="@{item.user.face}"
+                        app:url="@{item.face}"
                         app:avatar="@{true}"
                         tools:src="@drawable/ic_face"/>
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{item.user.nickname}"
+                        android:text="@{item.nickname}"
                         android:layout_gravity="center_vertical"
                         tools:text="ditclear"/>
             </LinearLayout>

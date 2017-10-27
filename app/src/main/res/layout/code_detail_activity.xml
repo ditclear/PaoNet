@@ -46,7 +46,7 @@
                         android:contentDescription="@string/thumbnail"
                         android:duplicateParentState="true"
                         android:fitsSystemWindows="true"
-                        app:url="@{vm.article.url}"
+                        app:url="@{vm.article.thumbnail}"
                         android:scaleType="centerCrop"/>
 
                 <android.support.v7.widget.Toolbar

@@ -54,6 +54,7 @@
                 android:layout_height="wrap_content"
                 android:text='@{item.loginBtnText,default="LOG IN"}'
                 android:background="@color/hint_highlight"
+                android:foreground="@drawable/mid_grey_ripple"
                 android:transitionName="@string/transition_login"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:textAppearance="@style/TextAppearance.DarkButton"

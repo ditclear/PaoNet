@@ -3,8 +3,8 @@ package com.ditclear.paonet.view.code.viewmodel
 import android.databinding.ObservableArrayList
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.lib.extention.async
-import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.remote.api.PaoService
+import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ class CodeListViewModel
 @Inject
 constructor(private val repo: PaoService) : PagedViewModel() {
 
-    val observableList = ObservableArrayList<Article>()
+    val observableList = ObservableArrayList<ArticleItemViewModel>()
 
     //null代表全部
     var category: Int? = null
@@ -26,7 +26,7 @@ constructor(private val repo: PaoService) : PagedViewModel() {
     var keyWord: String? = null
         set
 
-    fun loadData(isRefresh: Boolean) =
+    fun loadData(isRefresh: Boolean)=
             if (keyWord != null) {
                 repo.getSearchCode(getPage(isRefresh), key = keyWord!!)
             } else {
@@ -38,9 +38,9 @@ constructor(private val repo: PaoService) : PagedViewModel() {
                                 observableList.clear()
                             }
                             loadMore.set(!incomplete_results)
-                            return@map items?.let { observableList.addAll(it) }
+                            return@map items?.map { ArticleItemViewModel(it) }?.let { observableList.addAll(it) }
                         }
-                    }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }
+                    }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }!!
 
 
 }

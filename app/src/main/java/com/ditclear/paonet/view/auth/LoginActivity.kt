@@ -9,6 +9,7 @@ import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.BaseActivity
 import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.view.helper.SpUtil
+import com.ditclear.paonet.view.helper.Utils
 import com.ditclear.paonet.view.transitions.FabTransform
 import com.ditclear.paonet.view.transitions.MorphTransform
 import javax.inject.Inject
@@ -36,8 +37,11 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
     override fun initView() {
         getComponent().inject(this)
         mBinding.run {
-            vm = viewModel
-            presenter=this@LoginActivity
+            vm = viewModel.apply {
+                showLogin = SpUtil.user == null
+                showLogout=SpUtil.user!=null
+            }
+            presenter = this@LoginActivity
         }
 
         if (!FabTransform.setup(this, mBinding.container)) {
@@ -45,12 +49,16 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
                     ContextCompat.getColor(this, R.color.background_light),
                     resources.getDimensionPixelSize(R.dimen.cardview_default_radius))
         }
+        if (SpUtil.user==null) {
+            Utils.showIme(mBinding.username)
+        }
     }
 
     override fun getLayoutId(): Int = R.layout.login_activity
 
-    fun dismiss(v: View?) {
+    private fun dismiss(v: View?) {
         mBinding.formLayout.visibility = View.INVISIBLE
+        mBinding.logoutBtn.visibility = View.INVISIBLE
         finishAfterTransition()
     }
 
@@ -61,9 +69,18 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.login -> viewModel.attemptToLogIn().compose(bindToLifecycle())
+            R.id.login_btn -> viewModel.attemptToLogIn().compose(bindToLifecycle())
                     .subscribe({ t: User? -> t.let { onLoginSuccess(it) } }
                             , { t: Throwable? -> t?.let { toastFailure(it) } })
+
+            R.id.logout_btn -> viewModel.attemptToLogout().compose(bindToLifecycle())
+                    .subscribe { t1, t2 ->
+                        t1?.let {
+                            SpUtil.logout()
+                            dismiss(v)
+                        }
+                        t2?.let { toastFailure(it) }
+                    }
             R.id.super_container -> dismiss(v)
         }
 

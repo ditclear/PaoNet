@@ -35,7 +35,7 @@ fun navigateToArticleDetail(activity: Activity, v: View?=null, article: Article)
 }
 
 //登录
-fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=null) {
+fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=null,radius:Int= (triggeringView.height / 2)) {
     var startActivity :Activity?=null
     val context: Context = triggeringView.context
     if (activity!=null){
@@ -51,7 +51,7 @@ fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=nu
         val fabIcon = triggeringView.getTag(R.integer.fab_icon) as Int? ?: R.color.background_light
         FabTransform.addExtras(login, startColor, fabIcon)
     } else {
-        MorphTransform.addExtras(login, startColor, (triggeringView.height / 2))
+        MorphTransform.addExtras(login, startColor,radius)
     }
     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
             startActivity,

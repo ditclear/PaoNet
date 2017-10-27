@@ -6,9 +6,11 @@
     <data>
 
         <import type="android.view.View"/>
+
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.auth.viewmodel.LoginViewModel"/>
+
         <variable
                 name="presenter"
                 type="android.view.View.OnClickListener"/>
@@ -18,92 +20,111 @@
             android:id="@+id/super_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".view.auth.LoginActivity"
             android:fitsSystemWindows="true"
-            android:onClick="@{(v)->presenter.onClick(v)}">
+            android:onClick="@{(v)->presenter.onClick(v)}"
+            tools:context=".view.auth.LoginActivity">
 
         <android.support.v7.widget.CardView
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:minHeight="@dimen/xdp_150.0"
+                android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/spacing_large"
                 android:layout_marginRight="@dimen/spacing_large"
-                app:cardBackgroundColor="@color/background_light"
                 android:transitionName="@string/transition_login"
-                android:layout_gravity="center">
+                app:cardBackgroundColor="@color/background_light">
+
             <LinearLayout
                     android:id="@+id/form_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="@dimen/padding_normal"
                     android:layout_gravity="center"
-                    android:elevation="@dimen/cardview_default_elevation"
+                    android:animateLayoutChanges="true"
                     android:clickable="true"
-                    android:animateLayoutChanges="true">
+                    android:elevation="@dimen/cardview_default_elevation"
+                    android:orientation="vertical"
+                    android:padding="@dimen/padding_normal">
 
-                <TextView
-                        android:id="@+id/dialog_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/title_login"
-                        android:visibility="@{vm.loginVisibility}"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
-                <android.support.design.widget.TextInputLayout
-                        android:id="@+id/username_float_label"
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="@{vm.loginVisibility}"
-                        app:hintTextAppearance="@style/TextAppearance.FloatLabelHint">
+                        android:orientation="vertical">
 
-                    <AutoCompleteTextView
-                            android:id="@+id/username"
+
+                    <TextView
+                            android:id="@+id/dialog_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:text="@string/title_login"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+
+                    <android.support.design.widget.TextInputLayout
+                            android:id="@+id/username_float_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/username"
-                            android:inputType="textEmailAddress"
-                            android:text="@={vm.email}"
-                            android:textColorHighlight="@color/deep_sky_blue"
-                            android:selectAllOnFocus="true" />
+                            app:hintTextAppearance="@style/TextAppearance.FloatLabelHint">
 
-                </android.support.design.widget.TextInputLayout>
+                        <AutoCompleteTextView
+                                android:id="@+id/username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/username"
+                                android:inputType="textEmailAddress"
+                                android:selectAllOnFocus="true"
+                                android:text="@={vm.email}"
+                                android:textColorHighlight="@color/deep_sky_blue"/>
 
-                <android.support.design.widget.TextInputLayout
-                        android:id="@+id/password_float_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:hintTextAppearance="@style/TextAppearance.FloatLabelHint"
-                        app:passwordToggleEnabled="true"
-                        android:visibility="@{vm.loginVisibility}"
-                        app:passwordToggleTint="?colorControlNormal">
+                    </android.support.design.widget.TextInputLayout>
 
-                    <com.ditclear.paonet.widget.PasswordEntry
-                            android:id="@+id/password"
+                    <android.support.design.widget.TextInputLayout
+                            android:id="@+id/password_float_label"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="@string/password"
-                            android:inputType="textPassword"
-                            android:textColorHighlight="@color/deep_sky_blue"
-                            android:text="@={vm.password}"
-                            android:selectAllOnFocus="true" />
+                            app:hintTextAppearance="@style/TextAppearance.FloatLabelHint"
+                            app:passwordToggleEnabled="true"
+                            app:passwordToggleTint="?colorControlNormal">
 
-                </android.support.design.widget.TextInputLayout>
+                        <AutoCompleteTextView
+                                android:id="@+id/password"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/password"
+                                android:inputType="textPassword"
+                                android:selectAllOnFocus="true"
+                                android:text="@={vm.password}"
+                                android:textColorHighlight="@color/deep_sky_blue"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <Button
+                            android:id="@+id/login_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:enabled="@{vm.btnEnabled}"
+                            android:onClick="@{(v)->presenter.onClick(v)}"
+                            android:text="@string/login_action"
+                            android:textAppearance="@style/TextAppearance.DarkButton"
+                            android:visibility="@{vm.loginVisibility}"/>
+                </LinearLayout>
 
                 <Button
-                        android:id="@+id/login"
+                        android:id="@+id/logout_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center"
                         android:layout_marginTop="@dimen/spacing_normal"
-                        android:text="@string/login_action"
                         android:onClick="@{(v)->presenter.onClick(v)}"
-                        android:visibility="@{vm.loginVisibility}"
-                        android:textAppearance="@style/TextAppearance.DarkButton"/>
-
-                <include layout="@layout/loading"
-                        android:visibility="@{vm.showLogin?View.GONE:View.VISIBLE}"/>
+                        android:text="@string/logout_action"
+                        android:textAppearance="@style/TextAppearance.DarkButton"
+                        android:visibility="@{vm.logoutVisibility}"/>
+                <include
+                        layout="@layout/loading"
+                        android:visibility="@{vm.loading}"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>
