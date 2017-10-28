@@ -85,6 +85,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
         mBinding.run {
             vm = viewModel
+            presenter=this@MyArticleFragment
             recyclerView.adapter = mAdapter
             recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
                 override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {

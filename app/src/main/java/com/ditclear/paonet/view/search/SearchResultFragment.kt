@@ -1,13 +1,14 @@
 package com.ditclear.paonet.view.search
 
+import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
 import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.article.ArticleListFragment
-import com.ditclear.paonet.view.code.CodeListFragment
+import com.ditclear.paonet.view.helper.Constants
+import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * 页面描述：SearchResultFragment
@@ -20,20 +21,10 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     lateinit var keyWord :String
 
-    val pagerAdapter: AbstractPagerAdapter by lazy {
-        object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
-            override fun getItem(pos: Int): Fragment? {
-                if (list[pos]==null) {
-                    when(pos){
-                        0 -> list[pos]=ArticleListFragment.newInstance(keyWord)
-                        1 -> list[pos]=CodeListFragment.newInstance(keyWord)
-                    }
-                }
-                return list[pos]
-            }
+    @Inject
+    @field:Named(Constants.Qualifier_SEARCH)
+    lateinit var pagerAdapter: AbstractPagerAdapter
 
-        }
-    }
     companion object {
         private val KEY_KEYWORD = "keyWord"
         fun newInstance(keyWord: String): SearchResultFragment {
@@ -45,6 +36,11 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
             }
         }
 
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        getComponent().inject(this)
     }
 
     override fun loadData(isRefresh: Boolean) {

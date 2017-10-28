@@ -9,7 +9,6 @@ import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.BaseActivity
 import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.view.helper.SpUtil
-import com.ditclear.paonet.view.helper.Utils
 import com.ditclear.paonet.view.transitions.FabTransform
 import com.ditclear.paonet.view.transitions.MorphTransform
 import javax.inject.Inject
@@ -49,16 +48,12 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
                     ContextCompat.getColor(this, R.color.background_light),
                     resources.getDimensionPixelSize(R.dimen.cardview_default_radius))
         }
-        if (SpUtil.user==null) {
-            Utils.showIme(mBinding.username)
-        }
     }
 
     override fun getLayoutId(): Int = R.layout.login_activity
 
     private fun dismiss(v: View?) {
         mBinding.formLayout.visibility = View.INVISIBLE
-        mBinding.logoutBtn.visibility = View.INVISIBLE
         finishAfterTransition()
     }
 

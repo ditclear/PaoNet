@@ -10,6 +10,7 @@ import com.ditclear.paonet.view.mine.CollectionListFragment
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
 import com.ditclear.paonet.view.search.RecentSearchFragment
+import com.ditclear.paonet.view.search.SearchResultFragment
 import dagger.Subcomponent
 
 /**
@@ -31,6 +32,9 @@ interface FragmentComponent {
     fun inject(fragment: HomeFragment)
 
     fun inject(fragment: RecentFragment)
+
+    fun inject(fragment: SearchResultFragment)
+
     fun inject(fragment: RecentSearchFragment)
 
     fun inject(fragment: MyArticleFragment)

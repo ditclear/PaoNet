@@ -8,6 +8,7 @@ import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.view.BaseFragment
 import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * 页面描述：首页
@@ -19,6 +20,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>(){
 
 
     @Inject
+    @field:Named("home")
     lateinit var pagerAdapter:FragmentStatePagerAdapter
 
     companion object {

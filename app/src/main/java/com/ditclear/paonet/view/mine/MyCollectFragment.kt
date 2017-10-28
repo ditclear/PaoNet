@@ -2,14 +2,14 @@ package com.ditclear.paonet.view.mine
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
-import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.home.MainActivity
+import javax.inject.Inject
+import javax.inject.Named
 
 /**
  * 页面描述：MyCollectFragment
@@ -19,7 +19,9 @@ import com.ditclear.paonet.view.home.MainActivity
 @FragmentScope
 class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
 
-    lateinit var pagerAdapter: FragmentStatePagerAdapter
+    @Inject
+    @field:Named("collect")
+    lateinit var collectAdapter: FragmentStatePagerAdapter
 
     companion object {
 
@@ -35,7 +37,7 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-
+        getComponent().inject(this)
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -47,19 +49,8 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
     }
 
     override fun initView() {
-        pagerAdapter= object :AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
-                override fun getItem(pos: Int): Fragment? {
-                    if (list[pos]==null) {
-                        when (pos) {
-                            0 -> list[pos] = CollectionListFragment.newInstance(1)
-                            1 -> list[pos] = CollectionListFragment.newInstance(-19)
-                        }
-                    }
-                    return list[pos]
-                }
-        }
 
-        mBinding.viewPager.adapter = pagerAdapter
+        mBinding.viewPager.adapter = collectAdapter
         show()
     }
     override fun onHiddenChanged(hidden: Boolean) {

@@ -107,6 +107,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
             vm = viewModel.apply {
                 type = collectionType
             }
+            presenter=this@CollectionListFragment
             recyclerView.adapter = mAdapter
             recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL) {
                 override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
