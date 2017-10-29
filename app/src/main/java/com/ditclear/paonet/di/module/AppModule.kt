@@ -23,7 +23,7 @@ class AppModule(val app:Application){
 
     @Singleton
     @Provides
-    fun provideRemoteClient(): Retrofit = NetMgr.getInstance().getRetrofit(Constants.HOST_API);
+    fun provideRemoteClient(): Retrofit = NetMgr.getRetrofit(Constants.HOST_API);
 
     @Singleton
     @Provides

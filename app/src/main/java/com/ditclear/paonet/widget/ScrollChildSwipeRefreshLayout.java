@@ -45,7 +45,7 @@ public class ScrollChildSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     private FragmentManager mFragmentManager;
-    private EmptyFragment mEmptyFragment=EmptyFragment.newInstance();
+    private EmptyFragment mEmptyFragment= EmptyFragment.Companion.newInstance();
     public void setFragmentManager(FragmentManager f){
         this.mFragmentManager=f;
     }
