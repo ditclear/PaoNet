@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.mine
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -21,6 +20,7 @@ import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
+import com.ditclear.paonet.viewmodel.StateModel
 import javax.inject.Inject
 
 /**
@@ -30,8 +30,9 @@ import javax.inject.Inject
  */
 @FragmentScope
 class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
-    override val loadMore: ObservableBoolean
-        get() = viewModel.loadMore
+    override val state: StateModel
+        get() = viewModel.state
+
 
 
     @Inject

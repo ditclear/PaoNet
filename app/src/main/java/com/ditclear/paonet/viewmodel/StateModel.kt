@@ -1,9 +1,8 @@
 package com.ditclear.paonet.viewmodel
 
 import android.databinding.BaseObservable
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
+import android.databinding.ObservableBoolean
+import com.ditclear.paonet.model.remote.exception.EmptyException
 
 /**
  * 页面描述：StateModel 用于控制toast 和 各种空状态
@@ -12,12 +11,25 @@ import java.net.UnknownHostException
  */
 class StateModel : BaseObservable() {
 
+    val loading = ObservableBoolean(false)
 
-    public fun bindError(e: Throwable) {
-        if (e is SocketTimeoutException) {
-        } else if (e is UnknownHostException || e is ConnectException) {
-            //网络未连接
+    val loadMore = ObservableBoolean(false)
 
+    val empty=ObservableBoolean(false)
+
+    fun canLoadMore()=loadMore.get()&&!loading.get()
+
+    fun showEmpty( emptyType:Int){
+        if(!empty.get()) {
+            empty.set(true)
+        }
+        throw EmptyException(emptyType)
+
+    }
+
+    fun hideEmpty(){
+        if(empty.get()) {
+            empty.set(false)
         }
     }
 }

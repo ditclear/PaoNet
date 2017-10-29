@@ -10,6 +10,6 @@ class ArticleList {
 
     var total_count: Long = 0
     var incomplete_results: Boolean = false
-    var items: List<Article>? = null
+    val items: List<Article>? = null
 
 }

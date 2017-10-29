@@ -2,9 +2,9 @@ package com.ditclear.paonet.view.search
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
-import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.helper.Constants
 import javax.inject.Inject
@@ -23,7 +23,7 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     @Inject
     @field:Named(Constants.Qualifier_SEARCH)
-    lateinit var pagerAdapter: AbstractPagerAdapter
+    lateinit var pagerAdapter: FragmentStatePagerAdapter
 
     companion object {
         private val KEY_KEYWORD = "keyWord"

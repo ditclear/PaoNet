@@ -11,6 +11,6 @@ import android.databinding.BaseObservable
 open class BaseViewModel : BaseObservable(){
 
 
-
+    val state=StateModel()
 
 }

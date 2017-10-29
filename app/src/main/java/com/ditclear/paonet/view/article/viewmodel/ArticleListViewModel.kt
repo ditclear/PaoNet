@@ -34,10 +34,15 @@ constructor(private val repo: PaoService) : PagedViewModel() {
             }.async(1000)
                     .map { articleList ->
                         with(articleList) {
+                            loadMore.set(!incomplete_results)
                             if (isRefresh) {
                                 obserableList.clear()
+                                if (items==null|| items.isEmpty()){
+                                    state.showEmpty(1)
+                                }else {
+                                    state.hideEmpty()
+                                }
                             }
-                            loadMore.set(!incomplete_results)
                             return@map items?.map { ArticleItemViewModel(it) }?.let { obserableList.addAll(it) }
                         }
                     }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }!!

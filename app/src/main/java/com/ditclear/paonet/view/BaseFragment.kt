@@ -13,7 +13,11 @@ import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.lib.extention.ToastType
 import com.ditclear.paonet.lib.extention.toast
+import com.ditclear.paonet.model.remote.exception.EmptyException
 import com.trello.rxlifecycle2.components.support.RxFragment
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 
 /**
@@ -124,7 +128,17 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(), View.OnClickL
     }
 
     fun toastFailure(error: Throwable) {
-        error.message?.let { activity.toast(it,ToastType.ERROR) }
+
+        if (error !is EmptyException) {
+            error.message?.let { activity.toast(it, ToastType.ERROR) }
+        }else if (error is SocketTimeoutException) {
+            error.message?.let { activity.toast("网络连接超时", ToastType.ERROR) }
+
+        } else if (error is UnknownHostException || error is ConnectException) {
+            //网络未连接
+            error.message?.let { activity.toast("网络未连接", ToastType.ERROR) }
+
+        }
     }
 
     override fun onClick(v: View?) {

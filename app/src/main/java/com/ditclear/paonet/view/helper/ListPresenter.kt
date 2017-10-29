@@ -1,7 +1,7 @@
 package com.ditclear.paonet.view.helper
 
-import android.databinding.ObservableBoolean
 import android.view.View
+import com.ditclear.paonet.viewmodel.StateModel
 
 /**
  * 页面描述：ListPresenter 列表页事件处理
@@ -10,7 +10,7 @@ import android.view.View
  */
 interface ListPresenter:View.OnClickListener{
 
-    val loadMore : ObservableBoolean
+    val state : StateModel
 
     fun loadData(isRefresh:Boolean)
 }

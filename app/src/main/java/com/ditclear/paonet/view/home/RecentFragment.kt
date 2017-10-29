@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.home
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
 import android.graphics.Rect
 import android.os.Bundle
@@ -21,6 +20,7 @@ import com.ditclear.paonet.view.helper.ItemType
 import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
+import com.ditclear.paonet.viewmodel.StateModel
 import javax.inject.Inject
 
 /**
@@ -29,8 +29,10 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/22.
  */
 class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
-    override val loadMore: ObservableBoolean
-        get() = viewModel.loadMore
+
+    override val state: StateModel
+        get() = viewModel.state
+
 
     override fun onItemClick(v: View?, t: ArticleItemViewModel) {
         navigateToArticleDetail(activity, v, t.article)

@@ -22,7 +22,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-class ArticleDetailViewModel @Inject
+class  ArticleDetailViewModel @Inject
 constructor(private val repo: PaoService, private val userRepo: UserService) : BaseViewModel() {
 
     val loading = ObservableBoolean(true)

@@ -1,7 +1,5 @@
 package com.ditclear.paonet.viewmodel
 
-import android.databinding.ObservableBoolean
-
 /**
  * 页面描述：PagedViewModel
  *
@@ -9,9 +7,13 @@ import android.databinding.ObservableBoolean
  */
 open class PagedViewModel : BaseViewModel() {
 
-    val loading = ObservableBoolean(false)
 
-    val loadMore = ObservableBoolean(false)
+
+    val loading = state.loading
+
+    val loadMore = state.loadMore
+
+    val empty=state.empty
 
     var page = 0
 

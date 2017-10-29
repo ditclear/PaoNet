@@ -36,6 +36,11 @@ constructor(private val repo: PaoService) : PagedViewModel() {
                         with(articleList) {
                             if (isRefresh) {
                                 observableList.clear()
+                                if (items==null|| items.isEmpty()){
+                                    state.showEmpty(1)
+                                }else {
+                                    state.hideEmpty()
+                                }
                             }
                             loadMore.set(!incomplete_results)
                             return@map items?.map { ArticleItemViewModel(it) }?.let { observableList.addAll(it) }

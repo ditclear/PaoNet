@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.search
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.databinding.ObservableList
 import android.os.Bundle
 import android.view.View
@@ -11,7 +10,6 @@ import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.vendor.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.helper.ItemType
-import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.ditclear.paonet.widget.ColorBrewer
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -23,9 +21,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/24.
  */
-class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemClickPresenter<String>, ListPresenter {
-    override val loadMore: ObservableBoolean
-        get() = viewModel.loadMore
+class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemClickPresenter<String> {
 
     override fun onItemClick(v: View?, item: String) {
         (activity as SearchActivity).setQuery(keyWord = item)

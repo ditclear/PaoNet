@@ -21,6 +21,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.home.MainActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
+import com.ditclear.paonet.viewmodel.StateModel
 import javax.inject.Inject
 
 /**
@@ -30,9 +31,8 @@ import javax.inject.Inject
  */
 @FragmentScope
 class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
-    override val loadMore: ObservableBoolean
-        get() = viewModel.loadMore
-
+    override val state: StateModel
+        get() = viewModel.state
 
     @Inject
     lateinit var viewModel: MyArticleViewModel
