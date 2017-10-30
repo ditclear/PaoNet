@@ -10,17 +10,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.lib.extention.dpToPx
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.vendor.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.helper.ItemType
 import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
 import com.ditclear.paonet.viewmodel.StateModel
+import com.ditclear.paonet.widget.recyclerview.MultiTypeAdapter
 import javax.inject.Inject
 
 /**
@@ -42,8 +42,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     lateinit var viewModel: RecentViewModel
 
     val sliderAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders,
-                ArticleItemViewModel.Companion.DiffCallBack()).apply { presenter = this@RecentFragment }
+        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }
 
 
     }

@@ -13,10 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ditclear.paonet.vendor.recyclerview;
+package com.ditclear.paonet.lib.adapter.recyclerview
 
-public class Dummy {
-
-
-}
+class Dummy
 

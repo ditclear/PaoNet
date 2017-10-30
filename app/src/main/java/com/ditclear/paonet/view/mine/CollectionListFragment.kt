@@ -10,11 +10,11 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.helper.ListPresenter
@@ -44,9 +44,8 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         } else R.layout.article_list_item
     }
     val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, layoutItemId, viewModel.obserableList
-                , ArticleItemViewModel.Companion.DiffCallBack()).apply {
-            presenter = this@CollectionListFragment
+        PagedAdapter<ArticleItemViewModel>(activity, layoutItemId, viewModel.obserableList).apply {
+            itemPresenter = this@CollectionListFragment
         }
     }
 

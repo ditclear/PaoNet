@@ -12,12 +12,9 @@ import android.widget.Toast
 import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.lib.extention.ToastType
+import com.ditclear.paonet.lib.extention.dispatchFailure
 import com.ditclear.paonet.lib.extention.toast
-import com.ditclear.paonet.model.remote.exception.EmptyException
 import com.trello.rxlifecycle2.components.support.RxFragment
-import java.net.ConnectException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 
 
 /**
@@ -25,7 +22,7 @@ import java.net.UnknownHostException
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(), View.OnClickListener {
+abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), View.OnClickListener {
 
     protected lateinit var mBinding: VB
 
@@ -115,7 +112,7 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(), View.OnClickL
     abstract fun initArgs(savedInstanceState: Bundle?)
 
     abstract fun initView()
-    abstract fun loadData(isRefresh:Boolean)
+    abstract fun loadData(isRefresh: Boolean)
 
     abstract fun getLayoutId(): Int
 
@@ -128,17 +125,7 @@ abstract class BaseFragment< VB : ViewDataBinding> : RxFragment(), View.OnClickL
     }
 
     fun toastFailure(error: Throwable) {
-
-        if (error !is EmptyException) {
-            error.message?.let { activity.toast(it, ToastType.ERROR) }
-        }else if (error is SocketTimeoutException) {
-            error.message?.let { activity.toast("网络连接超时", ToastType.ERROR) }
-
-        } else if (error is UnknownHostException || error is ConnectException) {
-            //网络未连接
-            error.message?.let { activity.toast("网络未连接", ToastType.ERROR) }
-
-        }
+        activity.dispatchFailure(error)
     }
 
     override fun onClick(v: View?) {

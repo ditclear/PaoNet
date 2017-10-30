@@ -1,5 +1,9 @@
 package com.ditclear.paonet.model.data
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Embedded
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -8,9 +12,13 @@ import java.io.Serializable
  *
  * Created by ditclear on 2017/9/26.
  */
+@Entity(tableName = "articles")
+class Article(var title: String?) : Serializable {
 
-class Article(var title: String?) :  Serializable {
+    @PrimaryKey
+    @ColumnInfo(name = "articleid")
     var id: Int = 0
+    @Embedded
     var user: User? = null
     var content: String? = null
     var readme: String? = null

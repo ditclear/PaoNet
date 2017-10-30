@@ -1,4 +1,4 @@
-package com.ditclear.paonet.vendor.recyclerview;
+package com.ditclear.paonet.widget.recyclerview;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

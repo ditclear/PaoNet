@@ -26,6 +26,7 @@ import com.ditclear.paonet.view.code.CodeFragment
 import com.ditclear.paonet.view.helper.SpUtil
 import com.ditclear.paonet.view.helper.navigateToSearch
 import com.ditclear.paonet.view.helper.needsLogin
+import com.ditclear.paonet.view.home.viewmodel.MainViewModel
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
 import io.reactivex.Single
@@ -42,7 +43,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
     private val myArticleFragment = MyArticleFragment.newInstance()
     private val myCollectFragment = MyCollectFragment.newInstance()
 
-    val defaultUser: User by lazy { User() }
+    val defaultUser: MainViewModel by lazy { MainViewModel(User()) }
 
     val navHeaderBinding by lazy { DataBindingUtil.bind<NavHeaderMainBinding>(mBinding.navView.getHeaderView(0)) }
 
@@ -52,7 +53,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(), NavigationView.OnNavig
 
     override fun onResume() {
         super.onResume()
-        navHeaderBinding?.item = SpUtil.user ?: defaultUser
+        navHeaderBinding?.item = if (SpUtil.user!=null) MainViewModel(SpUtil.user!!) else defaultUser
 
     }
 

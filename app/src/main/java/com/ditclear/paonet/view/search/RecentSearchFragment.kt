@@ -2,16 +2,19 @@ package com.ditclear.paonet.view.search
 
 import android.content.Context
 import android.databinding.ObservableList
+import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.vendor.recyclerview.MultiTypeAdapter
+import com.ditclear.paonet.lib.adapter.recyclerview.BindingViewHolder
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemDecorator
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.helper.ItemType
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.ditclear.paonet.widget.ColorBrewer
+import com.ditclear.paonet.widget.recyclerview.MultiTypeAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import javax.inject.Inject
@@ -41,11 +44,17 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
             addViewTypeToLayoutMap(ItemType.HEADER, R.layout.recent_search_title_item)
             addViewTypeToLayoutMap(ItemType.ITEM, R.layout.recent_search_hot_item)
             addViewTypeToLayoutMap(ItemType.FOOTER, R.layout.recent_search_item)
-            setDecorator { holder, position, _ ->
-                if (position > 0) {
-                    holder.binding.root.background.setTint(colorArray[position])
-                }
-            }
+            setDecorator(
+                    object : ItemDecorator {
+                        override fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int) {
+                            if (position > 0) {
+                                holder?.binding?.root?.background?.setTint(colorArray[position])
+                            }
+                        }
+
+                    }
+
+            )
             setPresenter(this@RecentSearchFragment)
         }
     }

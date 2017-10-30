@@ -6,8 +6,8 @@ import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.getOriginData
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.BaseResponse
-import com.ditclear.paonet.model.remote.api.PaoService
-import com.ditclear.paonet.model.remote.api.UserService
+import com.ditclear.paonet.model.repository.PaoRepository
+import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.view.helper.Constants
 import com.ditclear.paonet.view.helper.SpUtil
 import com.ditclear.paonet.view.helper.Utils
@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/3.
  */
 class  ArticleDetailViewModel @Inject
-constructor(private val repo: PaoService, private val userRepo: UserService) : BaseViewModel() {
+constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
     val loading = ObservableBoolean(true)
 
@@ -33,7 +33,7 @@ constructor(private val repo: PaoService, private val userRepo: UserService) : B
         set
 
     //加载详情
-    fun loadData() = repo.getArticleDetail(article.id).subscribeOn(Schedulers.io())
+    fun loadData() = repo.getArticle(article.id).subscribeOn(Schedulers.io())
             .doOnSuccess { t ->
                 val data = Utils.processImgSrc(t!!.content!!, Constants.HOST_PAO)
                 markdown.set(data)

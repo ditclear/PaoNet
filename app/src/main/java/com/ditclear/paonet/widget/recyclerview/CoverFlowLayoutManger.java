@@ -1,4 +1,4 @@
-package com.ditclear.paonet.vendor.recyclerview;
+package com.ditclear.paonet.widget.recyclerview;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;

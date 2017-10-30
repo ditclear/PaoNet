@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.code
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -11,11 +10,11 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
-import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.helper.ListPresenter
@@ -38,9 +37,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
 
     private val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, R.layout.code_list_item, viewModel.observableList
-                , ArticleItemViewModel.Companion.DiffCallBack()).apply {
-            presenter = this@CodeListFragment
+        PagedAdapter<ArticleItemViewModel>(activity, R.layout.code_list_item, viewModel.observableList).apply {
+            itemPresenter = this@CodeListFragment
         }
     }
 

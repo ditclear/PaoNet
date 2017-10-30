@@ -9,8 +9,9 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.lib.extention.dpToPx
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
@@ -35,9 +36,8 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     lateinit var viewModel: ArticleListViewModel
 
     private val mAdapter by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList,
-                ArticleItemViewModel.Companion.DiffCallBack()).apply {
-            presenter = this@ArticleListFragment
+        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList).apply {
+            itemPresenter = this@ArticleListFragment
         }
     }
 

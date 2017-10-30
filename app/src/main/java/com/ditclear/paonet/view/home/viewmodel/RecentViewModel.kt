@@ -3,7 +3,7 @@ package com.ditclear.paonet.view.home.viewmodel
 import android.databinding.ObservableArrayList
 import android.util.Log
 import com.ditclear.paonet.lib.extention.async
-import com.ditclear.paonet.model.remote.api.PaoService
+import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +15,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedViewModel() {
+class RecentViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val sliders = ObservableArrayList<ArticleItemViewModel>()
     val obserableList = ObservableArrayList<ArticleItemViewModel>()
@@ -24,10 +24,12 @@ class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedV
         repo.getSlider()
                 .async()
                 .doOnSuccess { t ->
-                    Log.d("thread------",Thread.currentThread().name)
-                    sliders.clear()
+                    if(isRefresh) {
+                        sliders.clear()
+                    }
                     with(t) {
-                        items?.map { ArticleItemViewModel(it) }?.let { sliders.addAll(it) }
+                        items?.map { ArticleItemViewModel(it) }?.let {
+                            sliders.addAll(it) }
                     }
                 }
                 .observeOn(Schedulers.io())
@@ -42,6 +44,7 @@ class RecentViewModel @Inject constructor(private val repo: PaoService) : PagedV
                     with(articleList) {
                         if (isRefresh) {
                             obserableList.clear()
+
                         }
                         items?.map { ArticleItemViewModel(it) }?.let { obserableList.addAll(it) }
                     }

@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.mine
 
 import android.content.Context
-import android.databinding.ObservableBoolean
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -11,12 +10,12 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.lib.extention.navigateToActivity
-import com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.ArticleDetailActivity
-import com.ditclear.paonet.view.article.PagedAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.home.MainActivity
@@ -38,8 +37,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     lateinit var viewModel: MyArticleViewModel
 
     val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList
-                , ArticleItemViewModel.Companion.DiffCallBack()).apply { presenter = this@MyArticleFragment }
+        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }
     }
 
     var showTab: Boolean = false

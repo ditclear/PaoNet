@@ -16,6 +16,7 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import com.ditclear.paonet.R
 import com.ditclear.paonet.model.data.BaseResponse
+import com.ditclear.paonet.model.remote.exception.EmptyException
 import com.ditclear.paonet.view.helper.Constants
 import es.dmoral.toasty.Toasty
 import io.reactivex.Flowable
@@ -23,11 +24,14 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
+import java.net.ConnectException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 
 /**
- * 页面描述：
+ * 页面描述：一些扩展
  *
  * Created by ditclear on 2017/9/29.
  */
@@ -40,6 +44,19 @@ fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @Toast
         ToastType.ERROR -> Toasty.error(this, msg, duration, true).show()
         ToastType.NORMAL -> Toasty.info(this, msg, duration, false).show()
         ToastType.SUCCESS -> Toasty.success(this, msg, duration, true).show()
+    }
+}
+
+fun Activity.dispatchFailure(error:Throwable) {
+    if (error !is EmptyException) {
+        error.message?.let { toast(it, ToastType.ERROR) }
+    }else if (error is SocketTimeoutException) {
+        error.message?.let { toast("网络连接超时", ToastType.ERROR) }
+
+    } else if (error is UnknownHostException || error is ConnectException) {
+        //网络未连接
+        error.message?.let { toast("网络未连接", ToastType.ERROR) }
+
     }
 }
 

@@ -11,7 +11,7 @@
 
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.vendor.recyclerview.ItemClickPresenter"/>
+                type="com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter"/>
     </data>
 
 

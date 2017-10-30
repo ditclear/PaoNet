@@ -12,6 +12,7 @@ import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.di.component.ActivityComponent
 import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.lib.extention.ToastType
+import com.ditclear.paonet.lib.extention.dispatchFailure
 import com.ditclear.paonet.lib.extention.toast
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
@@ -81,7 +82,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),View.O
     }
 
     fun toastFailure(error: Throwable) {
-        error.message?.let { toast(it,ToastType.ERROR) }
+        dispatchFailure(error)
     }
 
     override fun onClick(v: View?) {

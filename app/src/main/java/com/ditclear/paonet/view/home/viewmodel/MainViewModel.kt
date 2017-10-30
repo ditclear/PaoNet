@@ -1,9 +1,8 @@
 package com.ditclear.paonet.view.home.viewmodel
 
 import com.ditclear.paonet.di.scope.ActivityScope
-import com.ditclear.paonet.model.remote.api.UserService
+import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.viewmodel.BaseViewModel
-import javax.inject.Inject
 
 /**
  * 页面描述：MainViewModel
@@ -11,6 +10,14 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/27.
  */
 @ActivityScope
-class MainViewModel @Inject constructor(val repo:UserService) :BaseViewModel(){
+class MainViewModel(val user: User) : BaseViewModel() {
+
+    var face: String? = user.face
+    var qianming: String? = user.qianming
+
+    //////////////////bind view/////////////
+    fun getNavHeaderName(): String = user.nickname ?: ""
+
+    fun getLoginBtnText() = if (user.nickname == null) "LOG IN" else "LOG OUT"
 
 }

@@ -1,5 +1,8 @@
 package com.ditclear.paonet.model.data
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import java.io.Serializable
 
 /**
@@ -8,6 +11,7 @@ import java.io.Serializable
  * Created by ditclear on 2017/9/26.
  */
 
+@Entity(tableName = "users")
 class User :Serializable{
     /**
      * id : 14161
@@ -24,8 +28,10 @@ class User :Serializable{
      * fans : 0
      * guanzhu : 0
      */
-
+    @PrimaryKey
+    @ColumnInfo(name = "userid")
     var id: Int = 0
+
     var nickname: String? = null
     var face: String? = null
     var sex: String? = null
@@ -40,8 +46,4 @@ class User :Serializable{
     var guanzhu: Int = 0
 
 
-    //////////////////bind view/////////////
-    fun getNavHeaderName():String=nickname?:""
-
-    fun getLoginBtnText()=if (nickname==null) "LOG IN" else "LOG OUT"
 }

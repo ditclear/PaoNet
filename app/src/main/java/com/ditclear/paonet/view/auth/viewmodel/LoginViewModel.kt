@@ -6,7 +6,7 @@ import com.ditclear.paonet.BR
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.lib.extention.getOriginData
 import com.ditclear.paonet.model.data.UserModel
-import com.ditclear.paonet.model.remote.api.UserService
+import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -21,7 +21,7 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/10.
  */
 class LoginViewModel @Inject
-constructor(private val repo: UserService) : BaseViewModel() {
+constructor(private val repo: UserRepository) : BaseViewModel() {
 
 
     private val PASSWORD_PATTERN = "^[a-zA-Z0-9_]{6,16}$"

@@ -11,13 +11,13 @@
                 type="android.support.v7.widget.RecyclerView.Adapter"/>
     </data>
 
-    <com.ditclear.paonet.vendor.recyclerview.RecyclerCoverFlow
+    <com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow
             android:id="@+id/view_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             app:adapter="@{item}">
 
-    </com.ditclear.paonet.vendor.recyclerview.RecyclerCoverFlow>
+    </com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow>
 
 </layout>
