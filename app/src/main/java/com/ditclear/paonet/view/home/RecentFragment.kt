@@ -1,7 +1,7 @@
 package com.ditclear.paonet.view.home
 
 import android.content.Context
-import android.databinding.ObservableList
+import android.databinding.ViewDataBinding
 import android.graphics.Rect
 import android.os.Bundle
 import android.support.v7.widget.DividerItemDecoration
@@ -10,8 +10,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.databinding.SliderBinding
+import com.ditclear.paonet.lib.adapter.recyclerview.*
 import com.ditclear.paonet.lib.extention.dpToPx
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
@@ -20,7 +20,6 @@ import com.ditclear.paonet.view.helper.ListPresenter
 import com.ditclear.paonet.view.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
 import com.ditclear.paonet.viewmodel.StateModel
-import com.ditclear.paonet.widget.recyclerview.MultiTypeAdapter
 import javax.inject.Inject
 
 /**
@@ -28,14 +27,16 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
+class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Any>, ListPresenter {
 
     override val state: StateModel
         get() = viewModel.state
 
 
-    override fun onItemClick(v: View?, t: ArticleItemViewModel) {
-        navigateToArticleDetail(activity, v, t.article)
+    override fun onItemClick(v: View?, t: Any) {
+        if (t is ArticleItemViewModel) {
+            navigateToArticleDetail(activity, v, t.article)
+        }
     }
 
     @Inject
@@ -43,18 +44,29 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     val sliderAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
         PagedAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }
-
-
     }
 
 
     val mAdapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext)
-                .apply {
-                    addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
-                    addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
-                    setPresenter(this@RecentFragment)
+        MultiTypeAdapter(mContext, viewModel.obserableList, object : MultiTypeAdapter.MultiViewTyper {
+            override fun getViewType(item: Any): Int =
+                    if (item is Dummy) ItemType.HEADER else ItemType.ITEM
+        }).apply {
+            addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
+            addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
+            itemPresenter = this@RecentFragment
+            itemDecorator=object :ItemDecorator{
+                override fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int) {
+                    if (viewType==ItemType.HEADER&&holder?.binding is SliderBinding){
+                        val binding=holder.binding as SliderBinding
+                        if(binding.slider.adapter==null) {
+                            binding.slider.adapter = sliderAdapter
+                        }
+                    }
                 }
+
+            }
+        }
     }
 
     override fun getLayoutId() = R.layout.refresh_fragment
@@ -70,8 +82,6 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     }
 
     override fun loadData(isRefresh: Boolean) {
-        mAdapter.clear()
-        mAdapter.add(0, sliderAdapter, ItemType.HEADER)
         viewModel.loadData(true).compose(bindToLifecycle())
                 .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
 
@@ -114,30 +124,6 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
             }
 
         }
-
-        viewModel.obserableList.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<ArticleItemViewModel>>() {
-            override fun onItemRangeChanged(sender: ObservableList<ArticleItemViewModel>?, positionStart: Int, itemCount: Int) {
-                sender?.let { mAdapter.notifyItemRangeChanged(1, positionStart, itemCount) }
-            }
-
-            override fun onChanged(sender: ObservableList<ArticleItemViewModel>?) {
-                sender?.let { mAdapter.notifyItemRangeChanged(1, sender.size) }
-            }
-
-            override fun onItemRangeRemoved(sender: ObservableList<ArticleItemViewModel>?, positionStart: Int, itemCount: Int) {
-                sender?.let { mAdapter.notifyItemRangeRemoved(positionStart + 1, itemCount) }
-            }
-
-            override fun onItemRangeMoved(sender: ObservableList<ArticleItemViewModel>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                mAdapter.notifyItemMoved(fromPosition, toPosition)
-            }
-
-            override fun onItemRangeInserted(sender: ObservableList<ArticleItemViewModel>?, positionStart: Int, itemCount: Int) {
-                sender?.let { mAdapter.addAll(sender, ItemType.ITEM) }
-            }
-
-        })
-
 
     }
 

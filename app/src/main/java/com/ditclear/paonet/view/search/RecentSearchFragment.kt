@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.search
 
 import android.content.Context
-import android.databinding.ObservableList
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.View
@@ -10,11 +9,11 @@ import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
 import com.ditclear.paonet.lib.adapter.recyclerview.BindingViewHolder
 import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.lib.adapter.recyclerview.ItemDecorator
+import com.ditclear.paonet.lib.adapter.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.BaseFragment
 import com.ditclear.paonet.view.helper.ItemType
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.ditclear.paonet.widget.ColorBrewer
-import com.ditclear.paonet.widget.recyclerview.MultiTypeAdapter
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import javax.inject.Inject
@@ -24,10 +23,12 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/24.
  */
-class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemClickPresenter<String> {
+class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemClickPresenter<Any> {
 
-    override fun onItemClick(v: View?, item: String) {
-        (activity as SearchActivity).setQuery(keyWord = item)
+    override fun getLayoutId(): Int = R.layout.recent_search_fragment
+
+    override fun onItemClick(v: View?, item: Any) {
+        (activity as SearchActivity).setQuery(keyWord = item as String)
     }
 
     @Inject
@@ -40,11 +41,17 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     val adapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext).apply {
+        MultiTypeAdapter(mContext, viewModel.obserableList, object : MultiTypeAdapter.MultiViewTyper {
+            override fun getViewType(item: Any): Int {
+                val pos = viewModel.obserableList.indexOf(item)
+                return if (pos == 0) ItemType.HEADER else ItemType.ITEM
+            }
+
+        }).apply {
             addViewTypeToLayoutMap(ItemType.HEADER, R.layout.recent_search_title_item)
             addViewTypeToLayoutMap(ItemType.ITEM, R.layout.recent_search_hot_item)
             addViewTypeToLayoutMap(ItemType.FOOTER, R.layout.recent_search_item)
-            setDecorator(
+            itemDecorator =
                     object : ItemDecorator {
                         override fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int) {
                             if (position > 0) {
@@ -54,15 +61,14 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
                     }
 
-            )
-            setPresenter(this@RecentSearchFragment)
+
+            itemPresenter = this@RecentSearchFragment
         }
     }
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).compose(bindToLifecycle())
                 .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
-        adapter.add(0, "热门搜索:", ItemType.HEADER)
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -81,30 +87,8 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
                 justifyContent = JustifyContent.SPACE_AROUND
             }
         }
-        viewModel.obserableList.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<String>>() {
-            override fun onChanged(sender: ObservableList<String>?) {
-            }
 
-            override fun onItemRangeRemoved(sender: ObservableList<String>?, positionStart: Int, itemCount: Int) {
-                adapter.clear()
-            }
-
-            override fun onItemRangeChanged(sender: ObservableList<String>?, positionStart: Int, itemCount: Int) {
-            }
-
-            override fun onItemRangeInserted(sender: ObservableList<String>?, positionStart: Int, itemCount: Int) {
-                sender?.run {
-                    adapter.addAll(sender, ItemType.ITEM)
-                }
-            }
-
-            override fun onItemRangeMoved(sender: ObservableList<String>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        })
     }
 
-    override fun getLayoutId(): Int = R.layout.recent_search_fragment
 
 }

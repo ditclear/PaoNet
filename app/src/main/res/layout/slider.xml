@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:bind="http://schemas.android.com/apk/res-auto"
-        xmlns:app="http://schemas.android.com/tools"
-        >
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
-        <variable
-                name="item"
-                type="android.support.v7.widget.RecyclerView.Adapter"/>
     </data>
 
     <com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow
-            android:id="@+id/view_pager"
+            android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            app:adapter="@{item}">
+            android:layout_marginBottom="@dimen/activity_vertical_margin">
 
     </com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow>
 

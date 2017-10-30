@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
 import android.webkit.URLUtil
 import android.widget.Toast
+import com.ditclear.paonet.BuildConfig
 import com.ditclear.paonet.R
 import com.ditclear.paonet.model.data.BaseResponse
 import com.ditclear.paonet.model.remote.exception.EmptyException
@@ -48,6 +49,9 @@ fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @Toast
 }
 
 fun Activity.dispatchFailure(error:Throwable) {
+    if (BuildConfig.DEBUG){
+        error.printStackTrace()
+    }
     if (error !is EmptyException) {
         error.message?.let { toast(it, ToastType.ERROR) }
     }else if (error is SocketTimeoutException) {

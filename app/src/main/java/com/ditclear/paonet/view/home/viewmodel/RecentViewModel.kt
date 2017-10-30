@@ -2,6 +2,7 @@ package com.ditclear.paonet.view.home.viewmodel
 
 import android.databinding.ObservableArrayList
 import android.util.Log
+import com.ditclear.paonet.lib.adapter.recyclerview.Dummy
 import com.ditclear.paonet.lib.extention.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
@@ -18,7 +19,7 @@ import javax.inject.Inject
 class RecentViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val sliders = ObservableArrayList<ArticleItemViewModel>()
-    val obserableList = ObservableArrayList<ArticleItemViewModel>()
+    val obserableList = ObservableArrayList<Any>()
 
     fun loadData(isRefresh: Boolean) =
         repo.getSlider()
@@ -26,10 +27,13 @@ class RecentViewModel @Inject constructor(private val repo: PaoRepository) : Pag
                 .doOnSuccess { t ->
                     if(isRefresh) {
                         sliders.clear()
+                        obserableList.clear()
                     }
                     with(t) {
                         items?.map { ArticleItemViewModel(it) }?.let {
-                            sliders.addAll(it) }
+                            obserableList.add(Dummy())
+                            sliders.addAll(it)
+                        }
                     }
                 }
                 .observeOn(Schedulers.io())
@@ -42,11 +46,9 @@ class RecentViewModel @Inject constructor(private val repo: PaoRepository) : Pag
                 .doOnSuccess{ articleList ->
                     Log.d("thread------",Thread.currentThread().name)
                     with(articleList) {
-                        if (isRefresh) {
-                            obserableList.clear()
-
+                        items?.map { ArticleItemViewModel(it) }?.let {
+                            obserableList.addAll(it)
                         }
-                        items?.map { ArticleItemViewModel(it) }?.let { obserableList.addAll(it) }
                     }
                 }
 

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class RecentSearchViewModel @Inject constructor(val repo: PaoRepository) : PagedViewModel() {
 
     val hotTags = ObservableArrayList<Tag>()
-    val obserableList = ObservableArrayList<String>()
+    val obserableList = ObservableArrayList<Any>()
 
 
     fun loadData(isRefresh: Boolean) =
@@ -29,6 +29,7 @@ class RecentSearchViewModel @Inject constructor(val repo: PaoRepository) : Paged
                         if (isRefresh) {
                             obserableList.clear()
                         }
+                        obserableList.add("热门搜索:")
                         t?.run { obserableList.addAll(this) }
                     }
 
