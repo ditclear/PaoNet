@@ -33,6 +33,7 @@ interface FragmentComponent {
 
     fun inject(fragment: RecentFragment)
 
+
     fun inject(fragment: SearchResultFragment)
 
     fun inject(fragment: RecentSearchFragment)

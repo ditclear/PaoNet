@@ -55,11 +55,11 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
             addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
             addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
             itemPresenter = this@RecentFragment
-            itemDecorator=object :ItemDecorator{
+            itemDecorator = object : ItemDecorator {
                 override fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int) {
-                    if (viewType==ItemType.HEADER&&holder?.binding is SliderBinding){
-                        val binding=holder.binding as SliderBinding
-                        if(binding.slider.adapter==null) {
+                    if (viewType == ItemType.HEADER && holder?.binding is SliderBinding) {
+                        val binding = holder.binding as SliderBinding
+                        if (binding.slider.adapter == null) {
                             binding.slider.adapter = sliderAdapter
                         }
                     }
