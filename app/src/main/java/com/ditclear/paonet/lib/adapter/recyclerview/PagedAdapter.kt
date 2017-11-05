@@ -12,7 +12,7 @@ import android.view.ViewGroup
  *
  * Created by ditclear on 2017/10/3.
  */
-open class PagedAdapter<T>(context: Context, private val layoutRes: Int, private val list: ObservableList<T>) : BaseViewAdapter<T>(context, list) {
+open class PagedAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableList<T>) : BaseViewAdapter<T>(context, list) {
 
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
@@ -33,8 +33,10 @@ open class PagedAdapter<T>(context: Context, private val layoutRes: Int, private
             }
 
             override fun onItemRangeRemoved(contributorViewModels: ObservableList<T>, i: Int, i1: Int) {
-                notifyItemRangeRemoved(i, i1)
+
+                notifyDataSetChanged()
             }
+
         })
     }
 

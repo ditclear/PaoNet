@@ -8,7 +8,7 @@ import android.databinding.BaseObservable
  * Created by ditclear on 2017/9/28.
  */
 
-open class BaseViewModel : BaseObservable(){
+open class BaseViewModel() : BaseObservable(){
 
 
     val state=StateModel()

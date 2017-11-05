@@ -2,6 +2,7 @@ package com.ditclear.paonet.model.remote.api
 
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.ArticleList
+import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.TagList
 import io.reactivex.Single
 import retrofit2.http.GET
@@ -19,6 +20,12 @@ interface PaoService {
      */
     @GET("slider.php")
     fun getSlider(): Single<ArticleList>
+
+    /**
+     * 获取代码分类
+     */
+    @GET("code_category_list.php")
+    fun getCodeCategory():Single<List<Category>>
 
     /**
      * 文章列表

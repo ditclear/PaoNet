@@ -5,11 +5,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
-import com.ditclear.paonet.view.article.ArticleListFragment
-import com.ditclear.paonet.view.helper.ArticleType
 import com.ditclear.paonet.view.helper.Constants
-import com.ditclear.paonet.view.home.RecentFragment
-import com.ditclear.paonet.view.mine.CollectionListFragment
+import com.ditclear.paonet.view.helper.annotation.ArticleType
+import com.ditclear.paonet.view.ui.article.ArticleListFragment
+import com.ditclear.paonet.view.ui.code.CodeListFragment
+import com.ditclear.paonet.view.ui.home.RecentFragment
+import com.ditclear.paonet.view.ui.mine.CollectionListFragment
+import com.ditclear.paonet.view.ui.search.SearchResultFragment
 import com.trello.rxlifecycle2.components.support.RxFragment
 import dagger.Module
 import dagger.Provides
@@ -77,16 +79,19 @@ class FragmentModule(private val fragment: RxFragment) {
     @Named(Constants.Qualifier_SEARCH)
     fun provideSearchPagerAdapter(): FragmentStatePagerAdapter {
         return object : AbstractPagerAdapter(fragment.childFragmentManager, arrayOf("文章", "代码")) {
+            val keyWord= (fragment as? SearchResultFragment)?.keyWord ?: ""
             override fun getItem(pos: Int): Fragment? {
                 if (list[pos] == null) {
                     when (pos) {
-                        0 -> list[pos] = CollectionListFragment.newInstance(1)
-                        1 -> list[pos] = CollectionListFragment.newInstance(-19)
+                        0 -> list[pos] = ArticleListFragment.newInstance(keyWord)
+                        1 -> list[pos] = CodeListFragment.newInstance(keyWord)
                     }
                 }
                 return list[pos]
             }
+
         }
     }
+
 
 }

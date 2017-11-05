@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/tools">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-                name="item"
-                type="com.ditclear.paonet.view.home.viewmodel.MainViewModel"/>
+                name="vm"
+                type="com.ditclear.paonet.view.ui.home.viewmodel.MainViewModel"/>
+
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.view.helper.presenter.Presenter"/>
     </data>
 
-    <FrameLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark">
+            android:orientation="vertical"
+            android:paddingBottom="?actionBarSize">
 
-        <LinearLayout
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/nav_header_height"
                 android:background="@android:color/white"
                 android:gravity="bottom"
-                android:orientation="vertical"
                 android:padding="@dimen/activity_horizontal_margin">
 
             <ImageView
@@ -28,36 +32,83 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:scaleType="fitCenter"
+                    app:avatar="@{true}"
                     app:srcCompat="@drawable/ic_face"
-                    bind:avatar="@{true}"
-                    bind:url="@{item.face}"/>
+                    app:url="@{vm.face}"/>
 
             <TextView
+                    android:id="@+id/name_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/imageView"
                     android:letterSpacing="0.2"
                     android:paddingTop="@dimen/nav_header_vertical_spacing"
-                    android:text='@{item.navHeaderName}'
-                    android:textColor="@color/colorPrimary"/>
+                    android:text='@{vm.navHeaderName}'
+                    android:textColor="@color/colorPrimary"
+                    tools:text="ditclear"/>
 
             <TextView
-                    android:id="@+id/textView"
+                    android:id="@+id/qianming_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{item.qianming}'
-                    android:textColor="@color/tools_color"/>
+                    android:layout_below="@id/name_tv"
+                    android:text='@{vm.qianming}'
+                    android:textColor="@color/tools_color"
+                    tools:text="nothing"/>
 
-        </LinearLayout>
-        <Button
-                android:id="@+id/toggle_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text='@{item.loginBtnText,default="LOG IN"}'
-                android:background="@color/hint_highlight"
-                android:foreground="@drawable/mid_grey_ripple"
-                android:transitionName="@string/transition_login"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:textAppearance="@style/TextAppearance.DarkButton"
-                android:layout_gravity="center_vertical|end"/>
-    </FrameLayout>
+            <Button
+                    android:id="@+id/toggle_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                    android:background="@color/hint_highlight"
+                    android:foreground="@drawable/mid_grey_ripple"
+                    android:onClick="@{(v)->presenter.onClick(v)}"
+                    android:text='@{vm.loginBtnText,default="LOG IN"}'
+                    android:textAppearance="@style/TextAppearance.DarkButton"
+                    android:transitionName="@string/transition_login"/>
+        </RelativeLayout>
+
+        <TextView
+                android:id="@+id/home_tv"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:drawableStart="@drawable/ic_home"
+                android:gravity="center_vertical"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="HOME"/>
+
+        <include
+                android:id="@+id/nav_code_layout"
+                layout="@layout/nav_code_layout"
+                app:presenter="@{presenter}"
+                app:vm="@{vm}"/>
+
+        <TextView
+                android:id="@+id/my_article_tv"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:drawableStart="@drawable/ic_list"
+                android:gravity="center_vertical"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="我的文章"/>
+
+        <TextView
+                android:id="@+id/my_collect_tv"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:drawablePadding="@dimen/activity_horizontal_margin"
+                android:drawableStart="@drawable/ic_collections"
+                android:gravity="center_vertical"
+                android:onClick="@{(v)->presenter.onClick(v)}"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="我的收藏"/>
+    </LinearLayout>
+
 </layout>

@@ -6,12 +6,12 @@
 
     </data>
 
-    <com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow
+    <com.ditclear.paonet.view.widget.recyclerview.RecyclerCoverFlow
             android:id="@+id/slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/activity_vertical_margin">
 
-    </com.ditclear.paonet.widget.recyclerview.RecyclerCoverFlow>
+    </com.ditclear.paonet.view.widget.recyclerview.RecyclerCoverFlow>
 
 </layout>

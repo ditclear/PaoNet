@@ -46,7 +46,6 @@ dependencies {
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
     compile 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
     kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
-    compile 'android.arch.paging:runtime:' + rootProject.pagingVersion
     compile 'com.android.support:customtabs:' + rootProject.supportLibVersion
 
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -72,19 +71,9 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava2:'+rootProject.retrofitVersion
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.google.code.gson:gson:2.8.0'
-    //6.0permission
-    compile 'pub.devrel:easypermissions:0.2.1'
-    //date
-    compile 'joda-time:joda-time:2.3'
     //image
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.1'
-    //字体
-    compile 'uk.co.chrisjenx:calligraphy:2.3.0'
-
-    compile 'com.airbnb.android:lottie:2.2.3'
-
-    compile 'com.jakewharton.timber:timber:4.5.1'
 
     compile 'us.feras.mdv:markdownview:1.1.0'
 

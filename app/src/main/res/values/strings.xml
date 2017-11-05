@@ -194,4 +194,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="action_attention">关注</string>
+    <string name="no_data">empty content</string>
 </resources>

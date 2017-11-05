@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+                name="item"
+                type="com.ditclear.paonet.view.ui.home.viewmodel.CategoryItemViewModel"/>
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter"/>
+    </data>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/xdp_36.0"
+            android:gravity="center"
+            tools:text="TIP"
+            android:textAppearance="@android:style/TextAppearance.Material.Body1"
+            android:background="?selectableItemBackground"
+            android:onClick="@{(v)->presenter.onItemClick(v,item)}"
+            android:text="@{item.catename}">
+
+    </TextView>
+</layout>

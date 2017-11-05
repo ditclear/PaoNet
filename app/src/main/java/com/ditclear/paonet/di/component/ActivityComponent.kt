@@ -1,11 +1,11 @@
 package com.ditclear.paonet.di.component
 
 import com.ditclear.paonet.di.module.ActivityModule
-import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.di.scope.ActivityScope
-import com.ditclear.paonet.view.article.ArticleDetailActivity
-import com.ditclear.paonet.view.auth.LoginActivity
-import com.ditclear.paonet.view.code.CodeDetailActivity
+import com.ditclear.paonet.view.ui.article.ArticleDetailActivity
+import com.ditclear.paonet.view.ui.auth.LoginActivity
+import com.ditclear.paonet.view.ui.code.CodeDetailActivity
+import com.ditclear.paonet.view.ui.home.MainActivity
 import dagger.Subcomponent
 
 /**
@@ -21,8 +21,10 @@ interface ActivityComponent {
 
     fun inject(activity: CodeDetailActivity)
 
+    fun inject(activity: MainActivity)
+
     fun inject(activity: LoginActivity)
 
-    fun plus(module: FragmentModule):FragmentComponent
+    fun supplyFragmentComponentBuilder():FragmentComponent.Builder
 
 }

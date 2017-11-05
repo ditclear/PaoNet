@@ -12,7 +12,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".view.home.MainActivity">
+        <activity android:name="com.ditclear.paonet.view.ui.home.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -20,17 +20,17 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".view.auth.LoginActivity"
+                android:name="com.ditclear.paonet.view.ui.auth.LoginActivity"
                 android:exported="false"
                 android:theme="@style/AppTheme.Translucent.Login"
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-                android:name=".view.search.SearchActivity" android:theme="@style/AppTheme.Secondary"/>
-        <activity android:name=".view.article.ArticleDetailActivity"/>
-        <activity android:name=".view.code.CodeDetailActivity"/>
+                android:name="com.ditclear.paonet.view.ui.search.SearchActivity" android:theme="@style/AppTheme.Secondary"/>
+        <activity android:name="com.ditclear.paonet.view.ui.article.ArticleDetailActivity"/>
+        <activity android:name="com.ditclear.paonet.view.ui.code.CodeDetailActivity"/>
         <activity
-                android:name=".view.setting.SettingsActivity"
+                android:name="com.ditclear.paonet.view.ui.setting.SettingsActivity"
                 android:label="@string/title_activity_settings">
         </activity>
     </application>

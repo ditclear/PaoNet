@@ -4,10 +4,6 @@
         >
 
     <data>
-
-        <variable
-                name="item"
-                type="java.util.Date"/>
     </data>
 
 

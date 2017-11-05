@@ -8,7 +8,7 @@
 
         <variable
                 name="item"
-                type="com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel"/>
+                type="com.ditclear.paonet.view.ui.article.viewmodel.ArticleItemViewModel"/>
 
         <variable
                 name="presenter"

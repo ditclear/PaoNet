@@ -13,11 +13,11 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.view.article.ArticleDetailActivity
-import com.ditclear.paonet.view.auth.LoginActivity
-import com.ditclear.paonet.view.search.SearchActivity
-import com.ditclear.paonet.view.transitions.FabTransform
-import com.ditclear.paonet.view.transitions.MorphTransform
+import com.ditclear.paonet.view.ui.article.ArticleDetailActivity
+import com.ditclear.paonet.view.ui.auth.LoginActivity
+import com.ditclear.paonet.view.ui.search.SearchActivity
+import com.ditclear.paonet.view.ui.transitions.FabTransform
+import com.ditclear.paonet.view.ui.transitions.MorphTransform
 
 
 /**

@@ -1,6 +1,6 @@
 package com.ditclear.paonet
 
-import org.junit.Assert.assertEquals
+import io.reactivex.Maybe
 import org.junit.Test
 
 /**
@@ -12,6 +12,12 @@ class ExampleUnitTest {
     @Test
     @Throws(Exception::class)
     fun addition_isCorrect() {
-        assertEquals(4, (2 + 2).toLong())
+        val a:String?=null
+        Maybe.just(1)
+                .map { a }
+                .map { t:String? -> t?.let { return@let "$t name"  }}
+                .subscribe({t: String? -> print(t?:"none") }
+                        ,{t: Throwable? -> t?.printStackTrace() })
+
     }
 }

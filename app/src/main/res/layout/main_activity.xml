@@ -5,6 +5,14 @@
 
     <data>
 
+        <variable
+                name="vm"
+                type="com.ditclear.paonet.view.ui.home.viewmodel.MainViewModel"/>
+
+        <variable
+                name="presenter"
+                type="com.ditclear.paonet.view.helper.presenter.Presenter"/>
+
     </data>
 
     <android.support.v4.widget.DrawerLayout
@@ -62,10 +70,13 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:fitsSystemWindows="true"
-                app:headerLayout="@layout/nav_header_main"
                 app:itemIconTint="@color/colorPrimary"
-                app:itemTextColor="@color/colorPrimary"
-                app:menu="@menu/activity_main_drawer">
+                app:itemTextColor="@color/colorPrimary">
+
+            <include layout="@layout/nav_header_main"
+                    android:id="@+id/nav_main_layout"
+                    app:vm="@{vm}"
+                    app:presenter="@{presenter}"/>
 
             <LinearLayout
                     android:layout_width="match_parent"
