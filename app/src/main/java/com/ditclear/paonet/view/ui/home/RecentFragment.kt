@@ -60,6 +60,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
                         val binding = holder.binding as SliderBinding
                         if (binding.slider.adapter == null) {
                             binding.slider.adapter = sliderAdapter
+                            binding.indicator.setViewPager(binding.slider)
                         }
                     }
                 }

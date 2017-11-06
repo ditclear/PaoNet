@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.helper.binds
 
 import android.databinding.BindingAdapter
-import android.graphics.Rect
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -72,8 +71,8 @@ fun bindOnRefresh(v: SwipeRefreshLayout, presenter: ListPresenter) {
     v.setOnRefreshListener { presenter.loadData(true) }
 }
 
-@BindingAdapter(value = *arrayOf("rv_adapter", "vertical"), requireAll = false)
-fun bindSlider(v: RecyclerView, adapter: RecyclerView.Adapter<*>, vertical: Boolean = true) {
+@BindingAdapter(value = *arrayOf("vertical"), requireAll = false)
+fun bindSlider(v: RecyclerView,  vertical: Boolean = true) {
 
     if (vertical) {
         v.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
@@ -82,13 +81,5 @@ fun bindSlider(v: RecyclerView, adapter: RecyclerView.Adapter<*>, vertical: Bool
             PagerSnapHelper().attachToRecyclerView(v)
         }
         v.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
-        v.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
-                super.getItemOffsets(outRect, view, parent, state)
-                outRect?.right = 20
-            }
-        })
     }
-    v.adapter = adapter
-
 }

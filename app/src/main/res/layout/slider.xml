@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        >
 
     <data>
-
     </data>
 
-    <com.ditclear.paonet.view.widget.recyclerview.RecyclerCoverFlow
-            android:id="@+id/slider"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
+            android:layout_height="@dimen/xdp_200.0">
 
-    </com.ditclear.paonet.view.widget.recyclerview.RecyclerCoverFlow>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/slider"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:vertical="@{false}">
 
+        </android.support.v7.widget.RecyclerView>
+        <com.ditclear.paonet.view.widget.indicator.CircleIndicator
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xdp_20.0"
+                android:layout_gravity="bottom"
+                app:ci_background="@android:color/white"
+                app:ci_selected_background="@color/deep_sky_blue"
+                app:ci_mode="solo"
+                app:ci_gravity="center"
+                app:ci_radius="@dimen/xdp_5.0"
+                app:ci_margin="@dimen/xdp_2.5"/>
+    </FrameLayout>
 </layout>
