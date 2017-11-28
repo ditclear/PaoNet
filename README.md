@@ -3,5 +3,17 @@
 
 遵循架构
 
-![](http://upload-images.jianshu.io/upload_images/3722695-fe58ac2b03c7377b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
- 
+![MVVM](http://upload-images.jianshu.io/upload_images/3722695-70230207c39b8601.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+### Todo
+
+- [ ] 横屏支持
+- [ ] 单元测试
+- [ ] TDD开发
+- [ ] Material Design
+- [ ] 多语言支持
+
+### License
+
+The MIT License 
+
