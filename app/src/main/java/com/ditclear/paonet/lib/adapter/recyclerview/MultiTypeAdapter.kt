@@ -23,12 +23,16 @@ class MultiTypeAdapter(context: Context, list: ObservableArrayList<Any>, val mul
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<Any>>() {
             override fun onItemRangeMoved(sender: ObservableList<Any>?, fromPosition: Int, toPosition: Int, itemCount: Int) {
-                notifyItemRangeRemoved(fromPosition,toPosition)
+                notifyItemMoved(fromPosition, toPosition)
             }
 
             override fun onItemRangeRemoved(sender: ObservableList<Any>?, positionStart: Int, itemCount: Int) {
-                (positionStart + itemCount..positionStart).forEach { mCollectionViewType.removeAt(it) }
-                notifyItemRangeRemoved(positionStart, itemCount)
+                for (i in positionStart + itemCount - 1 downTo positionStart) mCollectionViewType.removeAt(i)
+                if (sender?.isNotEmpty() == true) {
+                    notifyItemRangeRemoved(positionStart, itemCount)
+                } else {
+                    notifyDataSetChanged()
+                }
             }
 
             override fun onItemRangeChanged(sender: ObservableList<Any>?, positionStart: Int, itemCount: Int) {
@@ -37,8 +41,8 @@ class MultiTypeAdapter(context: Context, list: ObservableArrayList<Any>, val mul
 
             override fun onItemRangeInserted(sender: ObservableList<Any>?, positionStart: Int, itemCount: Int) {
                 sender?.run {
-                    (positionStart until positionStart+itemCount).forEach {
-                        mCollectionViewType.add(multiViewTyper.getViewType(this[it]))
+                    (positionStart until positionStart + itemCount).forEach {
+                        mCollectionViewType.add(it, multiViewTyper.getViewType(this[it]))
                     }
                     notifyItemRangeInserted(positionStart, itemCount)
                 }
