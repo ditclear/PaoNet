@@ -17,7 +17,7 @@
                 app:vertical="@{false}">
 
         </android.support.v7.widget.RecyclerView>
-        <com.ditclear.paonet.view.widget.indicator.CircleIndicator
+        <com.ditclear.paonet.helper.widget.indicator.CircleIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/xdp_20.0"

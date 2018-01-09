@@ -7,7 +7,7 @@ import com.ditclear.paonet.BR
 import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.R
 import com.ditclear.paonet.model.remote.exception.EmptyException
-import com.ditclear.paonet.view.helper.annotation.EmptyState
+import com.ditclear.paonet.helper.annotation.EmptyState
 
 /**
  * 页面描述：StateModel 用于控制toast 和 各种空状态

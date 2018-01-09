@@ -4,8 +4,8 @@ import android.view.View
 import android.widget.Toast
 import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.R
-import com.ditclear.paonet.view.helper.SpUtil
-import com.ditclear.paonet.view.helper.needsLogin
+import com.ditclear.paonet.helper.SpUtil
+import com.ditclear.paonet.helper.needsLogin
 import es.dmoral.toasty.Toasty
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around

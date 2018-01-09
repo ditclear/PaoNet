@@ -9,18 +9,18 @@
 
         <variable
                 name="vm"
-                type="com.ditclear.paonet.view.ui.code.viewmodel.CodeDetailViewModel"/>
+                type="com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel"/>
 
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.view.helper.presenter.Presenter"/>
+                type="com.ditclear.paonet.helper.presenter.Presenter"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/over_scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            tools:context=".view.ui.code.CodeDetailActivity">
+            tools:context=".view.code.CodeDetailActivity">
 
         <android.support.design.widget.AppBarLayout
                 android:id="@+id/app_bar"

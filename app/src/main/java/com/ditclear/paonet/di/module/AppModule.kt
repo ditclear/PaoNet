@@ -9,7 +9,7 @@ import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.model.remote.api.UserService
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.model.repository.UserRepository
-import com.ditclear.paonet.view.helper.Constants
+import com.ditclear.paonet.helper.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

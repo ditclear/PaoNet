@@ -7,10 +7,10 @@
         <import type="android.view.View"/>
         <variable
                 name="vm"
-                type="com.ditclear.paonet.view.ui.home.viewmodel.MainViewModel"/>
+                type="com.ditclear.paonet.view.home.viewmodel.MainViewModel"/>
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.view.helper.presenter.Presenter"/>
+                type="com.ditclear.paonet.helper.presenter.Presenter"/>
     </data>
 
     <RelativeLayout

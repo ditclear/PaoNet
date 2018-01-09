@@ -1,6 +1,6 @@
 package com.ditclear.paonet.viewmodel
 
-import com.ditclear.paonet.view.helper.annotation.EmptyState
+import com.ditclear.paonet.helper.annotation.EmptyState
 
 /**
  * 页面描述：PagedViewModel

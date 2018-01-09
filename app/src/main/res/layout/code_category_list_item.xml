@@ -5,7 +5,7 @@
     <data>
         <variable
                 name="item"
-                type="com.ditclear.paonet.view.ui.home.viewmodel.CategoryItemViewModel"/>
+                type="com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel"/>
         <variable
                 name="presenter"
                 type="com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter"/>
