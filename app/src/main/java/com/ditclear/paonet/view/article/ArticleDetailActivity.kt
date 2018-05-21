@@ -8,13 +8,13 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
+import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
-import com.ditclear.paonet.helper.Constants
+import com.ditclear.paonet.view.base.BaseActivity
 import javax.inject.Inject
 
 
@@ -36,7 +36,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
         viewModel.loadData().compose(bindToLifecycle())
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
-                        { t: Throwable? -> toastFailure(t!!) })
+                        { toastFailure(it) })
 
     }
 
@@ -61,9 +61,10 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
         getComponent().inject(this)
 
-        viewModel.article = article!!
         mBinding.vm = viewModel.apply {
-            this.article = article
+            article?.let {
+                this.article=it
+            }
         }
         mBinding.presenter = this
 
@@ -113,15 +114,13 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     private fun attentionTo() {
         viewModel.attentionTo().compose(bindToLifecycle())
-                .subscribe { t1: Any?, t2: Throwable? ->
-                    t2?.let { toastFailure(it) }
-                }
+                .subscribe({},{toastFailure(it)})
     }
 
     private fun stow() {
         viewModel.stow().compose(bindToLifecycle())
-                .subscribe({ t -> toastSuccess(t.message) }
-                        , { t: Throwable? -> t?.let { toastFailure(it) } })
+                .subscribe({toastSuccess(it.message) }
+                        , {  toastFailure(it) })
     }
 
 }

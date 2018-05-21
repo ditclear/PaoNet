@@ -1,5 +1,6 @@
 package com.ditclear.paonet.model.repository
 
+import android.arch.persistence.room.EmptyResultSetException
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.ArticleList
 import com.ditclear.paonet.model.data.TagList
@@ -13,8 +14,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/30.
  */
-class PaoRepository @Inject constructor(val remote: PaoService, val local: ArticleDao) {
-
+class PaoRepository @Inject constructor(private val remote: PaoService, private val local: ArticleDao) {
 
 
     /**
@@ -31,9 +31,11 @@ class PaoRepository @Inject constructor(val remote: PaoService, val local: Artic
     /**
      * 文章详情
      */
-    fun getArticle(articleId: Int): Single<Article> = remote.getArticleDetail(articleId)
-            .doOnSuccess { t -> t?.let { local.insertArticle(it) } }
-            .onErrorResumeNext { local.getArticleById(articleId) }
+    fun getArticle(articleId: Int): Single<Article> = local.getArticleById(articleId).onErrorResumeNext {
+        if (it is EmptyResultSetException) {
+            remote.getArticleDetail(articleId).doOnSuccess { t -> t?.let { local.insertArticle(it) } }
+        } else throw it
+    }
 
     /**
      * 代码列表
@@ -43,9 +45,12 @@ class PaoRepository @Inject constructor(val remote: PaoService, val local: Artic
     /**
      * 代码详情
      */
-    fun getCodeDetail(id: Int): Single<Article> = remote.getCodeDetail(id)
-            .doOnSuccess { t: Article? -> t?.let { local.insertArticle(it) } }
-            .onErrorResumeNext { local.getArticleById(id) }
+    fun getCodeDetail(id: Int): Single<Article> = local.getArticleById(id).onErrorResumeNext {
+        if (it is EmptyResultSetException) {
+            remote.getCodeDetail(id)
+                    .doOnSuccess { t: Article? -> t?.let { local.insertArticle(it) } }
+        } else throw it
+    }
 
     /**
      * 文章搜索

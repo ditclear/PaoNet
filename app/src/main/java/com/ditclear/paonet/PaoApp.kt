@@ -4,9 +4,9 @@ import android.app.Application
 import com.ditclear.paonet.di.component.AppComponent
 import com.ditclear.paonet.di.component.DaggerAppComponent
 import com.ditclear.paonet.di.module.AppModule
+import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.lib.network.NetMgr
 import com.ditclear.paonet.model.remote.BaseNetProvider
-import com.ditclear.paonet.helper.SpUtil
 import es.dmoral.toasty.Toasty
 
 /**
@@ -22,7 +22,7 @@ class PaoApp : Application() {
 
     companion object {
         private var instance: Application? = null
-        fun instance() = instance!!
+        fun instance() = instance?:throw Throwable("instance 还未初始化")
     }
 
 

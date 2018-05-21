@@ -85,7 +85,7 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
                 showLogin = false
                 showLogout = false
             }
-            .doFinally { showLogin = true }!!
+            .doFinally { showLogin = true }
 
 
     fun attemptToLogout() = repo.logout().getOriginData().async(1000)
@@ -93,7 +93,7 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
                 showLogin = false
                 showLogout = false
             }
-            .doFinally { showLogout = true }!!
+            .doFinally { showLogout = true }
 
 
 }

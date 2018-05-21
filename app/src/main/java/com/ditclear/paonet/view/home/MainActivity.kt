@@ -16,15 +16,15 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.MainActivityBinding
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
-import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.extens.switchFragment
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.navigateToSearch
 import com.ditclear.paonet.helper.needsLogin
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
@@ -143,7 +143,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
                 Single.just(isQuit)
                         .compose(bindToLifecycle())
                         .async(2000)
-                        .subscribe { t1, _ -> t1.let { isQuit = false } }
+                        .subscribe({isQuit = false },{})
             } else {
                 super.onBackPressed()
             }

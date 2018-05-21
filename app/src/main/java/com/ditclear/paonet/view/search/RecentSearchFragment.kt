@@ -6,14 +6,14 @@ import android.os.Bundle
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
+import com.ditclear.paonet.helper.annotation.ItemType
+import com.ditclear.paonet.helper.widget.ColorBrewer
 import com.ditclear.paonet.lib.adapter.recyclerview.BindingViewHolder
 import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.lib.adapter.recyclerview.ItemDecorator
 import com.ditclear.paonet.lib.adapter.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
-import com.ditclear.paonet.helper.widget.ColorBrewer
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
 import javax.inject.Inject
@@ -68,7 +68,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).compose(bindToLifecycle())
-                .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
+                .subscribe ({},{toastFailure(it)})
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {

@@ -9,15 +9,15 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.helper.annotation.ArticleType
+import com.ditclear.paonet.helper.extens.dpToPx
+import com.ditclear.paonet.helper.navigateToArticleDetail
+import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
-import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
-import com.ditclear.paonet.helper.annotation.ArticleType
-import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.helper.navigateToArticleDetail
+import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.viewmodel.StateModel
 import javax.inject.Inject
 
@@ -79,11 +79,9 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).compose(bindToLifecycle())
-                .subscribe { _, t2 ->
-                    t2?.let {
-                        toastFailure(it)
-                    }
-                }
+                .subscribe({},{
+                    toastFailure(it)
+                })
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -108,7 +106,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
         lazyLoad = true
         viewModel.tid = tid
         viewModel.keyWord = keyWord
-
+        mBinding.refreshLayout.setOnRefreshListener { loadData(true) }
         mBinding.run {
 
             vm = viewModel

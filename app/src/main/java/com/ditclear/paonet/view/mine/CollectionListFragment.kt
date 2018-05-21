@@ -10,15 +10,15 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
-import com.ditclear.paonet.view.code.CodeDetailActivity
-import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.helper.navigateToArticleDetail
+import com.ditclear.paonet.helper.presenter.ListPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
+import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 import com.ditclear.paonet.viewmodel.StateModel
 import javax.inject.Inject
@@ -77,7 +77,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).compose(bindToLifecycle())
-                .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
+                .subscribe ({},{toastFailure(it)})
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {

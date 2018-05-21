@@ -16,10 +16,10 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import com.ditclear.paonet.BuildConfig
 import com.ditclear.paonet.R
-import com.ditclear.paonet.model.data.BaseResponse
-import com.ditclear.paonet.model.remote.exception.EmptyException
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
+import com.ditclear.paonet.model.data.BaseResponse
+import com.ditclear.paonet.model.remote.exception.EmptyException
 import es.dmoral.toasty.Toasty
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -49,19 +49,23 @@ fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @Toast
     }
 }
 
-fun Activity.dispatchFailure(error: Throwable) {
-    if (BuildConfig.DEBUG) {
-        error.printStackTrace()
-    }
-    if (error !is EmptyException) {
-        error.message?.let { toast(it, ToastType.ERROR) }
-    } else if (error is SocketTimeoutException) {
-        error.message?.let { toast("网络连接超时", ToastType.ERROR) }
+fun Activity.dispatchFailure(error: Throwable?) {
+    error?.let {
+        if (BuildConfig.DEBUG) {
+            it.printStackTrace()
+        }
+        if (it is EmptyException) {
 
-    } else if (error is UnknownHostException || error is ConnectException) {
-        //网络未连接
-        error.message?.let { toast("网络未连接", ToastType.ERROR) }
+        } else if (error is SocketTimeoutException) {
+            it.message?.let { toast("网络连接超时", ToastType.ERROR) }
 
+        } else if (it is UnknownHostException || it is ConnectException) {
+            //网络未连接
+            it.message?.let { toast("网络未连接", ToastType.ERROR) }
+
+        }else{
+            it.message?.let { toast(it, ToastType.ERROR) }
+        }
     }
 }
 

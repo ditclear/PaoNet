@@ -1,15 +1,13 @@
 package com.ditclear.paonet.di.module
 
 import android.app.Application
+import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.lib.network.NetMgr
 import com.ditclear.paonet.model.local.AppDatabase
 import com.ditclear.paonet.model.local.dao.ArticleDao
 import com.ditclear.paonet.model.local.dao.UserDao
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.model.remote.api.UserService
-import com.ditclear.paonet.model.repository.PaoRepository
-import com.ditclear.paonet.model.repository.UserRepository
-import com.ditclear.paonet.helper.Constants
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -46,12 +44,4 @@ class AppModule(val app:Application){
     @Provides
     fun provideUserDao(context:Application):UserDao = AppDatabase.getInstance(context).userDao()
 
-    @Singleton
-    @Provides
-    fun provideArticleRepo(remote:PaoService,local:ArticleDao)= PaoRepository(remote,local)
-
-
-    @Singleton
-    @Provides
-    fun provideUserRepo(remote:UserService,local:UserDao)=UserRepository(remote,local)
 }

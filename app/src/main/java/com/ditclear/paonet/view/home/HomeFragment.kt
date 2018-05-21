@@ -56,6 +56,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>(){
     }
 
     override fun initView() {
+        mBinding.viewPager.offscreenPageLimit=pagerAdapter.count
         mBinding.viewPager.adapter=pagerAdapter
         show()
     }

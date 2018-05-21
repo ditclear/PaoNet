@@ -6,13 +6,13 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.CodeDetailActivityBinding
+import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
-import com.ditclear.paonet.helper.Constants
 import javax.inject.Inject
 
 /**
@@ -30,15 +30,15 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun loadData() {
 
-        viewModel.loadData().compose(bindToLifecycle()).subscribe({ t: Boolean? -> t?.let { isStow(it) } },
-                { t: Throwable? -> t?.let {toastFailure(it) } })
+        viewModel.loadData().compose(bindToLifecycle()).subscribe({ isStow(it) },
+                { toastFailure(it) })
     }
 
     fun isStow(stow: Boolean) {
         mBinding.fab.drawable.setTint(
-                if (stow){
+                if (stow) {
                     getCompactColor(R.color.stow_color)
-                }else{
+                } else {
                     getCompactColor(R.color.tools_color)
                 })
     }
@@ -52,14 +52,14 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
             overridePendingTransition(0, 0)
         }
         getComponent().inject(this)
-        viewModel.article=article
+        viewModel.article = article
         mBinding.run {
-            vm=viewModel
-            presenter=this@CodeDetailActivity
+            vm = viewModel
+            presenter = this@CodeDetailActivity
             scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (scrollY-oldScrollY>10){
+                if (scrollY - oldScrollY > 10) {
                     mBinding.fab.hide()
-                }else if(scrollY-oldScrollY<-10){
+                } else if (scrollY - oldScrollY < -10) {
                     mBinding.fab.show()
                 }
             })
@@ -71,10 +71,10 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
     @CheckLogin
     @SingleClick
     override fun onClick(v: View?) {
-        when(v?.id){
+        when (v?.id) {
             R.id.fab -> viewModel.stow().compose(bindToLifecycle())
-                    .subscribe({ t -> toastSuccess(t.message) }
-                            , { t: Throwable? -> toastFailure(t ?: Exception("收藏失败")) })
+                    .subscribe({ toastSuccess(it.message) }
+                            , { toastFailure(it) })
         }
     }
 

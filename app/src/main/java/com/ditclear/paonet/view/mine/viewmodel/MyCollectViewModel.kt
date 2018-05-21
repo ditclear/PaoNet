@@ -25,19 +25,20 @@ constructor(private val repo: UserRepository) : PagedViewModel() {
 
     fun loadData(isRefresh: Boolean) =
             repo.collectionArticle(getPage(isRefresh), type).async(1000)
-                    .map { articleList ->
-                        with(articleList) {
-                            if (isRefresh) {
-                                obserableList.clear()
-                                if (items==null|| items.isEmpty()){
-                                    state.showEmpty(1)
-                                }else {
-                                    state.hideEmpty()
-                                }
+                    .doOnSuccess {
+                        if (isRefresh) {
+                            obserableList.clear()
+                            if (it.items == null || it.items.isEmpty()) {
+                                state.showEmpty(1)
+                            } else {
+                                state.hideEmpty()
                             }
-                            loadMore.set(!incomplete_results)
-                            return@map items?.map { ArticleItemViewModel(it) }?.let { obserableList.addAll(it) }
                         }
-                    }.doOnSubscribe { startLoad() }.doFinally { stopLoad() }
+                        loadMore.set(!it.incomplete_results)
+                        it.items?.let {
+                            obserableList.addAll(it.map { ArticleItemViewModel(it) })
+                        }
+
+                    }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }
 
 }

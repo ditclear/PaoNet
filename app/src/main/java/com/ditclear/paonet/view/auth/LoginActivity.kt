@@ -5,12 +5,12 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.LoginActivityBinding
-import com.ditclear.paonet.model.data.User
-import com.ditclear.paonet.view.base.BaseActivity
-import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.transitions.FabTransform
 import com.ditclear.paonet.helper.transitions.MorphTransform
+import com.ditclear.paonet.model.data.User
+import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
+import com.ditclear.paonet.view.base.BaseActivity
 import javax.inject.Inject
 
 /**
@@ -65,17 +65,16 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.login_btn -> viewModel.attemptToLogIn().compose(bindToLifecycle())
-                    .subscribe({ t: User? -> t.let { onLoginSuccess(it) } }
-                            , { t: Throwable? -> t?.let { toastFailure(it) } })
+                    .subscribe({onLoginSuccess(it)  }
+                            , { toastFailure(it)  })
 
             R.id.logout_btn -> viewModel.attemptToLogout().compose(bindToLifecycle())
-                    .subscribe { t1, t2 ->
-                        t1?.let {
-                            SpUtil.logout()
-                            dismiss(v)
-                        }
-                        t2?.let { toastFailure(it) }
-                    }
+                    .subscribe({
+                        SpUtil.logout()
+                        dismiss(v)
+                    },{
+                        toastFailure(it)
+                    })
             R.id.super_container -> dismiss(v)
         }
 

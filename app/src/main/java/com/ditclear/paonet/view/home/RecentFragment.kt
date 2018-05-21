@@ -11,11 +11,11 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.databinding.SliderBinding
-import com.ditclear.paonet.lib.adapter.recyclerview.*
 import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
+import com.ditclear.paonet.lib.adapter.recyclerview.*
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
@@ -83,7 +83,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).compose(bindToLifecycle())
-                .subscribe { _, t2 -> t2?.let { toastFailure(it) } }
+                .subscribe({},{toastFailure(it)})
 
 
     }

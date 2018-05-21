@@ -30,7 +30,7 @@ class RecentSearchViewModel @Inject constructor( val repo: PaoRepository) : Page
                             obserableList.clear()
                         }
                         obserableList.add("热门搜索:")
-                        t?.run { obserableList.addAll(this) }
+                        t?.let { obserableList.addAll(it) }
                     }
 
 

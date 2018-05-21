@@ -82,7 +82,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),Presen
         msg?.let { toast(it, ToastType.SUCCESS) }
     }
 
-    fun toastFailure(error: Throwable) {
+    fun toastFailure(error: Throwable?) {
         dispatchFailure(error)
     }
 

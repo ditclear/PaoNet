@@ -2,15 +2,15 @@ package com.ditclear.paonet.view.article.viewmodel
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.model.data.BaseResponse
-import com.ditclear.paonet.model.repository.PaoRepository
-import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.Utils
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.extens.getOriginData
+import com.ditclear.paonet.model.data.Article
+import com.ditclear.paonet.model.data.BaseResponse
+import com.ditclear.paonet.model.repository.PaoRepository
+import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,9 +34,11 @@ constructor(private val repo: PaoRepository, private val userRepo: UserRepositor
 
     //加载详情
     fun loadData() = repo.getArticle(article.id).subscribeOn(Schedulers.io())
-            .doOnSuccess { t ->
-                val data = Utils.processImgSrc(t!!.content!!, Constants.HOST_PAO)
-                markdown.set(data)
+            .doOnSuccess {
+                it?.content?.let {
+                    val data = Utils.processImgSrc(it, Constants.HOST_PAO)
+                    markdown.set(data)
+                }
                 loading.set(false)
             }.flatMap {
         if (SpUtil.user == null) {
@@ -45,11 +47,16 @@ constructor(private val repo: PaoRepository, private val userRepo: UserRepositor
             return@flatMap userRepo.isStow(article.id).getOriginData()
                     .map { t: BaseResponse? -> t?.data?.contentEquals("1") }
         }
-    }.observeOn(AndroidSchedulers.mainThread())!!
+    }.observeOn(AndroidSchedulers.mainThread())
 
 
     //关注
-    fun attentionTo() = (article.user?.id?.let { userRepo.followUser(it).getOriginData().async() } ?: Single.error<Any> { NullPointerException("用户不存在") })!!
+    fun attentionTo()=Single.create<Int> {submit->
+        article.user?.id?.let {
+            submit.onSuccess(it)
+        }?:submit.onError(Throwable("用户不存在"))
+    }.flatMap { userRepo.followUser(it) }.getOriginData().async()
+
 
 
     //收藏

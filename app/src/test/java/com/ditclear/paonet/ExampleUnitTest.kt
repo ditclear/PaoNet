@@ -1,6 +1,5 @@
 package com.ditclear.paonet
 
-import io.reactivex.Maybe
 import org.junit.Test
 
 /**
@@ -13,11 +12,7 @@ class ExampleUnitTest {
     @Throws(Exception::class)
     fun addition_isCorrect() {
         val a:String?=null
-        Maybe.just(1)
-                .map { a }
-                .map { t:String? -> t?.let { return@let "$t name"  }}
-                .subscribe({t: String? -> print(t?:"none") }
-                        ,{t: Throwable? -> t?.printStackTrace() })
+        print(a)
 
     }
 }
