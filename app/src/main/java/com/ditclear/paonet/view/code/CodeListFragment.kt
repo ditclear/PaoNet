@@ -88,7 +88,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity.navigateToActivity(CodeDetailActivity::class.java, item.article)
+        activity?.navigateToActivity(CodeDetailActivity::class.java, item.article)
 
     }
 
@@ -111,7 +111,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 addItemDecoration(object : DividerItemDecoration(activity, VERTICAL) {
                     override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect?.top = activity.dpToPx(R.dimen.xdp_12_0)
+                        outRect?.top = activity?.dpToPx(R.dimen.xdp_12_0)
                     }
                 })
 

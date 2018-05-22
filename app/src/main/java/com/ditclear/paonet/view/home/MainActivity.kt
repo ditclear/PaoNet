@@ -109,7 +109,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
             presenter = this@MainActivity
         }
 
-        mBinding.navMainLayout.navCodeLayout.recyclerView.run {
+        mBinding.navMainLayout?.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
             layoutManager = LinearLayoutManager(mContext)
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
@@ -117,7 +117,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
         changeFragment(homeFragment)
         mBinding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
-            override fun onDrawerClosed(drawerView: View?) {
+            override fun onDrawerClosed(drawerView: View) {
                 super.onDrawerClosed(drawerView)
 
             }

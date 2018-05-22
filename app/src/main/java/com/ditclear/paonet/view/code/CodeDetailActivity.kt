@@ -34,9 +34,9 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
                 { toastFailure(it) })
     }
 
-    fun isStow(stow: Boolean) {
+    fun isStow(stow: Boolean?) {
         mBinding.fab.drawable.setTint(
-                if (stow) {
+                if (stow==true) {
                     getCompactColor(R.color.stow_color)
                 } else {
                     getCompactColor(R.color.tools_color)

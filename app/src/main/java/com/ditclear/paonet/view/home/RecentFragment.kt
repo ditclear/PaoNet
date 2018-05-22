@@ -35,7 +35,9 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     override fun onItemClick(v: View?, t: Any) {
         if (t is ArticleItemViewModel) {
-            navigateToArticleDetail(activity, v, t.article)
+            activity?.let {
+                navigateToArticleDetail(it, v, t.article)
+            }
         }
     }
 
@@ -115,7 +117,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
                         if (layoutManager is LinearLayoutManager) {
                             if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
                                 if (current != 0) {
-                                    outRect?.bottom = activity.dpToPx(R.dimen.xdp_12_0)
+                                    outRect?.bottom = activity?.dpToPx(R.dimen.xdp_12_0)
                                 }
                             }
                         }

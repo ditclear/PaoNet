@@ -67,9 +67,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), Presenter {
         initArgs(savedInstanceState)
     }
 
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mContext = activity
+        mContext = activity?:throw Exception("activity 为null")
         initView()
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
@@ -80,7 +82,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), Presenter {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
         return mBinding.root
     }
@@ -123,11 +125,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), Presenter {
     }
 
     fun toastSuccess(msg: String?) {
-        msg?.let { activity.toast(it, ToastType.SUCCESS) }
+        msg?.let { activity?.toast(it, ToastType.SUCCESS) }
     }
 
     fun toastFailure(error: Throwable) {
-        activity.dispatchFailure(error)
+        activity?.dispatchFailure(error)
     }
 
     override fun onClick(v: View?) {

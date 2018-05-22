@@ -34,7 +34,6 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         get() = viewModel.state
 
 
-
     @Inject
     lateinit var viewModel: MyCollectViewModel
 
@@ -44,7 +43,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         } else R.layout.article_list_item
     }
     val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, layoutItemId, viewModel.obserableList).apply {
+        PagedAdapter<ArticleItemViewModel>(mContext, layoutItemId, viewModel.obserableList).apply {
             itemPresenter = this@CollectionListFragment
         }
     }
@@ -77,19 +76,21 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).compose(bindToLifecycle())
-                .subscribe ({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
-        collectionType = arguments.getInt(COLLECTION_TYPE, 1)
+        collectionType = arguments?.getInt(COLLECTION_TYPE, 1) ?: 1
     }
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        if (collectionType == 1) {
-            navigateToArticleDetail(activity, v?.findViewById(R.id.thumbnail_iv), item.article)
-        } else {
-            activity.navigateToActivity(CodeDetailActivity::class.java, item.article)
+        activity?.let {
+            if (collectionType == 1) {
+                navigateToArticleDetail(it, v?.findViewById(R.id.thumbnail_iv), item.article)
+            } else {
+                it.navigateToActivity(CodeDetailActivity::class.java, item.article)
+            }
         }
     }
 
@@ -107,12 +108,12 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
             vm = viewModel.apply {
                 type = collectionType
             }
-            presenter=this@CollectionListFragment
+            presenter = this@CollectionListFragment
             recyclerView.adapter = mAdapter
             recyclerView.addItemDecoration(object : DividerItemDecoration(activity, VERTICAL) {
                 override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect?.top = activity.dpToPx(R.dimen.xdp_12_0)
+                    outRect?.top = activity?.dpToPx(R.dimen.xdp_12_0)
                 }
             })
         }

@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.4-2'
+    ext.kotlin_version = '1.2.41'
     repositories {
         maven {
             url 'https://maven.google.com'
@@ -9,11 +9,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         //aspecj
-        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:1.0.10'
-        classpath 'org.aspectj:aspectjtools:1.8.9'
+        classpath 'com.hujiang.aspectjx:gradle-android-plugin-aspectjx:2.0.0'
+//        classpath 'org.aspectj:aspectjtools:1.8.13'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -29,11 +29,10 @@ allprojects {
 
 
 ext {
-    buildToolsVersion = "26.0.1"
-    supportLibVersion = "26.1.0"
-    archLifecycleVersion = "1.0.0-beta1"
-    archRoomVersion = "1.0.0-beta1"
-    pagingVersion="1.0.0-alpha2"
+    buildToolsVersion = "27.0.3"
+    supportLibVersion = "27.1.1"
+    archLifecycleVersion = "1.1.1"
+    archRoomVersion = "1.1.0"
     retrofitVersion = "2.3.0"
 }
 

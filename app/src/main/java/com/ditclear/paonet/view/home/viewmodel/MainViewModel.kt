@@ -3,10 +3,10 @@ package com.ditclear.paonet.view.home.viewmodel
 import android.databinding.*
 import com.android.databinding.library.baseAdapters.BR
 import com.ditclear.paonet.di.scope.ActivityScope
+import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.remote.api.PaoService
-import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.viewmodel.BaseViewModel
 import javax.inject.Inject
 
@@ -22,9 +22,9 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
     val categories = ObservableArrayList<CategoryItemViewModel>()
     val cateVisible=ObservableBoolean(false)
 
-    var face: String? = user.get().face
+    var face: String? = user.get()?.face
         @Bindable get
-    var qianming: String? = user.get().qianming
+    var qianming: String? = user.get()?.qianming
         @Bindable get
 
     init {
@@ -41,11 +41,11 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
 
     //////////////////bind view/////////////
     @Bindable
-    fun getNavHeaderName(): String = user.get().nickname ?: ""
+    fun getNavHeaderName(): String = user.get()?.nickname ?: ""
 
 
     @Bindable()
-    fun getLoginBtnText() = if (user.get().nickname == null) "LOG IN" else "LOG OUT"
+    fun getLoginBtnText() = if (user.get()?.nickname == null) "LOG IN" else "LOG OUT"
 
     /**
      * 获取代码分类

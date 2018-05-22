@@ -12,12 +12,12 @@ import android.support.v4.content.ContextCompat
 import android.view.ContextThemeWrapper
 import android.view.View
 import com.ditclear.paonet.R
+import com.ditclear.paonet.helper.transitions.FabTransform
+import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.auth.LoginActivity
 import com.ditclear.paonet.view.search.SearchActivity
-import com.ditclear.paonet.helper.transitions.FabTransform
-import com.ditclear.paonet.helper.transitions.MorphTransform
 
 
 /**
@@ -53,12 +53,15 @@ fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=nu
     } else {
         MorphTransform.addExtras(login, startColor,radius)
     }
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-            startActivity,
-            triggeringView, context.resources.getString(R.string.transition_login))
+    startActivity?.let {
 
-    (if (startActivity != null) startActivity else throw NullPointerException("Expression 'startActivity' must not be null"))
-            .startActivityForResult(login,1,options.toBundle())
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                startActivity,
+                triggeringView, context.resources.getString(R.string.transition_login))
+
+        startActivity
+                .startActivityForResult(login, 1, options.toBundle())
+    }
 }
 
 //搜索

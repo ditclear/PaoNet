@@ -132,11 +132,13 @@ fun Fragment.navigateToWebPage(@NonNull url: String?) {
     if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {
         return
     }
+    context?.let {
     val intent = CustomTabsIntent.Builder()
             .setShowTitle(true)
-            .setToolbarColor(ContextCompat.getColor(activity, R.color.theme))
+            .setToolbarColor(ContextCompat.getColor(it, R.color.theme))
             .build()
 
     intent.launchUrl(activity, Uri.parse(url))
+    }
 }
 

@@ -37,7 +37,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     lateinit var viewModel: MyArticleViewModel
 
     val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }
+        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }
     }
 
     var showTab: Boolean = false
@@ -64,12 +64,12 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
-        showTab = arguments.getBoolean(SHOW_TAB, false)
+        showTab = arguments?.getBoolean(SHOW_TAB, false)?:false
     }
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity.navigateToActivity(ArticleDetailActivity::class.java, item.article)
+        activity?.navigateToActivity(ArticleDetailActivity::class.java, item.article)
     }
 
     override fun onAttach(context: Context?) {
@@ -88,7 +88,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
             recyclerView.addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
                 override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect?.top = activity.dpToPx(R.dimen.xdp_12_0)
+                    outRect?.top = activity?.dpToPx(R.dimen.xdp_12_0)
                 }
             })
         }

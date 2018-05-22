@@ -40,7 +40,7 @@ open class PagedAdapter<T>(context: Context, private val layoutRes: Int, list: O
         })
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int) =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             BindingViewHolder(DataBindingUtil.inflate<ViewDataBinding>(mLayoutInflater, layoutRes, parent, false))
 
 

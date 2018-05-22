@@ -47,7 +47,7 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
-        keyWord = arguments.getString(KEY_KEYWORD)
+        keyWord = arguments?.getString(KEY_KEYWORD)?:""
     }
 
     override fun initView() {

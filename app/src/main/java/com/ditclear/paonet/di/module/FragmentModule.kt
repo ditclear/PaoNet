@@ -4,9 +4,9 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
-import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ArticleType
+import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.RecentFragment
@@ -30,7 +30,7 @@ class FragmentModule(private val fragment: RxFragment) {
     fun provideFragment() = fragment
 
     @Provides
-    fun provideContext(): Context = fragment.context
+    fun provideContext(): Context = fragment.context ?: throw Exception("fragment context is null")
 
     @Provides
     fun provideFragmentManager(): FragmentManager = fragment.childFragmentManager

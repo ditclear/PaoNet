@@ -36,7 +36,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     lateinit var viewModel: ArticleListViewModel
 
     private val mAdapter by lazy {
-        PagedAdapter<ArticleItemViewModel>(activity, R.layout.article_list_item, viewModel.obserableList).apply {
+        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply {
             itemPresenter = this@ArticleListFragment
         }
     }
@@ -93,7 +93,9 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
 
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        navigateToArticleDetail(activity, v?.findViewById(R.id.thumbnail_iv), article = item.article)
+        activity?.let {
+        navigateToArticleDetail(it, v?.findViewById(R.id.thumbnail_iv), article = item.article)
+        }
     }
 
     override fun onAttach(context: Context?) {
@@ -116,7 +118,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
                 addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
                     override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect?.top = activity.dpToPx(R.dimen.xdp_12_0)
+                        outRect?.top = activity?.dpToPx(R.dimen.xdp_12_0)
                     }
                 })
             }
