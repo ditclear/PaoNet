@@ -13,8 +13,8 @@ import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.extens.navigateToActivity
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
@@ -36,8 +36,8 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     @Inject
     lateinit var viewModel: MyArticleViewModel
 
-    val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }
+    val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }
     }
 
     var showTab: Boolean = false

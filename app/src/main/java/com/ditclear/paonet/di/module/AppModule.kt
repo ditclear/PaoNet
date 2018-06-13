@@ -2,7 +2,7 @@ package com.ditclear.paonet.di.module
 
 import android.app.Application
 import com.ditclear.paonet.helper.Constants
-import com.ditclear.paonet.lib.network.NetMgr
+import com.ditclear.paonet.helper.network.NetMgr
 import com.ditclear.paonet.model.local.AppDatabase
 import com.ditclear.paonet.model.local.dao.ArticleDao
 import com.ditclear.paonet.model.local.dao.UserDao

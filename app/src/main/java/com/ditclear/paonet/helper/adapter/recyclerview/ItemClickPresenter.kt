@@ -1,4 +1,4 @@
-package com.ditclear.paonet.lib.adapter.recyclerview
+package com.ditclear.paonet.helper.adapter.recyclerview
 
 import android.databinding.ViewDataBinding
 import android.view.View
@@ -15,4 +15,11 @@ interface  ItemClickPresenter<in Any> {
 
 interface ItemDecorator{
     fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int)
+}
+
+interface ItemAnimator{
+
+    fun scrollUpAnim(v:View)
+
+    fun scrollDownAnim(v: View)
 }

@@ -1,4 +1,4 @@
-package com.ditclear.paonet.lib.adapter.recyclerview
+package com.ditclear.paonet.helper.adapter.recyclerview
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -31,6 +31,7 @@ class MultiTypeAdapter(context: Context, list: ObservableArrayList<Any>, val mul
                 if (sender?.isNotEmpty() == true) {
                     notifyItemRangeRemoved(positionStart, itemCount)
                 } else {
+                    mLastPosition = -1
                     notifyDataSetChanged()
                 }
             }

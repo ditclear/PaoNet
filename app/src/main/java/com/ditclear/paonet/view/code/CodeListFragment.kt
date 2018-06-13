@@ -13,8 +13,8 @@ import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.extens.navigateToActivity
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
@@ -37,8 +37,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     lateinit var viewModel: CodeListViewModel
 
 
-    private val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, viewModel.observableList).apply {
+    private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, viewModel.observableList).apply {
             itemPresenter = this@CodeListFragment
         }
     }

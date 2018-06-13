@@ -1,4 +1,4 @@
-package com.ditclear.paonet.lib.adapter.recyclerview
+package com.ditclear.paonet.helper.adapter.recyclerview
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -8,11 +8,11 @@ import android.view.ViewGroup
 
 
 /**
- * 页面描述：PagedAdapter
+ * 页面描述：SingleTypeAdapter
  *
  * Created by ditclear on 2017/10/3.
  */
-open class PagedAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableList<T>) : BaseViewAdapter<T>(context, list) {
+open class SingleTypeAdapter<T>(context: Context, private val layoutRes: Int, list: ObservableList<T>) : BaseViewAdapter<T>(context, list) {
 
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<T>>() {
@@ -34,7 +34,12 @@ open class PagedAdapter<T>(context: Context, private val layoutRes: Int, list: O
 
             override fun onItemRangeRemoved(contributorViewModels: ObservableList<T>, i: Int, i1: Int) {
 
-                notifyDataSetChanged()
+                if (contributorViewModels.isEmpty()) {
+                    mLastPosition = -1
+                    notifyDataSetChanged()
+                } else {
+                    notifyItemRangeRemoved(i, i1)
+                }
             }
 
         })

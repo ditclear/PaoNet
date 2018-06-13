@@ -3,7 +3,7 @@ package com.ditclear.paonet.view.home.viewmodel
 import android.databinding.ObservableArrayList
 import android.util.Log
 import com.ditclear.paonet.helper.extens.async
-import com.ditclear.paonet.lib.adapter.recyclerview.Dummy
+import com.ditclear.paonet.helper.adapter.recyclerview.Dummy
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel

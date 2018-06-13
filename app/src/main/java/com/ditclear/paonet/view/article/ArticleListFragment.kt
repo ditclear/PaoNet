@@ -9,12 +9,12 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
@@ -36,7 +36,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     lateinit var viewModel: ArticleListViewModel
 
     private val mAdapter by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply {
             itemPresenter = this@ArticleListFragment
         }
     }

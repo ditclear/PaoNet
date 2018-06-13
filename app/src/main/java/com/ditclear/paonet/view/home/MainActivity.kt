@@ -22,8 +22,8 @@ import com.ditclear.paonet.helper.extens.switchFragment
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.navigateToSearch
 import com.ditclear.paonet.helper.needsLogin
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
@@ -45,7 +45,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     lateinit var viewModel: MainViewModel
 
     val adapter by lazy {
-        PagedAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
+        SingleTypeAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
                 viewModel.categories).apply {
             itemPresenter = this@MainActivity
         }

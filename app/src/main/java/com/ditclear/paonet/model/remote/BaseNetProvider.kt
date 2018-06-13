@@ -3,8 +3,8 @@ package com.ditclear.paonet.model.remote
 
 import android.content.Context
 import com.ditclear.paonet.BuildConfig
-import com.ditclear.paonet.lib.network.NetProvider
-import com.ditclear.paonet.lib.network.RequestHandler
+import com.ditclear.paonet.helper.network.NetProvider
+import com.ditclear.paonet.helper.network.RequestHandler
 import com.ditclear.paonet.model.remote.exception.ApiException
 import com.franmontiel.persistentcookiejar.PersistentCookieJar
 import com.franmontiel.persistentcookiejar.cache.SetCookieCache

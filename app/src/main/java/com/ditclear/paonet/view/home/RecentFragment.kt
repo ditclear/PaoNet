@@ -15,7 +15,7 @@ import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.*
+import com.ditclear.paonet.helper.adapter.recyclerview.*
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
@@ -44,8 +44,8 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     @Inject
     lateinit var viewModel: RecentViewModel
 
-    val sliderAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }
+    val sliderAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }
     }
 
     val mAdapter: MultiTypeAdapter by lazy {

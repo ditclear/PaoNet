@@ -8,10 +8,10 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
 import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.widget.ColorBrewer
-import com.ditclear.paonet.lib.adapter.recyclerview.BindingViewHolder
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemDecorator
-import com.ditclear.paonet.lib.adapter.recyclerview.MultiTypeAdapter
+import com.ditclear.paonet.helper.adapter.recyclerview.BindingViewHolder
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemDecorator
+import com.ditclear.paonet.helper.adapter.recyclerview.MultiTypeAdapter
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.google.android.flexbox.FlexboxLayoutManager

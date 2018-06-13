@@ -5,7 +5,7 @@ import com.ditclear.paonet.di.component.AppComponent
 import com.ditclear.paonet.di.component.DaggerAppComponent
 import com.ditclear.paonet.di.module.AppModule
 import com.ditclear.paonet.helper.SpUtil
-import com.ditclear.paonet.lib.network.NetMgr
+import com.ditclear.paonet.helper.network.NetMgr
 import com.ditclear.paonet.model.remote.BaseNetProvider
 import es.dmoral.toasty.Toasty
 

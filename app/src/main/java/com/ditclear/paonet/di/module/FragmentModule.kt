@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ArticleType
-import com.ditclear.paonet.lib.adapter.viewpager.AbstractPagerAdapter
+import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.RecentFragment

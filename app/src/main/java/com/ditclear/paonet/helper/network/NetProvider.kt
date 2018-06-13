@@ -1,4 +1,4 @@
-package com.ditclear.paonet.lib.network
+package com.ditclear.paonet.helper.network
 
 import okhttp3.CookieJar
 import okhttp3.Interceptor

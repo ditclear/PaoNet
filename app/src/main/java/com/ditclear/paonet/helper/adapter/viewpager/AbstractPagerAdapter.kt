@@ -1,4 +1,4 @@
-package com.ditclear.paonet.lib.adapter.viewpager
+package com.ditclear.paonet.helper.adapter.viewpager
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

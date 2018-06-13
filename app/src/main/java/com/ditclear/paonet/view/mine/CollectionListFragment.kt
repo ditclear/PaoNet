@@ -14,8 +14,8 @@ import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.extens.navigateToActivity
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.lib.adapter.recyclerview.PagedAdapter
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.CodeDetailActivity
@@ -42,8 +42,8 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
             R.layout.collect_code_list_item
         } else R.layout.article_list_item
     }
-    val mAdapter: PagedAdapter<ArticleItemViewModel> by lazy {
-        PagedAdapter<ArticleItemViewModel>(mContext, layoutItemId, viewModel.obserableList).apply {
+    val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, layoutItemId, viewModel.obserableList).apply {
             itemPresenter = this@CollectionListFragment
         }
     }

@@ -8,7 +8,7 @@
                 type="com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel"/>
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.lib.adapter.recyclerview.ItemClickPresenter"/>
+                type="com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter"/>
     </data>
 
     <TextView
