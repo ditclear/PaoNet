@@ -26,7 +26,9 @@
                 android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-                android:name="com.ditclear.paonet.view.search.SearchActivity" android:theme="@style/AppTheme.Secondary"/>
+                android:name="com.ditclear.paonet.view.search.SearchActivity"
+                android:windowSoftInputMode="stateAlwaysHidden"
+                android:theme="@style/AppTheme.Secondary"/>
         <activity android:name="com.ditclear.paonet.view.article.ArticleDetailActivity"/>
         <activity android:name="com.ditclear.paonet.view.code.CodeDetailActivity"/>
         <activity

@@ -10,10 +10,10 @@
         <!--<item name="android:textColorHint">@color/tools_color</item>-->
         <!-- 允许使用transitions -->
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
         <item name="android:windowAllowEnterTransitionOverlap">false</item>
-        <item name="android:windowSharedElementsUseOverlay">false</item>
-
+        <item name="android:windowAllowReturnTransitionOverlap">false</item>
+        <item name="android:windowEnterTransition">@android:transition/slide_bottom</item>
+        <item name="android:windowExitTransition">@android:transition/no_transition</item>
     </style>
 
     <style name="AppTheme.Secondary">
@@ -24,6 +24,7 @@
         <item name="android:textColorPrimary">@color/colorPrimary</item>
         <item name="android:editTextColor">@color/colorPrimary</item>
     </style>
+
     <style name="AppTheme.Translucent">
         <!-- using a semi-transparent window background for the drag-back gesture -->
         <item name="android:windowBackground">@color/scrim</item>
@@ -52,9 +53,8 @@
     </style>
 
     <style name="AppTheme.Detail">
-        <item name="android:windowSharedElementsUseOverlay">true</item>
-        <item name="android:windowAllowReturnTransitionOverlap">true</item>
     </style>
+
     <style name="AppTheme.Translucent.Login">
         <item name="android:windowAllowReturnTransitionOverlap">false</item>
         <item name="android:colorControlActivated">?android:colorAccent</item>

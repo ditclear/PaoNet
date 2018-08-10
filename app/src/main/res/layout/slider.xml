@@ -4,6 +4,7 @@
         >
 
     <data>
+        <import type="android.view.Gravity"/>
     </data>
 
     <FrameLayout
@@ -17,6 +18,12 @@
                 app:vertical="@{false}">
 
         </android.support.v7.widget.RecyclerView>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/xdp_90.0"
+                app:gravity ="@{Gravity.BOTTOM}"
+                app:num_step = "@{10}"
+                android:layout_gravity="bottom"/>
         <com.ditclear.paonet.helper.widget.indicator.CircleIndicator
                 android:id="@+id/indicator"
                 android:layout_width="match_parent"

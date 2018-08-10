@@ -6,7 +6,7 @@
     <data>
 
         <import type="android.view.View"/>
-
+        <import type="android.view.Gravity"/>
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel"/>
@@ -47,6 +47,12 @@
                         android:fitsSystemWindows="true"
                         app:url="@{vm.article.thumbnail}"
                         android:scaleType="centerCrop"/>
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/xdp_90.0"
+                        app:gravity ="@{Gravity.BOTTOM}"
+                        app:num_step = "@{10}"
+                        android:layout_gravity="bottom"/>
 
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
@@ -62,6 +68,7 @@
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:transitionGroup="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout

@@ -14,6 +14,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -44,9 +50,6 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:palette-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
-    implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
-    implementation 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
-    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
     implementation 'android.arch.lifecycle:viewmodel:'+ rootProject.archLifecycleVersion
     implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
 
@@ -73,6 +76,15 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:'+rootProject.retrofitVersion
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    //room
+    implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
+    implementation 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
+    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+    // roomigrant
+    implementation 'com.github.MatrixDev.Roomigrant:RoomigrantLib:0.1.1'
+    kapt 'com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.1.1'
+
     //image
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'jp.wasabeef:glide-transformations:2.0.1'

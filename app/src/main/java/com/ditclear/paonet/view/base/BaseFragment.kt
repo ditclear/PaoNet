@@ -73,6 +73,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), Presenter {
         super.onActivityCreated(savedInstanceState)
         mContext = activity?:throw Exception("activity 为null")
         initView()
+        retainInstance = true
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
             lazyLoad();

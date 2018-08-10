@@ -52,6 +52,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
             overridePendingTransition(0, 0)
         }
         getComponent().inject(this)
+        delayToTransition = true
         viewModel.article = article
         mBinding.run {
             vm = viewModel

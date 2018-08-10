@@ -31,7 +31,8 @@ fun navigateToArticleDetail(activity: Activity, v: View?=null, article: Article)
     val bundle = Bundle()
     bundle.putSerializable(Constants.KEY_SERIALIZABLE, article)
     intent.putExtras(bundle)
-    activity.startActivity(intent)
+    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle()
+    activity.startActivity(intent,options)
 }
 
 //登录
@@ -66,11 +67,6 @@ fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=nu
 
 //搜索
 fun navigateToSearch(activity: Activity, v: View? = null) {
-    v?.let {
-        val options = ActivityOptions.makeSceneTransitionAnimation(activity, v,
-                activity.getString(R.string.transition_search_back)).toBundle()
+        val options = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
         activity.startActivity(Intent(activity, SearchActivity::class.java), options)
-        return
-    }
-    activity.startActivity(Intent(activity, SearchActivity::class.java))
 }

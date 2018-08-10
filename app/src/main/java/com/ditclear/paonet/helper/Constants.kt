@@ -17,5 +17,8 @@ object Constants {
     const val  Qualifier_SEARCH="search"
     const val Qualifier_HOME="home"
     const val Qualifier_COLLECT="collect"
+    const val VIEW_NAME_IMAGE ="view_name_image"
+    const val VIEW_NAME_TITLE ="view_name_title"
+    const val DB_NAME: String = "pao.db"
 
 }

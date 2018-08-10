@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transitionSet xmlns:android="http://schemas.android.com/apk/res/android"
+        android:duration="@android:integer/config_mediumAnimTime">
+
+    <!-- changeBounds is used for the TextViews which are shared -->
+    <changeBounds>
+
+    </changeBounds>
+
+    <!-- changeImageTransform is used for the ImageViews which are shared -->
+    <changeImageTransform/>
+
+    <slide android:slideEdge="bottom">
+        <targets>
+            <target android:targetId="@id/scroll_view"/>
+        </targets>
+    </slide>
+
+</transitionSet>

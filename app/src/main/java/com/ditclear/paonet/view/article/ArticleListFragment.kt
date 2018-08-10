@@ -1,19 +1,23 @@
 package com.ditclear.paonet.view.article
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
@@ -93,8 +97,18 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
 
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
+
         activity?.let {
-        navigateToArticleDetail(it, v?.findViewById(R.id.thumbnail_iv), article = item.article)
+//        navigateToArticleDetail(it, v?.findViewById(R.id.thumbnail_iv), article = item.article)
+
+            val intent = Intent(mContext,ArticleDetailActivity::class.java)
+            val bundle = Bundle()
+            bundle.putSerializable(Constants.KEY_SERIALIZABLE, item.article)
+            intent.putExtras(bundle)
+            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(mContext as Activity)
+            ActivityCompat.startActivity(mContext,intent,options.toBundle())
+
+
         }
     }
 

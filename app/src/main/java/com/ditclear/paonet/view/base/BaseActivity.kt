@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.NonNull
+import android.support.transition.TransitionListenerAdapter
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
@@ -23,13 +24,17 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),Presenter{
+abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(), Presenter {
 
     protected lateinit var mBinding: VB
 
     protected lateinit var mContext: Context
 
     private var activityComponent: ActivityComponent? = null
+
+    protected var autoRefresh =true
+    protected var delayToTransition =false
+
 
     @NonNull
     fun getComponent(): ActivityComponent {
@@ -47,8 +52,35 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(),Presen
         mContext = this
 
         initView()
+        if (delayToTransition){
+            afterEnterTransition()
+        } else if (autoRefresh){
+            loadData()
+        }
 
-        loadData()
+
+    }
+
+    private fun afterEnterTransition(){
+        window.enterTransition.addListener(object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
+            override fun onTransitionResume(transition: android.transition.Transition?) {
+
+            }
+
+            override fun onTransitionPause(transition: android.transition.Transition?) {
+            }
+
+            override fun onTransitionCancel(transition: android.transition.Transition?) {
+            }
+
+            override fun onTransitionStart(transition: android.transition.Transition?) {
+            }
+
+            override fun onTransitionEnd(transition: android.transition.Transition?) {
+                loadData()
+            }
+
+        })
     }
 
     abstract fun loadData()

@@ -6,6 +6,7 @@
     <data>
         <import type="com.ditclear.paonet.R"/>
         <import type="android.view.View"/>
+        <import type="android.view.Gravity"/>
         <variable
                 name="vm"
                 type="com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel"/>
@@ -46,6 +47,14 @@
                         android:duplicateParentState="true"
                         android:transitionName="@string/transition_image"
                         android:background="?selectableItemBackground"/>
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/xdp_90.0"
+                        app:gravity ="@{Gravity.BOTTOM}"
+                        app:num_step = "@{10}"
+                        android:layout_gravity="bottom"/>
+
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
@@ -61,6 +70,7 @@
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:transitionGroup="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 >
 

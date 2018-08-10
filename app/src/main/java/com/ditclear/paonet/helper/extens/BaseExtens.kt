@@ -8,6 +8,7 @@ import android.support.annotation.ColorRes
 import android.support.annotation.DimenRes
 import android.support.annotation.NonNull
 import android.support.customtabs.CustomTabsIntent
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -91,8 +92,10 @@ fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable? = null)
         bundle.putSerializable(Constants.KEY_SERIALIZABLE, it)
         intent.putExtras(bundle)
     }
+    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
+
     intent.setClass(this, c)
-    startActivity(intent)
+    startActivity(intent,options)
 }
 
 fun <T> Flowable<T>.async(withDelay: Long = 0): Flowable<T> =

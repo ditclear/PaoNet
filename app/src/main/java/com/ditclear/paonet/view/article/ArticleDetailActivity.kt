@@ -1,8 +1,10 @@
 package com.ditclear.paonet.view.article
 
+import android.support.v4.view.ViewCompat
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
@@ -16,6 +18,8 @@ import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.ditclear.paonet.view.base.BaseActivity
 import javax.inject.Inject
+
+
 
 
 /**
@@ -70,6 +74,12 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
         initBackToolbar(mBinding.toolbar)
 
+        delayToTransition =true
+
+        ViewCompat.setTransitionName(mBinding.thumbnailIv,Constants.VIEW_NAME_IMAGE)
+        ViewCompat.setTransitionName(mBinding.toolbar,Constants.VIEW_NAME_TITLE)
+        window.enterTransition.excludeChildren(window.decorView.rootView.findViewById<View>(android.R.id.statusBarBackground),true)
+
         mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY - oldScrollY > 10) {
                 mBinding.fab.hide()
@@ -78,6 +88,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
             }
         })
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_attention, menu)
@@ -121,6 +132,10 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
         viewModel.stow().compose(bindToLifecycle())
                 .subscribe({toastSuccess(it.message) }
                         , {  toastFailure(it) })
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
     }
 
 }

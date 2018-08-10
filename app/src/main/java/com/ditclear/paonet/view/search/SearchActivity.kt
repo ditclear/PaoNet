@@ -7,10 +7,10 @@ import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SearchActivityBinding
-import com.ditclear.paonet.helper.extens.switchFragment
-import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.Utils
+import com.ditclear.paonet.helper.extens.switchFragment
+import com.ditclear.paonet.view.base.BaseActivity
 
 
 /**
@@ -25,13 +25,14 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
     val recentSearch by lazy { RecentSearchFragment.newInstance() }
 
     override fun loadData() {
+        changeFragment(recentSearch)
     }
 
     override fun initView() {
 
         SystemBarHelper.setStatusBarDarkMode(this)
         setSupportActionBar(mBinding.toolbar)
-
+        delayToTransition = true
         mBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.run {
@@ -50,7 +51,6 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
             }
 
         })
-        changeFragment(recentSearch)
     }
 
     fun setQuery(keyWord: String?) {
