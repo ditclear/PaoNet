@@ -1,5 +1,6 @@
 package com.ditclear.paonet.view.home
 
+import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -33,7 +34,6 @@ import com.ditclear.paonet.view.home.viewmodel.MainViewModel
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
 import io.reactivex.Single
-import javax.inject.Inject
 
 
 class MainActivity : BaseActivity<MainActivityBinding>(),
@@ -42,8 +42,9 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    @Inject
-    lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel  by lazy {
+        getInjectViewModel(MainViewModel::class.java)
+    }
 
     val adapter by lazy {
         SingleTypeAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
@@ -69,7 +70,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun loadData() {
         viewModel.getCodeCategories().bindLifeCycle(this)
-                .subscribe { _, _ -> }
+                .subscribe ({},{})
     }
 
 
@@ -115,14 +116,19 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
             layoutManager = LinearLayoutManager(mContext)
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
-
-        changeFragment(homeFragment)
         mBinding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
             override fun onDrawerClosed(drawerView: View) {
                 super.onDrawerClosed(drawerView)
 
             }
         })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState ==null){
+            changeFragment(homeFragment)
+        }
     }
 
     @SingleClick
@@ -190,7 +196,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
      */
     private fun changeFragment(fragment: Fragment, title: String = "泡在网上的日子") {
         supportActionBar?.title = title
-        switchFragment(temp, fragment,title)
+        switchFragment(temp, fragment,fragment.javaClass.simpleName)
         temp = fragment
     }
 

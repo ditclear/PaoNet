@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
@@ -24,21 +23,20 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.viewmodel.StateModel
-import javax.inject.Inject
 
 /**
  * 页面描述：ArticleListFragment
  *
  * Created by ditclear on 2017/10/3.
  */
-@FragmentScope
 class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
 
     override val state: StateModel
         get() = viewModel.state
 
-    @Inject
-    lateinit var viewModel: ArticleListViewModel
+    private val viewModel: ArticleListViewModel by lazy {
+        getInjectViewModel(ArticleListViewModel::class.java)
+    }
 
     private val mAdapter by lazy {
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply {

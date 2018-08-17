@@ -49,7 +49,7 @@
                 <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="@{vm.loginVisibility}"
+                        app:visible="@{vm.loginVisibility}"
                         android:orientation="vertical">
 
 
@@ -109,7 +109,7 @@
                             android:onClick="@{(v)->presenter.onClick(v)}"
                             android:text="@string/login_action"
                             android:textAppearance="@style/TextAppearance.DarkButton"
-                            android:visibility="@{vm.loginVisibility}"/>
+                            app:visible="@{vm.loginVisibility}"/>
                 </LinearLayout>
 
                 <Button
@@ -121,10 +121,10 @@
                         android:onClick="@{(v)->presenter.onClick(v)}"
                         android:text="@string/logout_action"
                         android:textAppearance="@style/TextAppearance.DarkButton"
-                        android:visibility="@{vm.logoutVisibility}"/>
+                        app:visible="@{vm.logoutVisibility}"/>
                 <include
                         layout="@layout/loading"
-                        android:visibility="@{vm.loading}"/>
+                        android:visibility="@{vm.loading?View.VISIBLE:View.GONE}"/>
 
             </LinearLayout>
         </android.support.v7.widget.CardView>

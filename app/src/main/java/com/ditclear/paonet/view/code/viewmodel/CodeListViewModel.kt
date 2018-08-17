@@ -1,7 +1,6 @@
 package com.ditclear.paonet.view.code.viewmodel
 
 import android.databinding.ObservableArrayList
-import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
@@ -13,10 +12,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-@FragmentScope
-class CodeListViewModel
-@Inject
-constructor(private val repo: PaoRepository) : PagedViewModel() {
+class CodeListViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val observableList = ObservableArrayList<ArticleItemViewModel>()
 
@@ -44,7 +40,10 @@ constructor(private val repo: PaoRepository) : PagedViewModel() {
                     loadMore.set(!incomplete_results)
                     return@map items?.map { ArticleItemViewModel(it) }?.let { observableList.addAll(it) }
                 }
-            }.doOnSubscribe { startLoad() }.doAfterTerminate { stopLoad() }
+            }.doOnSubscribe { startLoad() }.doAfterTerminate {
+                stopLoad()
+                empty.set(observableList.isEmpty())
+            }
 
 
 }

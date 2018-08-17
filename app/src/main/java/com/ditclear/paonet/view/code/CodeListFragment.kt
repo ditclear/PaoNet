@@ -9,33 +9,31 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.di.scope.FragmentScope
-import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
+import com.ditclear.paonet.helper.extens.dpToPx
+import com.ditclear.paonet.helper.extens.navigateToActivity
+import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.MainActivity
 import com.ditclear.paonet.viewmodel.StateModel
-import javax.inject.Inject
 
 /**
  * 页面描述：ArticleListFragment
  *
  * Created by ditclear on 2017/10/3.
  */
-@FragmentScope
 class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
     override val state: StateModel
         get() = viewModel.state
 
 
-    @Inject
-    lateinit var viewModel: CodeListViewModel
+    private val viewModel: CodeListViewModel by lazy {
+        getInjectViewModel(CodeListViewModel::class.java)
+    }
 
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {

@@ -50,9 +50,14 @@ dependencies {
     implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:palette-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
-    implementation 'android.arch.lifecycle:viewmodel:'+ rootProject.archLifecycleVersion
     implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
 
+    //ViewModel
+    implementation "android.arch.lifecycle:extensions:"+rootProject.archLifecycleVersion
+    implementation "android.arch.lifecycle:viewmodel:"+rootProject.archLifecycleVersion
+    kapt "android.arch.lifecycle:compiler:"+rootProject.archLifecycleVersion
+
+    //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
     kapt "com.android.databinding:compiler:3.1.2"

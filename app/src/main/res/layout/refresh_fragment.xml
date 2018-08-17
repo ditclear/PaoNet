@@ -38,7 +38,7 @@
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
             </android.support.v7.widget.RecyclerView>
             <include layout="@layout/empty_layout"
-                    android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
+                    android:visibility="@{vm.empty?View.VISIBLE:View.INVISIBLE}"/>
         </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>

@@ -11,17 +11,16 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
 import com.ditclear.paonet.databinding.SliderBinding
+import com.ditclear.paonet.helper.adapter.recyclerview.*
 import com.ditclear.paonet.helper.annotation.ItemType
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.helper.presenter.ListPresenter
-import com.ditclear.paonet.helper.adapter.recyclerview.*
-import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
 import com.ditclear.paonet.viewmodel.StateModel
-import javax.inject.Inject
 
 /**
  * 页面描述：RecentFragment
@@ -42,8 +41,9 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
         }
     }
 
-    @Inject
-    lateinit var viewModel: RecentViewModel
+    private val viewModel: RecentViewModel by lazy {
+        getInjectViewModel(RecentViewModel::class.java)
+    }
 
     val sliderAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }

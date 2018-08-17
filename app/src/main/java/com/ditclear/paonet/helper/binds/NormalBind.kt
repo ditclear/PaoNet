@@ -60,7 +60,7 @@ fun bindLoadMore(v: RecyclerView, presenter: ListPresenter) {
             if (recyclerView!!.layoutManager is LinearLayoutManager) {
                 //表示是否能向上滚动，false表示已经滚动到底部
                 //防止多次拉取同样的数据
-                if (!recyclerView.canScrollVertically(1) ) {
+                if (!recyclerView.canScrollVertically(1)) {
                     if (presenter.state.canLoadMore()) {
                         presenter.loadData(false)
 
@@ -77,7 +77,7 @@ fun bindOnRefresh(v: SwipeRefreshLayout, presenter: ListPresenter) {
 }
 
 @BindingAdapter(value = *arrayOf("vertical"), requireAll = false)
-fun bindSlider(v: RecyclerView,  vertical: Boolean = true) {
+fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
 
     if (vertical) {
         v.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)

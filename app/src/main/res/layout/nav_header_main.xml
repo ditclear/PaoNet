@@ -66,7 +66,7 @@
                     android:background="@color/hint_highlight"
                     android:foreground="@drawable/mid_grey_ripple"
                     android:onClick="@{(v)->presenter.onClick(v)}"
-                    android:text='@{vm.loginBtnText,default="LOG IN"}'
+                    android:text='@{vm.loginBtnText}'
                     android:textAppearance="@style/TextAppearance.DarkButton"
                     android:transitionName="@string/transition_login"/>
         </RelativeLayout>

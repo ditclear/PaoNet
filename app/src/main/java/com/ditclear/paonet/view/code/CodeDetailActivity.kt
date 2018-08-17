@@ -14,7 +14,6 @@ import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
-import javax.inject.Inject
 
 /**
  * 页面描述：ArticleDetailActivity
@@ -26,8 +25,9 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
 
-    @Inject
-    lateinit var viewModel: CodeDetailViewModel
+    private val viewModel: CodeDetailViewModel by lazy {
+        getInjectViewModel(CodeDetailViewModel::class.java)
+    }
 
     override fun loadData() {
 
@@ -37,7 +37,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     fun isStow(stow: Boolean?) {
         mBinding.fab.drawable.setTint(
-                if (stow==true) {
+                if (stow == true) {
                     getCompactColor(R.color.stow_color)
                 } else {
                     getCompactColor(R.color.tools_color)
@@ -53,10 +53,16 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
             overridePendingTransition(0, 0)
         }
         getComponent().inject(this)
+
         delayToTransition = true
-        viewModel.article = article
+        viewModel.article.set(article)
+        viewModel
         mBinding.run {
-            vm = viewModel
+            vm = viewModel.apply {
+                this.article.set(article)
+                this.nameAndDate.set("""${article?.user?.nickname ?: "佚名"}
+                                        |${article?.pubDate}""".trimMargin())
+            }
             presenter = this@CodeDetailActivity
             scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 if (scrollY - oldScrollY > 10) {

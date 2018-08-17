@@ -1,6 +1,7 @@
 package com.ditclear.paonet.helper.extens
 
 import android.app.Activity
+import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Intent
 import android.net.Uri
@@ -68,23 +69,21 @@ fun Activity.dispatchFailure(error: Throwable?) {
             //网络未连接
             it.message?.let { toast("网络未连接", ToastType.ERROR) }
 
-        }else{
+        } else {
             it.message?.let { toast(it, ToastType.ERROR) }
         }
     }
 }
 
-fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String?=null) {
+fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String? = null) {
     val ft = supportFragmentManager.beginTransaction()
     current?.run { ft.hide(this) }
-    if (!targetFg.isAdded) {
-        tag?.run {
-            ft.add(R.id.container, targetFg, tag)
-        } ?: ft.add(R.id.container, targetFg)
-
+    if (supportFragmentManager.findFragmentByTag(tag)==null) {
+        ft.add(R.id.container, targetFg, tag)
+    }else {
+        ft.show(targetFg)
     }
-    ft.show(targetFg)
-    ft.commitAllowingStateLoss();
+    ft.commit()
 }
 
 fun Activity.dpToPx(@DimenRes resID: Int): Int = this.resources.getDimensionPixelOffset(resID)
@@ -99,7 +98,7 @@ fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable? = null)
     val options = ActivityOptionsCompat.makeSceneTransitionAnimation(this).toBundle()
 
     intent.setClass(this, c)
-    startActivity(intent,options)
+    startActivity(intent, options)
 }
 
 fun <T> Flowable<T>.async(withDelay: Long = 0): Flowable<T> =
@@ -122,8 +121,8 @@ fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
     })
 }
 
-fun  <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =
-        this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner)))
+fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =
+        this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
 
 fun Activity.navigateToWebPage(@NonNull url: String) {
     if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {
@@ -143,12 +142,12 @@ fun Fragment.navigateToWebPage(@NonNull url: String?) {
         return
     }
     context?.let {
-    val intent = CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .setToolbarColor(ContextCompat.getColor(it, R.color.theme))
-            .build()
+        val intent = CustomTabsIntent.Builder()
+                .setShowTitle(true)
+                .setToolbarColor(ContextCompat.getColor(it, R.color.theme))
+                .build()
 
-    intent.launchUrl(activity, Uri.parse(url))
+        intent.launchUrl(activity, Uri.parse(url))
     }
 }
 

@@ -1,5 +1,8 @@
 package com.ditclear.paonet.view.base
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -17,6 +20,7 @@ import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.presenter.Presenter
+import javax.inject.Inject
 
 
 /**
@@ -35,6 +39,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     protected var autoRefresh =true
     protected var delayToTransition =false
 
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
 
     @NonNull
     fun getComponent(): ActivityComponent {
@@ -44,6 +50,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         }
         return activityComponent as ActivityComponent
     }
+
+    fun <T :ViewModel> getInjectViewModel (modelClass: Class<T>)= ViewModelProviders.of(this,factory).get(modelClass)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

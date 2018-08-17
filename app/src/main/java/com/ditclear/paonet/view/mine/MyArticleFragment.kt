@@ -18,6 +18,7 @@ import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
+import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.MainActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
@@ -34,8 +35,9 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     override val state: StateModel
         get() = viewModel.state
 
-    @Inject
-    lateinit var viewModel: MyArticleViewModel
+    private val viewModel: MyArticleViewModel  by lazy {
+        getInjectViewModel(MyArticleViewModel::class.java)
+    }
 
     val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.obserableList).apply { itemPresenter = this@MyArticleFragment }

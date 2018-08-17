@@ -2,8 +2,8 @@ package com.ditclear.paonet.view.home.viewmodel
 
 import android.databinding.ObservableArrayList
 import android.util.Log
-import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.adapter.recyclerview.Dummy
+import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel
@@ -42,13 +42,16 @@ class RecentViewModel @Inject constructor(private val repo: PaoRepository) : Pag
                         repo.getArticleList(page = 0)
                     }
                     .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe { startLoad() }
-                    .doAfterTerminate { stopLoad() }
                     .doOnSuccess {
                         Log.d("thread------", Thread.currentThread().name)
                         it.items?.map { ArticleItemViewModel(it) }?.let {
                             obserableList.addAll(it)
                         }
+                    }
+                    .doOnSubscribe { startLoad() }
+                    .doAfterTerminate {
+                        stopLoad()
+                        empty.set(obserableList.isEmpty())
                     }
 
 

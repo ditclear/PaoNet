@@ -38,8 +38,8 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
         getComponent().inject(this)
         mBinding.run {
             vm = viewModel.apply {
-                showLogin = SpUtil.user == null
-                showLogout=SpUtil.user!=null
+                showLogin .set(SpUtil.user == null)
+                showLogout.set(SpUtil.user!=null)
             }
             presenter = this@LoginActivity
         }

@@ -18,7 +18,6 @@ import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.ditclear.paonet.view.base.BaseActivity
-import javax.inject.Inject
 
 
 /**
@@ -31,8 +30,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
-    @Inject
-    lateinit var viewModel: ArticleDetailViewModel
+    private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel(ArticleDetailViewModel::class.java) }
 
 
     override fun loadData() {

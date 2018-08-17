@@ -1,7 +1,9 @@
 package com.ditclear.paonet.view.home.viewmodel
 
-import android.databinding.*
-import com.android.databinding.library.baseAdapters.BR
+import android.databinding.Observable
+import android.databinding.ObservableArrayList
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
 import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.data.Category
@@ -22,17 +24,19 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
     val categories = ObservableArrayList<CategoryItemViewModel>()
     val cateVisible=ObservableBoolean(false)
 
-    var face: String? = user.get()?.face
-        @Bindable get
-    var qianming: String? = user.get()?.qianming
-        @Bindable get
+    val face = ObservableField<String>()
+
+    var qianming = ObservableField<String>()
+    var navHeaderName = ObservableField<String>()
+    var loginBtnText = ObservableField<String>("LOG IN")
 
     init {
         user.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
             override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                notifyChange()
-                notifyPropertyChanged(BR.face)
-                notifyPropertyChanged(BR.qianming)
+                face.set(user.get()?.face)
+                qianming.set(user.get()?.qianming)
+                navHeaderName.set(user.get()?.nickname ?: "")
+                loginBtnText.set( if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
             }
 
         })
@@ -40,13 +44,6 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
 
 
     //////////////////bind view/////////////
-    @Bindable
-    fun getNavHeaderName(): String = user.get()?.nickname ?: ""
-
-
-    @Bindable()
-    fun getLoginBtnText() = if (user.get()?.nickname == null) "LOG IN" else "LOG OUT"
-
     /**
      * 获取代码分类
      */

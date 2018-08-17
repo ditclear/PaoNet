@@ -1,5 +1,8 @@
 package com.ditclear.paonet.view.base
 
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -16,6 +19,7 @@ import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.presenter.Presenter
+import javax.inject.Inject
 
 
 /**
@@ -42,9 +46,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
      */
     protected var hasLoadOnce: Boolean = false
 
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
 
     private var fragmentComponent: FragmentComponent? = null
-    protected lateinit var fragmentComponentBuilder:FragmentComponent.Builder
+    protected lateinit var fragmentComponentBuilder: FragmentComponent.Builder
     @NonNull
     fun getComponent(): FragmentComponent {
         if (fragmentComponent != null) {
@@ -53,7 +59,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
         val activity = activity
         if (activity is BaseActivity<*>) {
-            fragmentComponentBuilder=activity.getComponent().supplyFragmentComponentBuilder()
+            fragmentComponentBuilder = activity.getComponent().supplyFragmentComponentBuilder()
             fragmentComponent = fragmentComponentBuilder.fragmentModule(FragmentModule(this)).build()
             return fragmentComponent as FragmentComponent
         } else {
@@ -67,16 +73,19 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         initArgs(savedInstanceState)
     }
 
+    fun <T : ViewModel> getInjectViewModel(modelClass: Class<T>): T {
+        return ViewModelProviders.of(this, factory).get(modelClass)
+    }
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mContext = activity?:throw Exception("activity 为null")
-        initView()
+        mContext = activity ?: throw Exception("activity 为null")
         retainInstance = true
+        initView()
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
-            lazyLoad();
+            lazyLoad()
         } else {
             // 加载数据
             loadData(true);

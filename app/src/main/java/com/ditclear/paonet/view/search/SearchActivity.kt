@@ -1,5 +1,6 @@
 package com.ditclear.paonet.view.search
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
@@ -25,7 +26,7 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
     val recentSearch by lazy { RecentSearchFragment.newInstance() }
 
     override fun loadData() {
-        changeFragment(recentSearch)
+
     }
 
     override fun initView() {
@@ -53,6 +54,13 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         })
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            changeFragment(recentSearch)
+        }
+    }
+
     fun setQuery(keyWord: String?) {
         keyWord?.run {
             mBinding.searchView.setQuery(keyWord, true)
@@ -67,14 +75,14 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
-    var temp :Fragment ?=null
+    var temp: Fragment? = null
     /**
      * 切换fragment
      */
     private fun changeFragment(fragment: Fragment) {
 
-        switchFragment(temp,fragment)
-        temp=fragment
+        switchFragment(temp, fragment)
+        temp = fragment
     }
 
     fun setupWithViewPager(viewPager: ViewPager) {

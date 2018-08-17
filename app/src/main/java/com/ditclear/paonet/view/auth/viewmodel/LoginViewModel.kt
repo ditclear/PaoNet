@@ -1,8 +1,8 @@
 package com.ditclear.paonet.view.auth.viewmodel
 
-import android.databinding.Bindable
-import android.view.View
-import com.ditclear.paonet.BR
+import android.databinding.Observable
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.extens.getOriginData
 import com.ditclear.paonet.model.data.UserModel
@@ -29,71 +29,79 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
     private val emailPattern = Pattern.compile(EMAIL_PATTERN)
     private val passwordPattern = Pattern.compile(PASSWORD_PATTERN)
 
-    var showLogin = true
-        @Bindable get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.showLogin)
-            notifyPropertyChanged(BR.showLogout)
-        }
 
-    var showLogout = false
-        @Bindable get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.showLogout)
-            notifyPropertyChanged(BR.showLogin)
+
+    val showLogin = ObservableBoolean(true)
+
+
+    val showLogout = ObservableBoolean()
+
+
+    val email = ObservableField<String>("")
+
+    val password = ObservableField<String>()
+
+    private val callback by lazy {
+        object :Observable.OnPropertyChangedCallback(){
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                when(sender){
+                    password ,email -> {
+                        isBtnEnabled.set(isBtnEnabled())
+                    }
+                    showLogin->{
+                        loading.set(!(showLogin.get() || showLogout.get()))
+                        loginVisibility.set(showLogin.get())
+                    }
+                    showLogout -> {
+                        loading.set(!(showLogin.get() || showLogout.get()))
+                        logoutVisibility.set(showLogout.get())
+                    }
+
+                }
+            }
 
         }
-
-    var email = ""
-        @Bindable get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.email)
-        }
-    var password = ""
-        @Bindable get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.password)
-        }
-
-    @Bindable("password", "email")
-    fun isBtnEnabled(): Boolean {
-        return !(!emailPattern.matcher(email).matches()
-                || !passwordPattern.matcher(password).matches())
     }
 
-    var loading = View.GONE
-        @Bindable("showLogin", "showLogout") get() = if (showLogin || showLogout) View.GONE else View.VISIBLE
+    init {
+        password.addOnPropertyChangedCallback(callback)
+        email.addOnPropertyChangedCallback(callback)
+        showLogin.addOnPropertyChangedCallback(callback)
+        showLogout.addOnPropertyChangedCallback(callback)
+    }
 
-    var loginVisibility = View.VISIBLE
-        @Bindable("showLogin") get () = if (showLogin) View.VISIBLE else View.GONE
+    val isBtnEnabled = ObservableBoolean()
+    val loading = ObservableBoolean()
 
-    var logoutVisibility=View.GONE
-        @Bindable("showLogout") get () = if (showLogout) View.VISIBLE else View.GONE
+    fun isBtnEnabled(): Boolean {
+        return !(!emailPattern.matcher(email.get()).matches()
+                || !passwordPattern.matcher(password.get()).matches())
+    }
+
+    val loginVisibility = ObservableBoolean(true)
+
+    val logoutVisibility=ObservableBoolean(false)
 
 
-    fun attemptToLogIn() = repo.login(email, password)
+    fun attemptToLogIn() = repo.login(email.get()?:"", password.get()?:"")
             .subscribeOn(Schedulers.io())
             .delay(1, TimeUnit.SECONDS)
             .getOriginData()
             .flatMap { repo.myProfile().map { t: UserModel -> t.model } }
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                showLogin = false
-                showLogout = false
+                showLogin.set(false)
+                showLogout.set(false)
             }
-            .doFinally { showLogin = true }
+            .doAfterTerminate { showLogin.set(true) }
 
 
     fun attemptToLogout() = repo.logout().getOriginData().async(1000)
             .doOnSubscribe {
-                showLogin = false
-                showLogout = false
+                showLogin .set(false)
+                showLogout .set(false)
             }
-            .doFinally { showLogout = true }
+            .doFinally { showLogout .set(true) }
 
 
 }

@@ -1,9 +1,7 @@
 package com.ditclear.paonet.view.code.viewmodel
 
-import android.databinding.Bindable
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import com.ditclear.paonet.BR
 import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
@@ -31,21 +29,18 @@ constructor(private val repo: PaoRepository, private val userRepo: UserRepositor
 
     val loading = ObservableBoolean(true)
     val markdown = ObservableField<String>()
-    var article: Article? = null
-        @Bindable get
-        set(value) {
-            field = value
-            notifyPropertyChanged(BR.article)
-        }
+    val article = ObservableField<Article>()
+    val nameAndDate = ObservableField<String>()
+
 
     //加载详情
     fun loadData() = Single.create<Int> { emitter ->
-        article?.let {
+        article.get()?.let {
             emitter.onSuccess(it.id)
         } ?: emitter.onError(Throwable("无效的id"))
     }.flatMap { repo.getCodeDetail(it) }.subscribeOn(Schedulers.io())
             .doOnSuccess {
-                article = it
+                article.set(it)
                 it?.readme?.let {
                     val data = Utils.processImgSrc(it, Constants.HOST_PAO)
                     markdown.set(data)
@@ -56,8 +51,8 @@ constructor(private val repo: PaoRepository, private val userRepo: UserRepositor
                 if (SpUtil.user == null) {
                     return@flatMap Single.just(false)
                 } else {
-                    return@flatMap userRepo.isStow(article?.id
-                            ?: throw Throwable("无效的id")).getOriginData()
+                    return@flatMap userRepo.isStow(it.id)
+                            .getOriginData()
                             .map { t: BaseResponse? -> t?.data?.contentEquals("1") }
                 }
             }.observeOn(AndroidSchedulers.mainThread())
@@ -65,15 +60,10 @@ constructor(private val repo: PaoRepository, private val userRepo: UserRepositor
 
     //收藏
     fun stow() = Single.create<Int> { emitter ->
-        article?.let {
+        article.get()?.let {
             emitter.onSuccess(it.id)
         } ?: emitter.onError(Throwable("无效的id"))
     }.flatMap { userRepo.stow(it) }.getOriginData().async()
 
-
-    /////////////bind view//////////////
-
-    fun getNameAndDate() = """${article?.user?.nickname ?: "佚名"}
-        |${article?.pubDate}""".trimMargin()
 
 }

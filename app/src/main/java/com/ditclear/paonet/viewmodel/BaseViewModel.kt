@@ -1,6 +1,6 @@
 package com.ditclear.paonet.viewmodel
 
-import android.databinding.BaseObservable
+import android.arch.lifecycle.ViewModel
 
 /**
  * 页面描述：viewModel 基类
@@ -8,8 +8,7 @@ import android.databinding.BaseObservable
  * Created by ditclear on 2017/9/28.
  */
 
-open class BaseViewModel() : BaseObservable(){
-
+open class BaseViewModel() : ViewModel(){
 
     val state=StateModel()
 
