@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.NonNull
+import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.presenter.Presenter
-import com.trello.rxlifecycle2.components.support.RxFragment
 
 
 /**
@@ -23,7 +23,7 @@ import com.trello.rxlifecycle2.components.support.RxFragment
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseFragment<VB : ViewDataBinding> : RxFragment(), Presenter {
+abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     protected lateinit var mBinding: VB
 

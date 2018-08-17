@@ -17,6 +17,7 @@ import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.annotation.ArticleType
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
@@ -82,7 +83,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh).compose(bindToLifecycle())
+        viewModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe({},{
                     toastFailure(it)
                 })

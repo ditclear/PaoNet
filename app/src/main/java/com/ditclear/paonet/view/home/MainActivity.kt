@@ -17,13 +17,14 @@ import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.helper.SpUtil
+import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
+import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.async
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.switchFragment
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.navigateToSearch
 import com.ditclear.paonet.helper.needsLogin
-import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
-import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
@@ -67,7 +68,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
 
     override fun loadData() {
-        viewModel.getCodeCategories().compose(bindToLifecycle())
+        viewModel.getCodeCategories().bindLifeCycle(this)
                 .subscribe { _, _ -> }
     }
 
@@ -141,8 +142,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
                 isQuit = true;
                 //在两秒钟之后isQuit会变成false
                 Single.just(isQuit)
-                        .compose(bindToLifecycle())
                         .async(2000)
+                        .bindLifeCycle(this)
                         .subscribe({isQuit = false },{})
             } else {
                 super.onBackPressed()

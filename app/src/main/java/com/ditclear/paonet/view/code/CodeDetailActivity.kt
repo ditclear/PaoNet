@@ -8,6 +8,7 @@ import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.CodeDetailActivityBinding
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
@@ -30,7 +31,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun loadData() {
 
-        viewModel.loadData().compose(bindToLifecycle()).subscribe({ isStow(it) },
+        viewModel.loadData().bindLifeCycle(this).subscribe({ isStow(it) },
                 { toastFailure(it) })
     }
 
@@ -73,7 +74,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.fab -> viewModel.stow().compose(bindToLifecycle())
+            R.id.fab -> viewModel.stow().bindLifeCycle(this)
                     .subscribe({ toastSuccess(it.message) }
                             , { toastFailure(it) })
         }

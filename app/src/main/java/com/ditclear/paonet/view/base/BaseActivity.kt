@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.NonNull
 import android.support.transition.TransitionListenerAdapter
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +17,6 @@ import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.helper.presenter.Presenter
-import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
 
 
 /**
@@ -24,7 +24,7 @@ import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(), Presenter {
+abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Presenter {
 
     protected lateinit var mBinding: VB
 
@@ -61,8 +61,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(), Prese
 
     }
 
-    private fun afterEnterTransition(){
-        window.enterTransition.addListener(object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
+    private val enterTransitionListener by lazy {
+        object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
             override fun onTransitionResume(transition: android.transition.Transition?) {
 
             }
@@ -80,7 +80,16 @@ abstract class BaseActivity<VB : ViewDataBinding> : RxAppCompatActivity(), Prese
                 loadData()
             }
 
-        })
+        }
+    }
+
+    private fun afterEnterTransition(){
+        window.enterTransition.addListener(enterTransitionListener)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        window.enterTransition.removeListener(enterTransitionListener)
     }
 
     abstract fun loadData()

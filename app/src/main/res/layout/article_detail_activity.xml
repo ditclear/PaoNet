@@ -50,9 +50,10 @@
 
                 <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/xdp_90.0"
+                        android:layout_height="@dimen/xdp_180.0"
                         app:gravity ="@{Gravity.BOTTOM}"
                         app:num_step = "@{10}"
+                        android:fitsSystemWindows="true"
                         android:layout_gravity="bottom"/>
 
                 <android.support.v7.widget.Toolbar
@@ -95,10 +96,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
-                bind:start_color="@{R.color.colorAccent}"
-                bind:icon="@{R.drawable.ic_bookmark}"
                 android:onClick="@{(v)->presenter.onClick(v)}"
                 android:layout_gravity="bottom|end"
+                app:rippleColor="@color/stow_color"
                 android:transitionName="@string/transition_login"
                 app:srcCompat="@drawable/ic_bookmark"/>
 

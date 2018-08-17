@@ -1,6 +1,7 @@
 package com.ditclear.paonet.helper.extens
 
 import android.app.Activity
+import android.arch.lifecycle.LifecycleOwner
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +22,9 @@ import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.model.data.BaseResponse
 import com.ditclear.paonet.model.remote.exception.EmptyException
+import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.SingleSubscribeProxy
+import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import es.dmoral.toasty.Toasty
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -117,6 +121,9 @@ fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
         }
     })
 }
+
+fun  <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =
+        this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner)))
 
 fun Activity.navigateToWebPage(@NonNull url: String) {
     if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {

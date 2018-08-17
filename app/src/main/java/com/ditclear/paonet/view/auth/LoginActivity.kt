@@ -6,6 +6,7 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.LoginActivityBinding
 import com.ditclear.paonet.helper.SpUtil
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.transitions.FabTransform
 import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.User
@@ -64,11 +65,11 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.login_btn -> viewModel.attemptToLogIn().compose(bindToLifecycle())
+            R.id.login_btn -> viewModel.attemptToLogIn().bindLifeCycle(this)
                     .subscribe({onLoginSuccess(it)  }
                             , { toastFailure(it)  })
 
-            R.id.logout_btn -> viewModel.attemptToLogout().compose(bindToLifecycle())
+            R.id.logout_btn -> viewModel.attemptToLogout().bindLifeCycle(this)
                     .subscribe({
                         SpUtil.logout()
                         dismiss(v)

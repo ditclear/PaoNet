@@ -5,14 +5,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.helper.Constants
-import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
+import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.RecentFragment
 import com.ditclear.paonet.view.mine.CollectionListFragment
 import com.ditclear.paonet.view.search.SearchResultFragment
-import com.trello.rxlifecycle2.components.support.RxFragment
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -24,7 +23,7 @@ import javax.inject.Named
  * Created by ditclear on 2017/9/26.
  */
 @Module
-class FragmentModule(private val fragment: RxFragment) {
+class FragmentModule(private val fragment: Fragment) {
 
     @Provides
     fun provideFragment() = fragment

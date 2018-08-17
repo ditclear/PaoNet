@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.article
 
-import android.support.v4.view.ViewCompat
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
@@ -12,14 +12,13 @@ import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.ditclear.paonet.view.base.BaseActivity
 import javax.inject.Inject
-
-
 
 
 /**
@@ -38,7 +37,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun loadData() {
 
-        viewModel.loadData().compose(bindToLifecycle())
+        viewModel.loadData().bindLifeCycle(this)
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
                         { toastFailure(it) })
 
@@ -67,18 +66,14 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
         mBinding.vm = viewModel.apply {
             article?.let {
-                this.article=it
+                this.article = it
             }
         }
         mBinding.presenter = this
 
         initBackToolbar(mBinding.toolbar)
 
-        delayToTransition =true
-
-        ViewCompat.setTransitionName(mBinding.thumbnailIv,Constants.VIEW_NAME_IMAGE)
-        ViewCompat.setTransitionName(mBinding.toolbar,Constants.VIEW_NAME_TITLE)
-        window.enterTransition.excludeChildren(window.decorView.rootView.findViewById<View>(android.R.id.statusBarBackground),true)
+        delayToTransition = true
 
         mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY - oldScrollY > 10) {
@@ -87,6 +82,26 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
                 mBinding.fab.show()
             }
         })
+
+        val drawable: AnimatedVectorDrawable? = if (mBinding.fab.drawable is AnimatedVectorDrawable) {
+            mBinding.fab.drawable as AnimatedVectorDrawable
+        } else null
+
+        mBinding.fab.setOnHoverListener { v, e ->
+            drawable?.let {
+                if (e.action == MotionEvent.ACTION_DOWN) {
+                    if (it.isRunning) {
+                        it.stop()
+                    }
+                    it.start()
+                } else if (e.action == MotionEvent.ACTION_CANCEL || MotionEvent.ACTION_UP == e.action) {
+                    it.stop()
+                }
+                return@setOnHoverListener true
+            }
+
+            return@setOnHoverListener false
+        }
     }
 
 
@@ -124,14 +139,14 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
     }
 
     private fun attentionTo() {
-        viewModel.attentionTo().compose(bindToLifecycle())
-                .subscribe({},{toastFailure(it)})
+        viewModel.attentionTo().bindLifeCycle(this)
+                .subscribe({}, { toastFailure(it) })
     }
 
     private fun stow() {
-        viewModel.stow().compose(bindToLifecycle())
-                .subscribe({toastSuccess(it.message) }
-                        , {  toastFailure(it) })
+        viewModel.stow().bindLifeCycle(this)
+                .subscribe({ toastSuccess(it.message) }
+                        , { toastFailure(it) })
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

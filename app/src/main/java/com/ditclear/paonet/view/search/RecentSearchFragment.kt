@@ -12,6 +12,7 @@ import com.ditclear.paonet.helper.adapter.recyclerview.BindingViewHolder
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemDecorator
 import com.ditclear.paonet.helper.adapter.recyclerview.MultiTypeAdapter
+import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -67,7 +68,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(true).compose(bindToLifecycle())
+        viewModel.loadData(true).bindLifeCycle(this)
                 .subscribe ({},{toastFailure(it)})
     }
 

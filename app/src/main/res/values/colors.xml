@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#262626</color>
     <color name="colorAccent">#F5F5F5</color>
     <color name="colorAccentAlpha">#88FFFFFF</color>
+    <color name="colorPrimaryAlpha">#f0262626</color>
 
     <color name="theme">@color/colorPrimary</color>
     <color name="tools_color">#DCDCDC</color>
