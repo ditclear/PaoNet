@@ -8,3 +8,7 @@
 /captures
 .externalNativeBuild
 /.idea/
+/projectFilesBackup/
+/projectFilesBackup1/
+/.settings/
+/.idea/misc.xml

@@ -78,12 +78,11 @@ fun Activity.dispatchFailure(error: Throwable?) {
 fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String? = null) {
     val ft = supportFragmentManager.beginTransaction()
     current?.run { ft.hide(this) }
-    if (supportFragmentManager.findFragmentByTag(tag)==null) {
+    if (!targetFg.isAdded) {
         ft.add(R.id.container, targetFg, tag)
-    }else {
-        ft.show(targetFg)
     }
-    ft.commit()
+    ft.show(targetFg)
+    ft.commitAllowingStateLoss();
 }
 
 fun Activity.dpToPx(@DimenRes resID: Int): Int = this.resources.getDimensionPixelOffset(resID)

@@ -34,6 +34,7 @@
                         app:queryBackground="@null"
                         app:queryHint="@string/search_hint"
                         app:searchIcon="@null"
+                        android:focusedByDefault="false"
                         app:showDividers="none"
                         app:submitBackground="@null">
 

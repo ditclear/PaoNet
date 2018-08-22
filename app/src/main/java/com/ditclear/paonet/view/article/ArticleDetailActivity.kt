@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view.article
 
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
@@ -80,26 +79,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
                 mBinding.fab.show()
             }
         })
-
-        val drawable: AnimatedVectorDrawable? = if (mBinding.fab.drawable is AnimatedVectorDrawable) {
-            mBinding.fab.drawable as AnimatedVectorDrawable
-        } else null
-
-        mBinding.fab.setOnHoverListener { v, e ->
-            drawable?.let {
-                if (e.action == MotionEvent.ACTION_DOWN) {
-                    if (it.isRunning) {
-                        it.stop()
-                    }
-                    it.start()
-                } else if (e.action == MotionEvent.ACTION_CANCEL || MotionEvent.ACTION_UP == e.action) {
-                    it.stop()
-                }
-                return@setOnHoverListener true
-            }
-
-            return@setOnHoverListener false
-        }
     }
 
 
