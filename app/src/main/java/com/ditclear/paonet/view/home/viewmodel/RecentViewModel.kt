@@ -19,7 +19,7 @@ import javax.inject.Inject
 class RecentViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val sliders = ObservableArrayList<ArticleItemViewModel>()
-    val obserableList = ObservableArrayList<Any>()
+    val list = ObservableArrayList<Any>()
 
     fun loadData(isRefresh: Boolean) =
             repo.getSlider()
@@ -27,11 +27,11 @@ class RecentViewModel @Inject constructor(private val repo: PaoRepository) : Pag
                     .doOnSuccess {
                         if (isRefresh) {
                             sliders.clear()
-                            obserableList.clear()
+                            list.clear()
                         }
 
                         it.items?.map { ArticleItemViewModel(it) }?.let {
-                            obserableList.add(Dummy())
+                            list.add(Dummy())
                             sliders.addAll(it)
                         }
 
@@ -45,13 +45,13 @@ class RecentViewModel @Inject constructor(private val repo: PaoRepository) : Pag
                     .doOnSuccess {
                         Log.d("thread------", Thread.currentThread().name)
                         it.items?.map { ArticleItemViewModel(it) }?.let {
-                            obserableList.addAll(it)
+                            list.addAll(it)
                         }
                     }
                     .doOnSubscribe { startLoad() }
                     .doAfterTerminate {
                         stopLoad()
-                        empty.set(obserableList.isEmpty())
+                        empty.set(list.isEmpty())
                     }
 
 

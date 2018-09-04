@@ -1,4 +1,4 @@
-package com.ditclear.paonet.helper.presenter
+package com.ditclear.paonet.view.base
 
 import android.view.View
 
@@ -9,5 +9,6 @@ import android.view.View
  */
 interface Presenter:View.OnClickListener{
 
+    fun loadData(isRefresh:Boolean)
     override fun onClick(v: View?)
 }

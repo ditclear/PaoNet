@@ -4,15 +4,13 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View"/>
         <variable
                 name="vm"
                 type="com.ditclear.paonet.viewmodel.PagedViewModel"/>
-
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.helper.presenter.ListPresenter"/>
+                type="com.ditclear.paonet.view.base.Presenter"/>
     </data>
 
     <android.support.v4.widget.SwipeRefreshLayout
@@ -34,11 +32,12 @@
                     android:layoutAnimation="@anim/layout_animation_fall_down"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
-                    app:loadMore="@{presenter}"
+                    app:loadMore="@{vm.loadMore}"
+                    app:loadMorePresenter="@{presenter}"
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
             </android.support.v7.widget.RecyclerView>
             <include layout="@layout/empty_layout"
-                    android:visibility="@{vm.empty?View.VISIBLE:View.INVISIBLE}"/>
+                    android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
         </FrameLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>

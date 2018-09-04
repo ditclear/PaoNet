@@ -5,12 +5,12 @@ apply plugin: 'kotlin-android'
 apply plugin: 'android-aspectjx'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.ditclear.paonet"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -60,7 +60,7 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
-    kapt "com.android.databinding:compiler:3.1.2"
+    kapt "com.android.databinding:compiler:3.1.4"
     //aspectj
     implementation 'org.aspectj:aspectjrt:1.8.13'
     //rx android

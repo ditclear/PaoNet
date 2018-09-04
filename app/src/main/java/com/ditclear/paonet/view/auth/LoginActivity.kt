@@ -31,7 +31,7 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
         dismiss(null)
     }
 
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
     }
 
     override fun initView() {
@@ -41,7 +41,6 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
                 showLogin .set(SpUtil.user == null)
                 showLogout.set(SpUtil.user!=null)
             }
-            presenter = this@LoginActivity
         }
 
         if (!FabTransform.setup(this, mBinding.container)) {

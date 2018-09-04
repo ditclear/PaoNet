@@ -15,6 +15,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
+import android.util.Log
 import android.webkit.URLUtil
 import android.widget.Toast
 import com.ditclear.paonet.BuildConfig
@@ -100,6 +101,12 @@ fun Activity.navigateToActivity(c: Class<*>, serializable: Serializable? = null)
     startActivity(intent, options)
 }
 
+fun Any.logD(msg: String?) {
+    if (BuildConfig.DEBUG) {
+        Log.d(javaClass.simpleName, msg)
+    }
+}
+
 fun <T> Flowable<T>.async(withDelay: Long = 0): Flowable<T> =
         this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
 
@@ -107,7 +114,7 @@ fun <T> Single<T>.async(withDelay: Long = 0): Single<T> =
         this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
 
 fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
-    return this.compose({ upstream ->
+    return this.compose { upstream ->
         upstream.flatMap { t: R ->
             with(t) {
                 if (t.success == 1) {
@@ -117,7 +124,7 @@ fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
                 }
             }
         }
-    })
+    }
 }
 
 fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =

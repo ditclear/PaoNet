@@ -14,22 +14,22 @@ import javax.inject.Inject
  */
 class MyArticleViewModel @Inject constructor(private val repo: UserRepository) : PagedViewModel() {
 
-    val obserableList = ObservableArrayList<ArticleItemViewModel>()
+    val list = ObservableArrayList<ArticleItemViewModel>()
 
     fun loadData(isRefresh: Boolean) =
             repo.myArticle(getPage(isRefresh)).async(1000)
                     .doOnSuccess {
                         if (isRefresh) {
-                            obserableList.clear()
+                            list.clear()
                         }
                         loadMore.set(!it.incomplete_results)
                         it.items?.let {
-                            obserableList.addAll(it.map { ArticleItemViewModel(it) })
+                            list.addAll(it.map { ArticleItemViewModel(it) })
                         }
 
                     }.doOnSubscribe { startLoad() }.doAfterTerminate {
                         stopLoad()
-                        empty.set(obserableList.isEmpty())
+                        empty.set(list.isEmpty())
                     }
-
+    private fun getPage(isRefresh: Boolean)=if (isRefresh) 0 else list.size/20
 }

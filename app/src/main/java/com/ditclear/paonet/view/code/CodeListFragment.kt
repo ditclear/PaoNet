@@ -3,7 +3,6 @@ package com.ditclear.paonet.view.code
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
@@ -14,22 +13,17 @@ import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.MainActivity
-import com.ditclear.paonet.viewmodel.StateModel
 
 /**
  * 页面描述：ArticleListFragment
  *
  * Created by ditclear on 2017/10/3.
  */
-class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ListPresenter {
-    override val state: StateModel
-        get() = viewModel.state
-
+class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
     private val viewModel: CodeListViewModel by lazy {
         getInjectViewModel(CodeListViewModel::class.java)
@@ -37,7 +31,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, viewModel.observableList).apply {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, viewModel.list).apply {
             itemPresenter = this@CodeListFragment
         }
     }
@@ -88,7 +82,6 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
         activity?.navigateToActivity(CodeDetailActivity::class.java, item.article)
-
     }
 
     override fun onAttach(context: Context?) {
@@ -104,13 +97,13 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 category = cate
                 keyWord = this@CodeListFragment.keyWord
             }
-            presenter=this@CodeListFragment
             recyclerView.apply {
+
                 adapter = mAdapter
-                addItemDecoration(object : DividerItemDecoration(activity, VERTICAL) {
-                    override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect?.top = activity?.dpToPx(R.dimen.xdp_12_0)
+                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
                     }
                 })
 

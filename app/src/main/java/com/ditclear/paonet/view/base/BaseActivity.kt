@@ -13,13 +13,13 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
+import com.ditclear.paonet.BR
 import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.di.component.ActivityComponent
 import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
-import com.ditclear.paonet.helper.presenter.Presenter
 import javax.inject.Inject
 
 
@@ -56,6 +56,8 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
+        mBinding.setVariable(BR.presenter,this)
+        mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)
         mContext = this
 
@@ -63,7 +65,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         if (delayToTransition){
             afterEnterTransition()
         } else if (autoRefresh){
-            loadData()
+            loadData(true)
         }
 
 
@@ -85,7 +87,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
             }
 
             override fun onTransitionEnd(transition: android.transition.Transition?) {
-                loadData()
+                loadData(true)
             }
 
         }
@@ -100,11 +102,12 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         window.enterTransition.removeListener(enterTransitionListener)
     }
 
-    abstract fun loadData()
+    abstract override fun loadData(isRefresh:Boolean)
 
     abstract fun initView()
 
     abstract fun getLayoutId(): Int
+
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -16,7 +16,7 @@ class ArticleListViewModel
 @Inject
 constructor(private val repo: PaoRepository) : PagedViewModel() {
 
-    val obserableList = ObservableArrayList<ArticleItemViewModel>()
+    val list = ObservableArrayList<ArticleItemViewModel>()
 
     var tid = ArticleType.ANDROID
         set
@@ -34,18 +34,14 @@ constructor(private val repo: PaoRepository) : PagedViewModel() {
                 with(articleList) {
                     loadMore.set(!incomplete_results)
                     if (isRefresh) {
-                        obserableList.clear()
-                        if (items == null || items.isEmpty()) {
-                            state.showEmpty(1)
-                        } else {
-                            state.hideEmpty()
-                        }
+                        list.clear()
                     }
-                    return@map items?.map { ArticleItemViewModel(it) }?.let { obserableList.addAll(it) }
+                    return@map items?.map { ArticleItemViewModel(it) }?.let { list.addAll(it) }
                 }
             }.doOnSubscribe { startLoad() }.doAfterTerminate {
                 stopLoad()
-                empty.set(obserableList.isEmpty())
+                empty.set(list.isEmpty())
             }
 
+    private fun getPage(isRefresh: Boolean) = if (isRefresh) 0 else list.size / 20
 }
