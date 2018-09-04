@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class MyCollectViewModel @Inject constructor(private val repo: UserRepository) : PagedViewModel() {
 
-    val obserableList = ObservableArrayList<ArticleItemViewModel>()
+    val list = ObservableArrayList<ArticleItemViewModel>()
 
     //1 ：文章；-19 ：代码
     var type = 1
@@ -23,21 +23,18 @@ class MyCollectViewModel @Inject constructor(private val repo: UserRepository) :
             repo.collectionArticle(getPage(isRefresh), type).async(1000)
                     .doOnSuccess {
                         if (isRefresh) {
-                            obserableList.clear()
-                            if (it.items == null || it.items.isEmpty()) {
-                                state.showEmpty(1)
-                            } else {
-                                state.hideEmpty()
-                            }
+                            list.clear()
                         }
                         loadMore.set(!it.incomplete_results)
                         it.items?.let {
-                            obserableList.addAll(it.map { ArticleItemViewModel(it) })
+                            list.addAll(it.map { ArticleItemViewModel(it) })
                         }
 
                     }.doOnSubscribe { startLoad() }.doAfterTerminate {
                         stopLoad()
-                        empty.set(obserableList.isEmpty())
+                        empty.set(list.isEmpty())
                     }
+
+    private fun getPage(isRefresh: Boolean)=if (isRefresh) 0 else list.size/20
 
 }

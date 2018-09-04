@@ -13,12 +13,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.ditclear.paonet.BR
 import com.ditclear.paonet.di.component.FragmentComponent
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
-import com.ditclear.paonet.helper.presenter.Presenter
 import javax.inject.Inject
 
 
@@ -73,9 +73,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         initArgs(savedInstanceState)
     }
 
-    fun <T : ViewModel> getInjectViewModel(modelClass: Class<T>): T {
-        return ViewModelProviders.of(this, factory).get(modelClass)
-    }
+    fun <T : ViewModel> getInjectViewModel(modelClass: Class<T>): T =
+            ViewModelProviders.of(this, factory).get(modelClass)
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -94,6 +93,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+        mBinding.setVariable(BR.presenter,this)
+        mBinding.executePendingBindings()
         return mBinding.root
     }
 
@@ -115,18 +116,17 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     }
 
-    open protected fun onVisible() {
+    protected open fun onVisible() {
         lazyLoad()
     }
 
 
     open fun lazyLoad() {}
 
-
     abstract fun initArgs(savedInstanceState: Bundle?)
 
     abstract fun initView()
-    abstract fun loadData(isRefresh: Boolean)
+    abstract override fun loadData(isRefresh: Boolean)
 
     abstract fun getLayoutId(): Int
 

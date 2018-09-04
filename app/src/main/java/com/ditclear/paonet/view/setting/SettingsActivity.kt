@@ -6,7 +6,7 @@ import com.ditclear.paonet.databinding.EmptyLayoutBinding
 import com.ditclear.paonet.view.base.BaseActivity
 
 class SettingsActivity : BaseActivity<EmptyLayoutBinding>() {
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
 
     }
 

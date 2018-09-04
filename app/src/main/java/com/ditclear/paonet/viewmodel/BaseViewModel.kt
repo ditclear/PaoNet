@@ -10,6 +10,5 @@ import android.arch.lifecycle.ViewModel
 
 open class BaseViewModel() : ViewModel(){
 
-    val state=StateModel()
 
 }

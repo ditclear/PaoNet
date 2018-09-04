@@ -4,7 +4,6 @@ import android.content.Context
 import android.databinding.ViewDataBinding
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -16,21 +15,18 @@ import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
-import com.ditclear.paonet.helper.presenter.ListPresenter
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
-import com.ditclear.paonet.viewmodel.StateModel
+import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 
 /**
  * 页面描述：RecentFragment
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Any>, ListPresenter {
+class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Any>, ToTopOrRefreshContract {
 
-    override val state: StateModel
-        get() = viewModel.state
 
 
     override fun onItemClick(v: View?, t: Any) {
@@ -50,7 +46,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     }
 
     val mAdapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext, viewModel.obserableList, object : MultiTypeAdapter.MultiViewTyper {
+        MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
             override fun getViewType(item: Any): Int =
                     if (item is Dummy) ItemType.HEADER else ItemType.ITEM
         }).apply {
@@ -99,17 +95,13 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
         mBinding.run {
             vm = viewModel
-            presenter = this@RecentFragment
 
             recyclerView.run {
                 adapter = mAdapter
-                addItemDecoration(object : DividerItemDecoration(activity, DividerItemDecoration.VERTICAL) {
+                addItemDecoration(object : RecyclerView.ItemDecoration() {
 
-                    override fun getItemOffsets(outRect: Rect?, view: View?, parent: RecyclerView?, state: RecyclerView.State?) {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        if (parent == null || view == null || state == null) {
-                            return
-                        }
                         val layoutManager = parent.layoutManager
                         val current = parent.getChildLayoutPosition(view)
                         if (current == -1) {
@@ -118,7 +110,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
                         if (layoutManager is LinearLayoutManager) {
                             if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
                                 if (current != 0) {
-                                    outRect?.bottom = activity?.dpToPx(R.dimen.xdp_12_0)
+                                    outRect.bottom = activity?.dpToPx(R.dimen.xdp_12_0)?:0
                                 }
                             }
                         }
@@ -128,6 +120,18 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
         }
 
+    }
+
+    override fun toTopOrRefresh() {
+        if (mBinding.recyclerView.layoutManager is LinearLayoutManager){
+            val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
+            if (layoutManager.findLastVisibleItemPosition()> 5){
+                mBinding.recyclerView.smoothScrollToPosition(0)
+            }else{
+                mBinding.recyclerView.smoothScrollToPosition(0)
+                loadData(true)
+            }
+        }
     }
 
 }

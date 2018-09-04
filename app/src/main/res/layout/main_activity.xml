@@ -11,7 +11,7 @@
 
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.helper.presenter.Presenter"/>
+                type="com.ditclear.paonet.view.base.Presenter"/>
 
     </data>
 

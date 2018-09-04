@@ -32,7 +32,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
     private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel(ArticleDetailViewModel::class.java) }
 
 
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
 
         viewModel.loadData().bindLifeCycle(this)
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
@@ -66,8 +66,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
                 this.article = it
             }
         }
-        mBinding.presenter = this
-
         initBackToolbar(mBinding.toolbar)
 
         delayToTransition = true

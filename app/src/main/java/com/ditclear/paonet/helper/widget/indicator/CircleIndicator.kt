@@ -21,7 +21,7 @@ import com.ditclear.paonet.R
  * Created by ditclear on 2017/11/6.
  */
 class CircleIndicator : View {
-    private var viewPager: RecyclerView ?= null
+    private var viewPager: RecyclerView ?=null
     private var tabItems: MutableList<ShapeHolder>? = null
     private var movingItem: ShapeHolder? = null
 
@@ -96,13 +96,13 @@ class CircleIndicator : View {
 
     private fun setUpListener() {
         viewPager?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
             }
 
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val first = (recyclerView!!.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                val first = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                 trigger(first, 0f)
             }
         })
@@ -122,7 +122,7 @@ class CircleIndicator : View {
     }
 
     private fun createTabItems() {
-        for (i in 0 until viewPager!!.adapter.itemCount) {
+        for (i in 0 until (viewPager?.adapter?.itemCount?:0)) {
             val circle = OvalShape()
             val drawable = ShapeDrawable(circle)
             val shapeHolder = ShapeHolder(drawable)
@@ -207,12 +207,7 @@ class CircleIndicator : View {
     override fun onDraw(canvas: Canvas) {
         Log.e("CircleIndicator", "onDraw()")
         super.onDraw(canvas)
-        val sc = canvas.saveLayer(0f, 0f, getWidth().toFloat(), getHeight().toFloat(), null,
-                Canvas.MATRIX_SAVE_FLAG or
-                        Canvas.CLIP_SAVE_FLAG or
-                        Canvas.HAS_ALPHA_LAYER_SAVE_FLAG or
-                        Canvas.FULL_COLOR_LAYER_SAVE_FLAG or
-                        Canvas.CLIP_TO_LAYER_SAVE_FLAG)
+        val sc = canvas.saveLayer(0f, 0f, getWidth().toFloat(), getHeight().toFloat(), null)
         for (item in tabItems!!) {
             drawItem(canvas, item)
         }

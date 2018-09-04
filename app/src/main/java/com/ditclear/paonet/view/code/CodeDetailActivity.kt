@@ -29,7 +29,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
         getInjectViewModel(CodeDetailViewModel::class.java)
     }
 
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
 
         viewModel.loadData().bindLifeCycle(this).subscribe({ isStow(it) },
                 { toastFailure(it) })
@@ -63,7 +63,6 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
                 this.nameAndDate.set("""${article?.user?.nickname ?: "佚名"}
                                         |${article?.pubDate}""".trimMargin())
             }
-            presenter = this@CodeDetailActivity
             scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 if (scrollY - oldScrollY > 10) {
                     mBinding.fab.hide()

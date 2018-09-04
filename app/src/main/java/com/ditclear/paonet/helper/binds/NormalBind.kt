@@ -1,7 +1,6 @@
 package com.ditclear.paonet.helper.binds
 
 import android.databinding.BindingAdapter
-import android.os.Build
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
@@ -15,7 +14,7 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.helper.ImageUtil
 import com.ditclear.paonet.helper.ScrimUtil
 import com.ditclear.paonet.helper.extens.setMarkdown
-import com.ditclear.paonet.helper.presenter.ListPresenter
+import com.ditclear.paonet.view.base.Presenter
 import us.feras.mdv.MarkdownView
 
 /**
@@ -24,13 +23,13 @@ import us.feras.mdv.MarkdownView
  * Created by ditclear on 2017/10/2.
  */
 
-@BindingAdapter(value = *arrayOf("url", "avatar"), requireAll = false)
+@BindingAdapter(value = ["url", "avatar"], requireAll = false)
 fun bindUrl(imageView: ImageView, url: String?, isAvatar: Boolean?) {
 
     ImageUtil.load(url, imageView, isAvatar = isAvatar ?: false)
 }
 
-@BindingAdapter(value = *arrayOf("start_color", "icon"), requireAll = false)
+@BindingAdapter(value = ["start_color", "icon"], requireAll = false)
 fun bindTransitionArgs(v: View, color: Int, icon: Int?) {
     v.setTag(R.integer.start_color, color)
     if (v is FloatingActionButton) {
@@ -38,32 +37,30 @@ fun bindTransitionArgs(v: View, color: Int, icon: Int?) {
     }
 }
 
-@BindingAdapter(value = "markdown")
+@BindingAdapter(value = ["markdown"])
 fun bindMarkDown(v: MarkdownView, markdown: String?) {
     markdown?.let {
         v.setMarkdown(markdown)
     }
 }
 
-@BindingAdapter(value = "visible")
+@BindingAdapter(value = ["visible"])
 fun bindVisibility(v: View, visible: Boolean) {
     v.visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-//这样的写法并不好 ，建议不要使用ListPresenter 的方式 来处理
-@BindingAdapter(value = "loadMore")
-fun bindLoadMore(v: RecyclerView, presenter: ListPresenter) {
+@BindingAdapter(value = ["loadMore","loadMorePresenter"])
+fun bindLoadMore(v: RecyclerView, canLoadMore: Boolean,presenter: Presenter) {
     v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            if (recyclerView!!.layoutManager is LinearLayoutManager) {
+            if (recyclerView.layoutManager is LinearLayoutManager) {
                 //表示是否能向上滚动，false表示已经滚动到底部
                 //防止多次拉取同样的数据
                 if (!recyclerView.canScrollVertically(1)) {
-                    if (presenter.state.canLoadMore()) {
+                    if (canLoadMore) {
                         presenter.loadData(false)
-
                     }
                 }
             }
@@ -71,12 +68,12 @@ fun bindLoadMore(v: RecyclerView, presenter: ListPresenter) {
     })
 }
 
-@BindingAdapter(value = "onRefresh")
-fun bindOnRefresh(v: SwipeRefreshLayout, presenter: ListPresenter) {
+@BindingAdapter(value = ["onRefresh"])
+fun bindOnRefresh(v: SwipeRefreshLayout, presenter: Presenter) {
     v.setOnRefreshListener { presenter.loadData(true) }
 }
 
-@BindingAdapter(value = *arrayOf("vertical"), requireAll = false)
+@BindingAdapter(value = ["vertical"], requireAll = false)
 fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
 
     if (vertical) {
@@ -104,10 +101,7 @@ fun setShadow(view: View, mColor: Int, mNumSteps: Int, mGravity: Int) {
     if (gravity == 0) {
         gravity = Gravity.TOP
     }
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-        view.background = ScrimUtil.makeCubicGradientScrimDrawable(color, numSteps,
-                gravity)
-    } else {
-        view.setBackgroundDrawable(ScrimUtil.makeCubicGradientScrimDrawable(color, numSteps, gravity))
-    }
+    view.background = ScrimUtil.makeCubicGradientScrimDrawable(color, numSteps,
+            gravity)
+
 }

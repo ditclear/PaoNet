@@ -13,13 +13,14 @@
 
         <variable
                 name="presenter"
-                type="com.ditclear.paonet.helper.presenter.Presenter"/>
+                type="com.ditclear.paonet.view.base.Presenter"/>
     </data>
     <android.support.design.widget.CoordinatorLayout
             android:id="@+id/over_scroll_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:transitionGroup="true"
             tools:context=".view.code.CodeDetailActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -69,7 +70,6 @@
                 android:id="@+id/scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:transitionGroup="true"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout

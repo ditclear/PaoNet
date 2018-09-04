@@ -42,9 +42,9 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     val adapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext, viewModel.obserableList, object : MultiTypeAdapter.MultiViewTyper {
+        MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
             override fun getViewType(item: Any): Int {
-                val pos = viewModel.obserableList.indexOf(item)
+                val pos = viewModel.list.indexOf(item)
                 return if (pos == 0) ItemType.HEADER else ItemType.ITEM
             }
 

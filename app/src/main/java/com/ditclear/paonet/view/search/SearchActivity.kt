@@ -25,7 +25,7 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
 
     val recentSearch by lazy { RecentSearchFragment.newInstance() }
 
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
 
     }
 

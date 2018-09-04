@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 class CodeListViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
 
-    val observableList = ObservableArrayList<ArticleItemViewModel>()
+    val list = ObservableArrayList<ArticleItemViewModel>()
 
     //null代表全部
     var category: Int? = null
@@ -30,20 +30,15 @@ class CodeListViewModel @Inject constructor(private val repo: PaoRepository) : P
             .map { articleList ->
                 with(articleList) {
                     if (isRefresh) {
-                        observableList.clear()
-                        if (items == null || items.isEmpty()) {
-                            state.showEmpty(1)
-                        } else {
-                            state.hideEmpty()
-                        }
+                        list.clear()
                     }
                     loadMore.set(!incomplete_results)
-                    return@map items?.map { ArticleItemViewModel(it) }?.let { observableList.addAll(it) }
+                    return@map items?.map { ArticleItemViewModel(it) }?.let { list.addAll(it) }
                 }
             }.doOnSubscribe { startLoad() }.doAfterTerminate {
                 stopLoad()
-                empty.set(observableList.isEmpty())
+                empty.set(list.isEmpty())
             }
 
-
+    private fun getPage(isRefresh: Boolean)=if (isRefresh) 0 else list.size/20
 }

@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -68,7 +67,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     private val myCollectFragment = MyCollectFragment.newInstance()
 
 
-    override fun loadData() {
+    override fun loadData(isRefresh:Boolean) {
         viewModel.getCodeCategories().bindLifeCycle(this)
                 .subscribe ({},{})
     }
@@ -106,21 +105,26 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
 
-        mBinding.run {
-            vm = viewModel
-            presenter = this@MainActivity
-        }
+        mBinding.vm = viewModel
 
         mBinding.navMainLayout?.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
             layoutManager = LinearLayoutManager(mContext)
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
-        mBinding.drawerLayout.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
-            override fun onDrawerClosed(drawerView: View) {
-                super.onDrawerClosed(drawerView)
+        mBinding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+            override fun onTabUnselected(p0: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(p0: TabLayout.Tab?) {
 
             }
+
+            override fun onTabReselected(p0: TabLayout.Tab?) {
+                //再次点击，可见item个数大于5个回到顶部 ，小于5刷新当前页
+                homeFragment.toTopOrRefresh()
+            }
+
         })
     }
 
