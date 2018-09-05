@@ -15,6 +15,7 @@ import com.ditclear.paonet.helper.ImageUtil
 import com.ditclear.paonet.helper.ScrimUtil
 import com.ditclear.paonet.helper.extens.setMarkdown
 import com.ditclear.paonet.view.base.Presenter
+import com.ditclear.paonet.viewmodel.PagedViewModel
 import us.feras.mdv.MarkdownView
 
 /**
@@ -50,7 +51,7 @@ fun bindVisibility(v: View, visible: Boolean) {
 }
 
 @BindingAdapter(value = ["loadMore","loadMorePresenter"])
-fun bindLoadMore(v: RecyclerView, canLoadMore: Boolean,presenter: Presenter) {
+fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?,presenter: Presenter) {
     v.layoutManager = LinearLayoutManager(v.context)
     v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -59,8 +60,10 @@ fun bindLoadMore(v: RecyclerView, canLoadMore: Boolean,presenter: Presenter) {
                 //表示是否能向上滚动，false表示已经滚动到底部
                 //防止多次拉取同样的数据
                 if (!recyclerView.canScrollVertically(1)) {
-                    if (canLoadMore) {
-                        presenter.loadData(false)
+                    vm?.let {
+                        if (vm.loadMore.get() && !vm.loading.get()) {
+                            presenter.loadData(false)
+                        }
                     }
                 }
             }
