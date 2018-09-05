@@ -32,7 +32,7 @@
                     android:layoutAnimation="@anim/layout_animation_fall_down"
                     android:scrollbarStyle="outsideOverlay"
                     android:scrollbars="vertical"
-                    app:loadMore="@{vm.loadMore}"
+                    app:loadMore="@{vm}"
                     app:loadMorePresenter="@{presenter}"
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
             </android.support.v7.widget.RecyclerView>
