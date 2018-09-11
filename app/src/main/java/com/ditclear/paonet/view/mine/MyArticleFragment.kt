@@ -32,11 +32,11 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
         getInjectViewModel(MyArticleViewModel::class.java)
     }
 
-    val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
+    private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.list).apply { itemPresenter = this@MyArticleFragment }
     }
 
-    var showTab: Boolean = false
+    val showTab by lazy { autoWired(SHOW_TAB,false)?:false }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -53,14 +53,9 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
         }
     }
 
-
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe ({},{toastFailure(it)})
-    }
-
-    override fun initArgs(savedInstanceState: Bundle?) {
-        showTab = arguments?.getBoolean(SHOW_TAB, false)?:false
     }
 
     @SingleClick

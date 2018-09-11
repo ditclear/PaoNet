@@ -3,7 +3,6 @@ package com.ditclear.paonet.view.home
 import android.content.Context
 import android.databinding.ViewDataBinding
 import android.graphics.Rect
-import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -87,16 +86,12 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     }
 
-    override fun initArgs(savedInstanceState: Bundle?) {
-
-    }
-
     override fun initView() {
 
-        mBinding.run {
+        mBinding.apply {
             vm = viewModel
 
-            recyclerView.run {
+            recyclerView.apply {
                 adapter = mAdapter
                 addItemDecoration(object : RecyclerView.ItemDecoration() {
 

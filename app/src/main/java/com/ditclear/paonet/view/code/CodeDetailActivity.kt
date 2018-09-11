@@ -28,6 +28,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
     private val viewModel: CodeDetailViewModel by lazy {
         getInjectViewModel(CodeDetailViewModel::class.java)
     }
+    private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
     override fun loadData(isRefresh:Boolean) {
 
@@ -46,8 +47,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
 
     override fun initView() {
-        val article: Article? = intent?.extras?.getSerializable(Constants.KEY_SERIALIZABLE) as Article?
-        if (article == null) {
+        if (mArticle == null) {
             toast("文章不存在", ToastType.WARNING)
             finish()
             overridePendingTransition(0, 0)
@@ -55,13 +55,13 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
         getComponent().inject(this)
 
         delayToTransition = true
-        viewModel.article.set(article)
+        viewModel.article.set(mArticle)
         viewModel
         mBinding.run {
             vm = viewModel.apply {
-                this.article.set(article)
-                this.nameAndDate.set("""${article?.user?.nickname ?: "佚名"}
-                                        |${article?.pubDate}""".trimMargin())
+                this.article.set(mArticle)
+                this.nameAndDate.set("""${mArticle?.user?.nickname ?: "佚名"}
+                                        |${mArticle?.pubDate}""".trimMargin())
             }
             scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                 if (scrollY - oldScrollY > 10) {

@@ -40,9 +40,9 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
         }
     }
 
-    var tid: Int = ArticleType.ANDROID
+    val tid by lazy { autoWired(KEY_TID,ArticleType.ANDROID)?:ArticleType.ANDROID }
 
-    var keyWord: String? = null
+    val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -82,14 +82,6 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
                     toastFailure(it)
                 })
     }
-
-    override fun initArgs(savedInstanceState: Bundle?) {
-        arguments?.let {
-            tid = it.getInt(KEY_TID)
-            keyWord = it.getString(KEY_KEYWORD)
-        }
-    }
-
 
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
 

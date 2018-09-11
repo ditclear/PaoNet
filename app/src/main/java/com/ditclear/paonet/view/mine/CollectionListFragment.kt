@@ -43,7 +43,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         }
     }
 
-    var collectionType: Int = 1
+    val collectionType by lazy { autoWired(COLLECTION_TYPE,1)?:1 }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -72,10 +72,6 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe({}, { toastFailure(it) })
-    }
-
-    override fun initArgs(savedInstanceState: Bundle?) {
-        collectionType = arguments?.getInt(COLLECTION_TYPE, 1) ?: 1
     }
 
     @SingleClick

@@ -38,9 +38,9 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
-    var cate: Int? = null
+    val cate by lazy { autoWired<Int>(KEY_CATE) }
 
-    var keyWord: String? = null
+    val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
     companion object {
 
@@ -69,14 +69,6 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe({},{toastFailure(it)})
-    }
-
-    override fun initArgs(savedInstanceState: Bundle?) {
-        arguments?.let {
-            cate = it.getInt(KEY_CATE)
-            keyWord = it.getString(KEY_KEYWORD)
-
-        }
     }
 
     @SingleClick
