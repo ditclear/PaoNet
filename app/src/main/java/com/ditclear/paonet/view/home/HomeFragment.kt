@@ -31,8 +31,6 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
     override fun getLayoutId(): Int = R.layout.home_fragment
 
-    fun getViewPager() = mBinding.viewPager
-
     override fun loadData(isRefresh: Boolean) {
 
     }

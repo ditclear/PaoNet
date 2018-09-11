@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view.search
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
@@ -19,7 +18,7 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     override fun getLayoutId() = R.layout.content_main
 
-    lateinit var keyWord: String
+    val keyWord by lazy { autoWired(KEY_KEYWORD,"")?:"" }
 
     @Inject
     @field:Named(Constants.Qualifier_SEARCH)
@@ -38,16 +37,8 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
     override fun loadData(isRefresh: Boolean) {
 
-    }
-
-    override fun initArgs(savedInstanceState: Bundle?) {
-        keyWord = arguments?.getString(KEY_KEYWORD)?:""
     }
 
     override fun initView() {

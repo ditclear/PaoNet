@@ -141,4 +141,20 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     override fun onClick(v: View?) {
 
     }
+
+    protected fun <T> autoWired(key: String, default: T? = null): T? {
+        return intent?.extras?.let { findWired(it, key, default) }
+    }
+
+    private fun <T> findWired(bundle: Bundle, key: String, default: T? = null): T? {
+        return if (bundle.get(key) != null) {
+            try {
+                bundle.get(key) as T
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+                null
+            }
+        } else default
+
+    }
 }

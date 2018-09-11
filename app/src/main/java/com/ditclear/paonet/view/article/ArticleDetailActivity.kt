@@ -3,7 +3,6 @@ package com.ditclear.paonet.view.article
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
@@ -31,6 +30,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel(ArticleDetailViewModel::class.java) }
 
+    private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
     override fun loadData(isRefresh:Boolean) {
 
@@ -53,8 +53,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun initView() {
 
-        val article: Article? = intent?.extras?.getSerializable(Constants.KEY_SERIALIZABLE) as Article?
-        if (article == null) {
+        if (mArticle == null) {
             toast("文章不存在", ToastType.WARNING)
             finish()
         }
@@ -62,7 +61,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
         getComponent().inject(this)
 
         mBinding.vm = viewModel.apply {
-            article?.let {
+            mArticle?.let {
                 this.article = it
             }
         }
@@ -122,10 +121,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
         viewModel.stow().bindLifeCycle(this)
                 .subscribe({ toastSuccess(it.message) }
                         , { toastFailure(it) })
-    }
-
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        return super.dispatchTouchEvent(ev)
     }
 
 }

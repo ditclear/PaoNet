@@ -123,7 +123,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     open fun lazyLoad() {}
 
-    abstract fun initArgs(savedInstanceState: Bundle?)
+    open fun initArgs(savedInstanceState: Bundle?){
+
+    }
 
     abstract fun initView()
     abstract override fun loadData(isRefresh: Boolean)
@@ -143,6 +145,21 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     override fun onClick(v: View?) {
+
+    }
+
+    protected fun <T> autoWired(key: String, default: T? = null): T? =
+            arguments?.let { findWired(it, key, default) }
+
+    private fun <T> findWired(bundle: Bundle, key: String, default: T? = null): T? {
+        return if (bundle.get(key) != null) {
+            try {
+                bundle.get(key) as T
+            } catch (e: ClassCastException) {
+                e.printStackTrace()
+                null
+            }
+        } else default
 
     }
 
