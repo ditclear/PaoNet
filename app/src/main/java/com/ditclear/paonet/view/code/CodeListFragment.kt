@@ -26,7 +26,7 @@ import com.ditclear.paonet.view.home.MainActivity
 class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
     private val viewModel: CodeListViewModel by lazy {
-        getInjectViewModel(CodeListViewModel::class.java)
+        getInjectViewModel<CodeListViewModel>()
     }
 
 

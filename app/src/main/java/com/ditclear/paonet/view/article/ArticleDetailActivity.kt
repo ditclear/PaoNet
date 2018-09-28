@@ -28,7 +28,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
-    private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel(ArticleDetailViewModel::class.java) }
+    private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel<ArticleDetailViewModel>() }
 
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 

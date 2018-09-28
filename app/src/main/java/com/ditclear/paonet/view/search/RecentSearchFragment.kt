@@ -32,7 +32,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     private val viewModel: RecentSearchViewModel  by lazy {
-        getInjectViewModel(RecentSearchViewModel::class.java)
+        getInjectViewModel<RecentSearchViewModel>()
     }
 
     private val colorArray by lazy { ColorBrewer.Pastel2.getColorPalette(20) }

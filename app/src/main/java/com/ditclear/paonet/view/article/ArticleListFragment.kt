@@ -31,7 +31,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
 
     private val viewModel: ArticleListViewModel by lazy {
-        getInjectViewModel(ArticleListViewModel::class.java)
+        getInjectViewModel<ArticleListViewModel>()
     }
 
     private val mAdapter by lazy {

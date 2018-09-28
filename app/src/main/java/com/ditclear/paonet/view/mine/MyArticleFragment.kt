@@ -29,7 +29,7 @@ import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
 class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
     private val viewModel: MyArticleViewModel  by lazy {
-        getInjectViewModel(MyArticleViewModel::class.java)
+        getInjectViewModel<MyArticleViewModel>()
     }
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {

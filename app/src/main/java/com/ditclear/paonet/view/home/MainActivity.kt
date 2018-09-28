@@ -41,8 +41,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    private val viewModel: MainViewModel  by lazy {
-        getInjectViewModel(MainViewModel::class.java)
+    private val viewModel  by lazy {
+        getInjectViewModel<MainViewModel>()
     }
 
     val adapter by lazy {

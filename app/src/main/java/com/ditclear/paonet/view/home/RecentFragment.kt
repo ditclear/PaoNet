@@ -37,7 +37,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     }
 
     private val viewModel: RecentViewModel by lazy {
-        getInjectViewModel(RecentViewModel::class.java)
+        getInjectViewModel<RecentViewModel>()
     }
 
     val sliderAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {

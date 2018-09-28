@@ -25,8 +25,8 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
 
-    private val viewModel: CodeDetailViewModel by lazy {
-        getInjectViewModel(CodeDetailViewModel::class.java)
+    private val viewModel by lazy {
+        getInjectViewModel<CodeDetailViewModel>()
     }
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
