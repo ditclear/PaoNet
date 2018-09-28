@@ -27,6 +27,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/9/27.
  */
+
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     protected lateinit var mBinding: VB
@@ -73,8 +74,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         initArgs(savedInstanceState)
     }
 
-    fun <T : ViewModel> getInjectViewModel(modelClass: Class<T>): T =
-            ViewModelProviders.of(this, factory).get(modelClass)
+    inline fun <reified T: ViewModel> getInjectViewModel(): T =
+            ViewModelProviders.of(this, factory).get(T::class.java)
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -93,7 +94,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
-        mBinding.setVariable(BR.presenter,this)
+        mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         return mBinding.root
     }
@@ -123,7 +124,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     open fun lazyLoad() {}
 
-    open fun initArgs(savedInstanceState: Bundle?){
+    open fun initArgs(savedInstanceState: Bundle?) {
 
     }
 

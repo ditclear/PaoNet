@@ -29,7 +29,7 @@ import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
     private val viewModel: MyCollectViewModel  by lazy {
-        getInjectViewModel(MyCollectViewModel::class.java)
+        getInjectViewModel<MyCollectViewModel>()
     }
 
     val layoutItemId by lazy {

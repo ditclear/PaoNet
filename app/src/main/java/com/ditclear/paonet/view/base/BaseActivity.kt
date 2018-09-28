@@ -51,7 +51,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         return activityComponent as ActivityComponent
     }
 
-    fun <T :ViewModel> getInjectViewModel (modelClass: Class<T>)= ViewModelProviders.of(this,factory).get(modelClass)
+    inline fun <reified T :ViewModel> getInjectViewModel ()= ViewModelProviders.of(this,factory).get(T::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
