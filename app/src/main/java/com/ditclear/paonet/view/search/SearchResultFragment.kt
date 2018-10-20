@@ -1,11 +1,11 @@
 package com.ditclear.paonet.view.search
 
-import android.os.Bundle
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.home.SinglePageActivity
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -18,24 +18,12 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     override fun getLayoutId() = R.layout.content_main
 
-    val keyWord by lazy { autoWired(KEY_KEYWORD,"")?:"" }
+    val keyWord by lazy { autoWired("keyWord", "") ?: "" }
 
     @Inject
     @field:Named(Constants.Qualifier_SEARCH)
     lateinit var pagerAdapter: FragmentStatePagerAdapter
 
-    companion object {
-        private val KEY_KEYWORD = "keyWord"
-        fun newInstance(keyWord: String): SearchResultFragment {
-
-            return SearchResultFragment().apply {
-                val bundle = Bundle()
-                bundle.putString(KEY_KEYWORD, keyWord)
-                arguments = bundle
-            }
-        }
-
-    }
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -45,8 +33,10 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
         getComponent().inject(this)
         mBinding.viewPager.adapter = pagerAdapter
         mBinding.viewPager.offscreenPageLimit = pagerAdapter.count
-        (activity as SearchActivity).needShowTab(true)
-        (activity as SearchActivity).setupWithViewPager(mBinding.viewPager)
+        (activity as SinglePageActivity?)?.getSearchFragment()?.run {
+            needShowTab(true)
+            setupWithViewPager(mBinding.viewPager)
+        }
     }
 
 }

@@ -14,6 +14,7 @@ import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.widget.ColorBrewer
 import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.home.SinglePageActivity
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
@@ -27,8 +28,9 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     override fun getLayoutId(): Int = R.layout.recent_search_fragment
 
-    override fun onItemClick(v: View?, item: Any) {
-        (activity as SearchActivity).setQuery(keyWord = item as String)
+    override fun onItemClick(v: View?, item: Any) { val f = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host)?.childFragmentManager?.fragments?.firstOrNull()
+
+        (activity as SinglePageActivity?)?.getSearchFragment()?.setQuery(item as String)
     }
 
     private val viewModel: RecentSearchViewModel  by lazy {
@@ -36,10 +38,6 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     private val colorArray by lazy { ColorBrewer.Pastel2.getColorPalette(20) }
-
-    companion object {
-        fun newInstance() = RecentSearchFragment()
-    }
 
     val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
@@ -69,7 +67,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).bindLifeCycle(this)
-                .subscribe ({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
     }
 
     override fun initArgs(savedInstanceState: Bundle?) {
@@ -82,6 +80,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     override fun initView() {
+        inList = false
         mBinding.recyclerView.run {
             adapter = this@RecentSearchFragment.adapter
             layoutManager = FlexboxLayoutManager(mContext).apply {

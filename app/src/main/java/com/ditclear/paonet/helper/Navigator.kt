@@ -1,7 +1,6 @@
 package com.ditclear.paonet.helper
 
 import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,15 +8,15 @@ import android.support.annotation.ColorRes
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.content.ContextCompat
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
+import androidx.navigation.Navigation
 import com.ditclear.paonet.R
 import com.ditclear.paonet.helper.transitions.FabTransform
 import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.view.article.ArticleDetailActivity
 import com.ditclear.paonet.view.auth.LoginActivity
-import com.ditclear.paonet.view.search.SearchActivity
 
 
 /**
@@ -26,13 +25,22 @@ import com.ditclear.paonet.view.search.SearchActivity
  * Created by ditclear on 2017/10/2.
  */
 
-fun navigateToArticleDetail(activity: Activity, v: View?=null, article: Article) {
-    val intent = Intent(activity, ArticleDetailActivity::class.java)
-    val bundle = Bundle()
-    bundle.putSerializable(Constants.KEY_SERIALIZABLE, article)
-    intent.putExtras(bundle)
-    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle()
-    activity.startActivity(intent,options)
+fun navigateToArticleDetail(activity: Activity?,article: Article) {
+    activity?.let {
+        Navigation.findNavController(it, R.id.nav_host).navigate(R.id.articleDetailActivity, Bundle().apply {
+            putSerializable(Constants.KEY_SERIALIZABLE, article)
+        })
+    }?:Log.e("navigateToArticleDetail","activity is null")
+
+}
+
+fun navigateToCodeDetail(activity: Activity?,article: Article) {
+    activity?.let {
+        Navigation.findNavController(it,R.id.nav_host).navigate(R.id.codeDetailFragment, Bundle().apply {
+            putSerializable(Constants.KEY_SERIALIZABLE, article)
+        })
+    }?:Log.e("navigateToCodeDetail","activity is null")
+
 }
 
 //登录
@@ -66,7 +74,9 @@ fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=nu
 }
 
 //搜索
-fun navigateToSearch(activity: Activity, v: View? = null) {
-        val options = ActivityOptions.makeSceneTransitionAnimation(activity).toBundle()
-        activity.startActivity(Intent(activity, SearchActivity::class.java), options)
+fun navigateToSearch(activity: Activity?) {
+    activity?.let {
+        Navigation.findNavController(it,R.id.nav_host).navigate(R.id.searchFragment)
+    }?:Log.e("navigateToSearch","activity is null")
+
 }

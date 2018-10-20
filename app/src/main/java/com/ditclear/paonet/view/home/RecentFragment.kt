@@ -27,12 +27,9 @@ import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<Any>, ToTopOrRefreshContract {
 
 
-
     override fun onItemClick(v: View?, t: Any) {
         if (t is ArticleItemViewModel) {
-            activity?.let {
-                navigateToArticleDetail(it, v, t.article)
-            }
+            navigateToArticleDetail(activity, t.article)
         }
     }
 
@@ -81,7 +78,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(true).bindLifeCycle(this)
-                .subscribe({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
 
 
     }
@@ -105,7 +102,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
                         if (layoutManager is LinearLayoutManager) {
                             if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
                                 if (current != 0) {
-                                    outRect.bottom = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                                    outRect.bottom = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                                 }
                             }
                         }
@@ -114,15 +111,17 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
             }
 
         }
+        lazyLoad = true
+        isPrepared =true
 
     }
 
     override fun toTopOrRefresh() {
-        if (mBinding.recyclerView.layoutManager is LinearLayoutManager){
+        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
             val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
-            if (layoutManager.findLastVisibleItemPosition()> 5){
+            if (layoutManager.findLastVisibleItemPosition() > 5) {
                 mBinding.recyclerView.smoothScrollToPosition(0)
-            }else{
+            } else {
                 mBinding.recyclerView.smoothScrollToPosition(0)
                 loadData(true)
             }

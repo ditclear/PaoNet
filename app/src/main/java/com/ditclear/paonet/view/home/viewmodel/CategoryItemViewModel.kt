@@ -10,7 +10,7 @@ import com.ditclear.paonet.model.data.Category
 class CategoryItemViewModel(val cate: Category) {
 
     var catename = cate.catename
-    var value: Int? = cate.value
+    var value: Int? = cate.value?:-1
     var count: Int? = cate.count
 
 }

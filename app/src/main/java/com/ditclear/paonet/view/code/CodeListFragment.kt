@@ -12,11 +12,11 @@ import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
+import com.ditclear.paonet.helper.navigateToCodeDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
-import com.ditclear.paonet.view.home.MainActivity
+import com.ditclear.paonet.view.home.SinglePageActivity
 
 /**
  * 页面描述：ArticleListFragment
@@ -42,10 +42,13 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
+    val isInList by lazy { autoWired<Boolean>(KEY_INLIST) ?: true }
+
     companion object {
 
         val KEY_CATE = "cate"
         val KEY_KEYWORD = "keyWord"
+        val KEY_INLIST = "inList"
         fun newInstance(cate: Int?): CodeListFragment {
 
             val bundle = Bundle()
@@ -68,12 +71,13 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
-                .subscribe({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
+
     }
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity?.navigateToActivity(CodeDetailActivity::class.java, item.article)
+        navigateToCodeDetail(activity, item.article)
     }
 
     override fun onAttach(context: Context?) {
@@ -83,6 +87,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     override fun initView() {
+
+        inList = isInList
         mBinding.run {
 
             vm = viewModel.apply {
@@ -95,7 +101,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
                 addItemDecoration(object : RecyclerView.ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                     }
                 })
 
@@ -103,6 +109,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
             refreshLayout.setOnRefreshListener { loadData(true) }
         }
+        lazyLoad = true
+        isPrepared = true
         show()
     }
 
@@ -114,7 +122,9 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     fun show() {
-        (activity as? MainActivity)?.needShowTab(false)
+        if (activity is SinglePageActivity) {
+            (activity as SinglePageActivity?)?.needShowTab(false)
+        }
     }
 
 }

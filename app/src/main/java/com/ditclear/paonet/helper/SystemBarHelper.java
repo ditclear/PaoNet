@@ -26,6 +26,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.regex.Pattern;
 
+import kotlin.jvm.JvmStatic;
+
 /**
  * 状态栏工具类 状态栏两种模式(Android 4.4以上) 1.沉浸式全屏模式 2.状态栏着色模式
  */
@@ -116,7 +118,7 @@ public class SystemBarHelper {
      * @param alpha          透明栏透明度[0.0-1.0]
      */
     public static void tintStatusBarForDrawer(Activity activity, DrawerLayout drawerLayout, @ColorInt int statusBarColor,
-                                              @FloatRange(from = 0.0, to = 1.0) float alpha) {
+            @FloatRange(from = 0.0, to = 1.0) float alpha) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
             return;
         }
@@ -145,7 +147,8 @@ public class SystemBarHelper {
         drawerLayout.setFitsSystemWindows(false);
         drawContent.setFitsSystemWindows(true);
         ViewGroup drawer = (ViewGroup) drawerLayout.getChildAt(1);
-        drawer.setFitsSystemWindows(false);
+        if (drawer != null)
+            drawer.setFitsSystemWindows(false);
     }
 
     /**
@@ -221,10 +224,31 @@ public class SystemBarHelper {
     /**
      * 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上)
      */
+    @JvmStatic
     public static void setStatusBarDarkMode(Activity activity) {
         setStatusBarDarkMode(activity.getWindow());
     }
 
+    /**
+     * 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上)
+     */
+    @JvmStatic
+    public static void setStatusBarLightMode(Activity activity) {
+        setStatusBarLightMode(activity.getWindow());
+    }
+
+    /**
+     * 设置状态栏darkMode,字体颜色及icon变白(目前支持MIUI6以上,Flyme4以上,Android M以上)
+     */
+    public static void setStatusBarLightMode(Window window) {
+        if (isFlyme4Later()) {
+            setStatusBarDarkModeForFlyme4(window, false);
+        } else if (isMIUI6Later()) {
+            setStatusBarDarkModeForMIUI6(window, false);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            setStatusBarDarkModeForM(window,false);
+        }
+    }
     /**
      * 设置状态栏darkMode,字体颜色及icon变黑(目前支持MIUI6以上,Flyme4以上,Android M以上)
      */
@@ -234,7 +258,7 @@ public class SystemBarHelper {
         } else if (isMIUI6Later()) {
             setStatusBarDarkModeForMIUI6(window, true);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            setStatusBarDarkModeForM(window);
+            setStatusBarDarkModeForM(window,true);
         }
     }
 
@@ -245,15 +269,21 @@ public class SystemBarHelper {
      * android 6.0设置字体颜色
      */
     @TargetApi(Build.VERSION_CODES.M)
-    public static void setStatusBarDarkModeForM(Window window) {
+    public static void setStatusBarDarkModeForM(Window window,boolean darkMode) {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(Color.TRANSPARENT);
 
         int systemUiVisibility = window.getDecorView().getSystemUiVisibility();
-        systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (darkMode) {
+            systemUiVisibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        }else{
+            systemUiVisibility |= ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+
+        }
         window.getDecorView().setSystemUiVisibility(systemUiVisibility);
     }
+
 
     /**
      * 设置Flyme4+的darkMode,darkMode时候字体颜色及icon变黑 http://open-wiki.flyme.cn/index.php?title=Flyme%E7%B3%BB%E7%BB%9FAPI
@@ -337,7 +367,7 @@ public class SystemBarHelper {
      * 创建假的透明栏
      */
     private static void setTranslucentView(ViewGroup container,
-                                           @FloatRange(from = 0.0, to = 1.0) float alpha) {
+            @FloatRange(from = 0.0, to = 1.0) float alpha) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             View translucentView = container.findViewById(R.id.translucent_view);
             if (translucentView == null) {
@@ -395,6 +425,9 @@ public class SystemBarHelper {
      * 增加View的高度以及paddingTop,增加的值为状态栏高度.一般是在沉浸式全屏给ToolBar用的
      */
     public static void setHeightAndPadding(Context context, View view) {
+        if (view == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             ViewGroup.LayoutParams lp = view.getLayoutParams();
             lp.height += getStatusBarHeight(context);//增高

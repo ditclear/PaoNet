@@ -16,7 +16,8 @@
         <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:theme="@style/AppTheme.PopupOverlay">
+                app:theme="@style/AppTheme.Secondary"
+                android:background="#fff">
 
             <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar"
@@ -30,11 +31,11 @@
                         android:id="@+id/search_view"
                         android:layout_width="match_parent"
                         android:layout_height="?actionBarSize"
+                        android:focusedByDefault="false"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@null"
                         app:queryHint="@string/search_hint"
                         app:searchIcon="@null"
-                        android:focusedByDefault="false"
                         app:showDividers="none"
                         app:submitBackground="@null">
 
@@ -51,11 +52,12 @@
             </android.support.design.widget.TabLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-                android:id="@+id/container"
+        <fragment
+                android:id="@+id/nav_search_host"
+                android:name="androidx.navigation.fragment.NavHostFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-        </FrameLayout>
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                app:navGraph="@navigation/search_navigation"/>
     </LinearLayout>
 </layout>

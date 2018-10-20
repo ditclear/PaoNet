@@ -1,43 +1,50 @@
 package com.ditclear.paonet.view.search
 
-import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.transition.Slide
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
-import android.view.MenuItem
 import android.view.View
+import androidx.core.os.bundleOf
+import androidx.navigation.Navigation
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SearchActivityBinding
 import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.Utils
-import com.ditclear.paonet.helper.extens.switchFragment
-import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.base.BaseFragment
 
 
 /**
- * 页面描述：SearchActivity 搜索
+ * 页面描述：SearchFragment 搜索
  *
  * Created by ditclear on 2017/10/21.
  */
-class SearchActivity : BaseActivity<SearchActivityBinding>() {
+class SearchFragment : BaseFragment<SearchActivityBinding>() {
 
     override fun getLayoutId() = R.layout.search_activity
-
-    val recentSearch by lazy { RecentSearchFragment.newInstance() }
 
     override fun loadData(isRefresh:Boolean) {
 
     }
 
     override fun initView() {
+        inList = false
+        val slide= Slide()
+        enterTransition = slide
+        exitTransition = slide
+        allowEnterTransitionOverlap=false
+        allowReturnTransitionOverlap=false
+        SystemBarHelper.setStatusBarDarkMode(activity)
 
-        SystemBarHelper.setStatusBarDarkMode(this)
-        setSupportActionBar(mBinding.toolbar)
-        delayToTransition = true
+        mBinding.toolbar.setNavigationOnClickListener {
+            Navigation.findNavController(it).navigateUp()
+        }
+
         mBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.run {
-                    changeFragment(SearchResultFragment.newInstance(this))
+                query?.let {
+//                    changeFragment(SearchResultFragment.newInstance(this))
+                    Navigation.findNavController(activity!!,R.id.nav_search_host)
+                            .navigate(R.id.searchResultFragment, bundleOf("keyWord" to it))
                 }
                 Utils.hideIme(mBinding.searchView)
                 return true
@@ -46,7 +53,8 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText.isNullOrEmpty()) {
                     needShowTab(false)
-                    changeFragment(recentSearch)
+                    Navigation.findNavController(activity!!,R.id.nav_search_host)
+                            .navigate(R.id.recentSearchFragment)
                 }
                 return true
             }
@@ -54,35 +62,11 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            changeFragment(recentSearch)
-        }
-    }
-
     fun setQuery(keyWord: String?) {
         keyWord?.run {
             mBinding.searchView.setQuery(keyWord, true)
             Utils.hideIme(mBinding.searchView)
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    var temp: Fragment? = null
-    /**
-     * 切换fragment
-     */
-    private fun changeFragment(fragment: Fragment) {
-
-        switchFragment(temp, fragment)
-        temp = fragment
     }
 
     fun setupWithViewPager(viewPager: ViewPager) {

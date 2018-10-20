@@ -1,13 +1,12 @@
 package com.ditclear.paonet.view.mine
 
 import android.content.Context
-import android.os.Bundle
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.home.MainActivity
+import com.ditclear.paonet.view.home.SinglePageActivity
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -40,16 +39,8 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
         getComponent().inject(this)
     }
 
-    override fun initArgs(savedInstanceState: Bundle?) {
-
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun initView() {
-
+        inList = false
         mBinding.viewPager.adapter = collectAdapter
         show()
     }
@@ -60,8 +51,8 @@ class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
         }
     }
      fun show(){
-        (activity as MainActivity).needShowTab(true)
-        (activity as MainActivity).setupWithViewPager(getViewPager())
+         (activity as SinglePageActivity?)?.needShowTab(true)
+         (activity as SinglePageActivity?)?.setupWithViewPager(mBinding.viewPager)
     }
 
     fun getViewPager()=mBinding.viewPager

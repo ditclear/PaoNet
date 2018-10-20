@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation"
+            app:startDestination="@id/mainFragment">
+
+    <fragment
+            android:id="@+id/mainFragment"
+            android:name="com.ditclear.paonet.view.home.MainFragment"
+            tools:layout="@layout/main_fragment"
+            android:label="MainFragment">
+        <action
+                android:id="@+id/action_mainFragment_to_main_navigation"
+                app:destination="@id/main_navigation"/>
+        <action
+                android:id="@+id/action_mainFragment_to_articleDetailActivity"
+                app:destination="@id/articleDetailActivity"/>
+        <action
+                android:id="@+id/action_mainFragment_to_codeDetailFragment"
+                app:destination="@id/codeDetailFragment"/>
+        <action
+                android:id="@+id/action_mainFragment_to_searchFragment"
+                app:launchDocument="true"
+                app:destination="@id/searchFragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/articleDetailActivity"
+            android:name="com.ditclear.paonet.view.article.ArticleDetailFragment"
+            tools:layout="@layout/article_detail_activity"
+            android:label="ArticleDetailActivity">
+    </fragment>
+
+    <fragment
+            android:id="@+id/codeDetailFragment"
+            android:name="com.ditclear.paonet.view.code.CodeDetailFragment"
+            tools:layout="@layout/code_detail_activity"
+            android:label="CodeDetailFragment">
+    </fragment>
+
+    <include app:graph="@navigation/main_navigation"/>
+    <include app:graph="@navigation/search_navigation"/>
+    <fragment
+            android:id="@+id/searchFragment"
+            android:name="com.ditclear.paonet.view.search.SearchFragment"
+            tools:layout="@layout/search_activity"
+            android:label="SearchFragment">
+        <action
+                android:id="@+id/xml"
+                app:destination="@id/search_navigation.xml"/>
+    </fragment>
+</navigation>

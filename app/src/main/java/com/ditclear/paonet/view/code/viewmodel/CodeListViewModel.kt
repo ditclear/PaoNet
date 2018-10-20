@@ -32,7 +32,7 @@ class CodeListViewModel @Inject constructor(private val repo: PaoRepository) : P
                     if (isRefresh) {
                         list.clear()
                     }
-                    loadMore.set(!incomplete_results)
+                    loadMore.set(incomplete_results)
                     return@map items?.map { ArticleItemViewModel(it) }?.let { list.addAll(it) }
                 }
             }.doOnSubscribe { startLoad() }.doAfterTerminate {

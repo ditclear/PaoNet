@@ -13,11 +13,10 @@ import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.view.article.ArticleDetailActivity
+import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.home.MainActivity
+import com.ditclear.paonet.view.home.SinglePageActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
 
 /**
@@ -60,7 +59,8 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity?.navigateToActivity(ArticleDetailActivity::class.java, item.article)
+        navigateToArticleDetail(activity,item.article)
+
     }
 
     override fun onAttach(context: Context?) {
@@ -70,8 +70,8 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     }
 
     override fun initView() {
-        (activity as MainActivity).needShowTab(showTab)
-
+        (activity as SinglePageActivity?)?.needShowTab(false)
+        inList = false
         mBinding.apply {
             vm = viewModel
             recyclerView.adapter = mAdapter
@@ -82,7 +82,6 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
                 }
             })
         }
-        show()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -93,7 +92,8 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     }
 
     fun show() {
-        (activity as MainActivity).needShowTab(false)
+        (activity as SinglePageActivity?)?.needShowTab(false)
+
     }
 
 }

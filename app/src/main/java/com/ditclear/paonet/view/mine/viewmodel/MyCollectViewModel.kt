@@ -25,7 +25,11 @@ class MyCollectViewModel @Inject constructor(private val repo: UserRepository) :
                         if (isRefresh) {
                             list.clear()
                         }
-                        loadMore.set(!it.incomplete_results)
+                        if (type==1) {
+                            loadMore.set(!it.incomplete_results)
+                        }else{
+                            loadMore.set(it.incomplete_results)
+                        }
                         it.items?.let {
                             list.addAll(it.map { ArticleItemViewModel(it) })
                         }

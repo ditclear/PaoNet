@@ -25,11 +25,13 @@
         <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="com.ditclear.paonet.view.MainActivity">
+                android:fitsSystemWindows="true"
+                tools:context="com.ditclear.paonet.view.home.SinglePageActivity">
 
             <android.support.design.widget.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fitsSystemWindows="true"
                     android:theme="@style/AppTheme.AppBarOverlay">
 
                 <android.support.v7.widget.Toolbar
@@ -53,13 +55,14 @@
                 </android.support.design.widget.TabLayout>
             </android.support.design.widget.AppBarLayout>
 
-            <FrameLayout
-                    android:id="@+id/container"
+
+            <fragment
+                    android:id="@+id/nav_main_host"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            </FrameLayout>
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:navGraph="@navigation/main_navigation"/>
 
 
         </android.support.design.widget.CoordinatorLayout>
@@ -73,10 +76,11 @@
                 app:itemIconTint="@color/colorPrimary"
                 app:itemTextColor="@color/colorPrimary">
 
-            <include layout="@layout/nav_header_main"
+            <include
                     android:id="@+id/nav_main_layout"
-                    app:vm="@{vm}"
-                    app:presenter="@{presenter}"/>
+                    layout="@layout/nav_header_main"
+                    app:presenter="@{presenter}"
+                    app:vm="@{vm}"/>
 
             <LinearLayout
                     android:layout_width="match_parent"

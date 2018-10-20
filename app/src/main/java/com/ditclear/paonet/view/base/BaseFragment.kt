@@ -34,7 +34,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     protected lateinit var mContext: Context
 
-    protected var lazyLoad = false
+    protected var lazyLoad = true
 
     protected var visible = false
 
@@ -46,6 +46,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
      * 是否已被加载过一次，第二次就不再去请求数据了
      */
     protected var hasLoadOnce: Boolean = false
+
+    protected var inList = true  //位于列表时为true
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -80,9 +82,13 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.let {
+            return
+        }
         mContext = activity ?: throw Exception("activity 为null")
         retainInstance = true
         initView()
+        isPrepared = true
         if (lazyLoad) {
             //延迟加载，需重写lazyLoad方法
             lazyLoad()
@@ -93,7 +99,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
+        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
         mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         return mBinding.root
@@ -122,7 +128,19 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
 
-    open fun lazyLoad() {}
+    open fun lazyLoad() {
+        if (inList) {
+            if (!isPrepared || !visible || hasLoadOnce) {
+                return
+            }
+        }else{
+            if (!isPrepared || hasLoadOnce) {
+                return
+            }
+        }
+        hasLoadOnce = true
+        loadData(true)
+    }
 
     open fun initArgs(savedInstanceState: Bundle?) {
 

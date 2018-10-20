@@ -62,8 +62,9 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
     }
 
     fun show() {
-        (activity as MainActivity).needShowTab(true)
-        (activity as MainActivity).setupWithViewPager(mBinding.viewPager)
+
+        (activity as SinglePageActivity?)?.needShowTab(true)
+        (activity as SinglePageActivity?)?.setupWithViewPager(mBinding.viewPager)
     }
 
     override fun initView() {

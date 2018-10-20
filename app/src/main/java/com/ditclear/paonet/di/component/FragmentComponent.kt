@@ -2,9 +2,12 @@ package com.ditclear.paonet.di.component
 
 import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.view.article.ArticleDetailFragment
 import com.ditclear.paonet.view.article.ArticleListFragment
+import com.ditclear.paonet.view.code.CodeDetailFragment
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.HomeFragment
+import com.ditclear.paonet.view.home.MainFragment
 import com.ditclear.paonet.view.home.RecentFragment
 import com.ditclear.paonet.view.mine.CollectionListFragment
 import com.ditclear.paonet.view.mine.MyArticleFragment
@@ -23,6 +26,7 @@ import dagger.Subcomponent
 interface FragmentComponent {
 
     fun inject(fragment: ArticleListFragment)
+
     fun inject(fragment: CodeListFragment)
 
     fun inject(fragment: CollectionListFragment)
@@ -33,12 +37,16 @@ interface FragmentComponent {
 
     fun inject(fragment: RecentFragment)
 
-
     fun inject(fragment: SearchResultFragment)
 
     fun inject(fragment: RecentSearchFragment)
 
     fun inject(fragment: MyArticleFragment)
+
+    fun inject(fragment: MainFragment)
+    fun inject(fragment: ArticleDetailFragment)
+    fun inject(fragment: CodeDetailFragment)
+
 
     @Subcomponent.Builder
     interface Builder {

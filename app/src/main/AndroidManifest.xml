@@ -12,8 +12,9 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.ditclear.paonet.view.home.MainActivity"
-                android:screenOrientation="portrait">  <!--横屏容易出问题-->
+        <activity android:name="com.ditclear.paonet.view.home.SinglePageActivity"
+                  android:windowSoftInputMode="stateAlwaysHidden">
+            <!--横屏容易出问题-->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -26,13 +27,6 @@
                 android:theme="@style/AppTheme.Translucent.Login"
                 android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity
-                android:name="com.ditclear.paonet.view.search.SearchActivity"
-                android:screenOrientation="portrait"
-                android:windowSoftInputMode="stateAlwaysHidden"
-                android:theme="@style/AppTheme.Secondary"/>
-        <activity android:name="com.ditclear.paonet.view.article.ArticleDetailActivity"/>
-        <activity android:name="com.ditclear.paonet.view.code.CodeDetailActivity"/>
         <activity
                 android:name="com.ditclear.paonet.view.setting.SettingsActivity"
                 android:label="@string/title_activity_settings">

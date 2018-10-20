@@ -1,9 +1,12 @@
 package com.ditclear.paonet.view.article
 
+import android.support.transition.Slide
 import android.support.v4.widget.NestedScrollView
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.navigation.Navigation
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -15,15 +18,15 @@ import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
-import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.base.BaseFragment
 
 
 /**
- * 页面描述：ArticleDetailActivity
+ * 页面描述：ArticleDetailFragment
  *
  * Created by ditclear on 2017/10/1.
  */
-class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
+class ArticleDetailFragment : BaseFragment<ArticleDetailActivityBinding>() {
 
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
@@ -32,7 +35,7 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
-    override fun loadData(isRefresh:Boolean) {
+    override fun loadData(isRefresh: Boolean) {
 
         viewModel.loadData().bindLifeCycle(this)
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
@@ -43,20 +46,30 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     //是否收藏过
     private fun isStow(stow: Boolean) {
-        mBinding.fab.drawable.setTint(
-                if (stow) {
-                    getCompactColor(R.color.stow_color)
-                } else {
-                    getCompactColor(R.color.tools_color)
-                })
+        activity?.let {
+            mBinding.fab.drawable.setTint(
+                    if (stow) {
+                        it.getCompactColor(R.color.stow_color)
+                    } else {
+                        it.getCompactColor(R.color.tools_color)
+                    })
+        }
     }
 
     override fun initView() {
-
+        inList = false
+        val slide = Slide()
+        enterTransition = slide
+        exitTransition = slide
+        allowEnterTransitionOverlap = false
+        allowReturnTransitionOverlap = false
         if (mArticle == null) {
-            toast("文章不存在", ToastType.WARNING)
-            finish()
+            activity?.let {
+                it.toast("文章不存在", ToastType.WARNING)
+                Navigation.findNavController(it, R.id.nav_host).navigateUp()
+            }
         }
+        setHasOptionsMenu(true)
 
         getComponent().inject(this)
 
@@ -65,10 +78,17 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
                 this.article = it
             }
         }
-        initBackToolbar(mBinding.toolbar)
-
-        delayToTransition = true
-
+        mBinding.toolbar.apply {
+            inflateMenu(R.menu.menu_attention)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_attention) {
+                    onClick(mBinding.toolbar.findViewById(it.itemId))
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }.setNavigationOnClickListener {
+            Navigation.findNavController(it).navigateUp()
+        }
         mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
             if (scrollY - oldScrollY > 10) {
                 mBinding.fab.hide()
@@ -79,16 +99,13 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_attention, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_attention, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
 
-            R.id.action_attention -> onClick(mBinding.toolbar.findViewById(item.itemId))
-        }
         return super.onOptionsItemSelected(item)
     }
 

@@ -13,11 +13,10 @@ import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
 import com.ditclear.paonet.helper.navigateToArticleDetail
+import com.ditclear.paonet.helper.navigateToCodeDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 
 /**
@@ -43,7 +42,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         }
     }
 
-    val collectionType by lazy { autoWired(COLLECTION_TYPE,1)?:1 }
+    val collectionType by lazy { autoWired(COLLECTION_TYPE, 1) ?: 1 }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -60,14 +59,6 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         }
     }
 
-    override fun lazyLoad() {
-        if (!isPrepared || !visible || hasLoadOnce) {
-            return
-        }
-        hasLoadOnce = true
-        loadData(true)
-    }
-
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
@@ -76,13 +67,12 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity?.let {
-            if (collectionType == 1) {
-                navigateToArticleDetail(it, v?.findViewById(R.id.thumbnail_iv), item.article)
-            } else {
-                it.navigateToActivity(CodeDetailActivity::class.java, item.article)
-            }
+        if (collectionType == 1) {
+            navigateToArticleDetail(activity, item.article)
+        } else {
+            navigateToCodeDetail(activity, item.article)
         }
+
     }
 
     override fun onAttach(context: Context?) {
@@ -104,7 +94,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
             recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                 }
             })
         }

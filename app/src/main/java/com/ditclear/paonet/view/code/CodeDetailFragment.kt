@@ -1,7 +1,9 @@
 package com.ditclear.paonet.view.code
 
+import android.support.transition.Slide
 import android.support.v4.widget.NestedScrollView
 import android.view.View
+import androidx.navigation.Navigation
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -12,15 +14,15 @@ import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
 
 /**
- * 页面描述：ArticleDetailActivity
+ * 页面描述：ArticleDetailFragment
  *
  * Created by ditclear on 2017/10/1.
  */
-class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
+class CodeDetailFragment : BaseFragment<CodeDetailActivityBinding>() {
 
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
@@ -37,26 +39,34 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
     }
 
     fun isStow(stow: Boolean?) {
-        mBinding.fab.drawable.setTint(
-                if (stow == true) {
-                    getCompactColor(R.color.stow_color)
-                } else {
-                    getCompactColor(R.color.tools_color)
-                })
+        activity?.let {
+            mBinding.fab.drawable.setTint(
+                    if (stow == true) {
+                        it.getCompactColor(R.color.stow_color)
+                    } else {
+                        it.getCompactColor(R.color.tools_color)
+                    })
+        }
     }
 
 
     override fun initView() {
+        inList = false
+        val slide= Slide()
+        enterTransition = slide
+        exitTransition = slide
+        allowEnterTransitionOverlap=false
+        allowReturnTransitionOverlap=false
+
         if (mArticle == null) {
-            toast("文章不存在", ToastType.WARNING)
-            finish()
-            overridePendingTransition(0, 0)
+            activity?.let {
+                it.toast("文章不存在", ToastType.WARNING)
+                Navigation.findNavController(it,R.id.nav_host).navigateUp()
+
+            }
         }
         getComponent().inject(this)
 
-        delayToTransition = true
-        viewModel.article.set(mArticle)
-        viewModel
         mBinding.run {
             vm = viewModel.apply {
                 this.article.set(mArticle)
@@ -71,8 +81,9 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
                 }
             })
         }
-        initBackToolbar(mBinding.toolbar)
-
+        mBinding.toolbar.setNavigationOnClickListener {
+            Navigation.findNavController(it).navigateUp()
+        }
     }
 
     @CheckLogin

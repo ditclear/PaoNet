@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/search_navigation.xml"
+            app:startDestination="@id/recentSearchFragment">
+
+    <fragment
+            android:id="@+id/recentSearchFragment"
+            android:name="com.ditclear.paonet.view.search.RecentSearchFragment"
+            android:label="RecentSearchFragment">
+        <action
+                android:id="@+id/action_recentSearchFragment_to_searchResultFragment"
+                app:destination="@id/searchResultFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/searchResultFragment"
+            android:name="com.ditclear.paonet.view.search.SearchResultFragment"
+            android:label="SearchResultFragment">
+        <action
+                android:id="@+id/action_searchResultFragment_to_recentSearchFragment"
+                app:destination="@id/recentSearchFragment"/>
+        <argument android:name="keyWord" app:argType="String" android:defaultValue="" app:nullable="true"/>
+    </fragment>
+</navigation>

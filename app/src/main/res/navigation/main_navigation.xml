@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_navigation"
+            app:startDestination="@id/homeFragment">
+
+    <fragment
+            android:id="@+id/homeFragment"
+            android:name="com.ditclear.paonet.view.home.HomeFragment"
+            android:label="HomeFragment">
+        <action
+                android:id="@+id/action_homeFragment_to_articleDetailActivity"
+                app:destination="@id/articleDetailActivity"/>
+        <action
+                android:id="@+id/action_homeFragment_to_codeListFragment"
+                app:destination="@id/codeListFragment"/>
+        <action
+                android:id="@+id/action_homeFragment_to_myArticleFragment"
+                app:destination="@id/myArticleFragment"/>
+        <action
+                android:id="@+id/action_homeFragment_to_myCollectFragment"
+                app:destination="@id/myCollectFragment"/>
+    </fragment>
+    <fragment
+            android:id="@+id/myArticleFragment"
+            android:name="com.ditclear.paonet.view.mine.MyArticleFragment"
+            android:label="MyArticleFragment"/>
+    <fragment
+            android:id="@+id/myCollectFragment"
+            android:name="com.ditclear.paonet.view.mine.MyCollectFragment"
+            android:label="MyCollectFragment"/>
+    <fragment
+            android:id="@+id/codeListFragment"
+            android:name="com.ditclear.paonet.view.code.CodeListFragment"
+            android:label="CodeListFragment">
+        <argument android:name="cate" android:defaultValue="-1" app:argType="integer" app:nullable="false"/>
+        <argument android:name="keyWord" android:defaultValue=" " app:argType="String" app:nullable="true"/>
+        <argument android:name="inList" android:defaultValue="true" app:argType="boolean" app:nullable="true"/>
+    </fragment>
+</navigation>
