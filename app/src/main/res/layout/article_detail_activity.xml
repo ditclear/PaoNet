@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            android:transitionGroup="true"
             tools:context=".view.article.ArticleDetailFragment">
 
         <android.support.design.widget.AppBarLayout
@@ -111,6 +110,7 @@
                 android:layout_margin="@dimen/fab_margin"
                 android:onClick="@{(v)->presenter.onClick(v)}"
                 android:transitionName="@string/transition_login"
+                app:backgroundTint="@color/background_light"
                 app:rippleColor="@color/stow_color"
                 app:srcCompat="@drawable/ic_bookmark"/>
 

@@ -20,6 +20,12 @@ object SpUtil {
         get() = Gson().fromJson(prefs.getString("user", ""), User::class.java)
         set(user) = prefs.edit().putString("user", Gson().toJson(user)).apply()
 
+    fun initUser(user: User?){
+        user?.let {
+            this.user = it
+        }
+    }
+
     fun logout(){
         user=null
     }

@@ -4,6 +4,7 @@ import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.view.article.ArticleDetailFragment
 import com.ditclear.paonet.view.article.ArticleListFragment
+import com.ditclear.paonet.view.auth.LoginFragment
 import com.ditclear.paonet.view.code.CodeDetailFragment
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.HomeFragment
@@ -46,6 +47,7 @@ interface FragmentComponent {
     fun inject(fragment: MainFragment)
     fun inject(fragment: ArticleDetailFragment)
     fun inject(fragment: CodeDetailFragment)
+    fun inject(fragment: LoginFragment)
 
 
     @Subcomponent.Builder

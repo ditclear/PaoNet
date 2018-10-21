@@ -52,6 +52,9 @@ dependencies {
     implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
     implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
 
+    //navigation
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha06'
+    implementation "android.arch.navigation:navigation-ui:1.0.0-alpha06"
     //ViewModel
     implementation "android.arch.lifecycle:extensions:"+rootProject.archLifecycleVersion
     implementation "android.arch.lifecycle:viewmodel:"+rootProject.archLifecycleVersion
@@ -114,7 +117,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
-    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha06'
+
 }
 
 //https://github.com/google/dagger/issues/306

@@ -6,8 +6,7 @@
     <data>
     </data>
 
-    <android.support.design.widget.CoordinatorLayout
-            android:id="@+id/container_host"
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".view.home.SinglePageActivity">
@@ -19,5 +18,5 @@
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
                 app:navGraph="@navigation/navigation"/>
-    </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
 </layout>

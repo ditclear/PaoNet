@@ -2,7 +2,7 @@ package com.ditclear.paonet.di.component
 
 import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.di.scope.ActivityScope
-import com.ditclear.paonet.view.auth.LoginActivity
+import com.ditclear.paonet.view.auth.LoginFragment
 import dagger.Subcomponent
 
 /**
@@ -15,7 +15,7 @@ import dagger.Subcomponent
 interface ActivityComponent {
 
 
-    fun inject(activity: LoginActivity)
+    fun inject(activity: LoginFragment)
 
     fun supplyFragmentComponentBuilder():FragmentComponent.Builder
 

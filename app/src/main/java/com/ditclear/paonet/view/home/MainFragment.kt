@@ -81,7 +81,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
                     R.string.navigation_drawer_close)
             mBinding.drawerLayout.addDrawerListener(toggle)
             toggle.syncState()
-            SystemBarHelper.setHeightAndPadding(it,mBinding.toolbar)
+//            SystemBarHelper.setHeightAndPadding(it,mBinding.appBar )
         }
     }
 
@@ -98,15 +98,18 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
         }
     }
 
+
     override fun initView() {
         inList = false
+        activity?.let {
+//            it.window?.statusBarColor = it.getCompactColor(R.color.colorPrimary)
+            SystemBarHelper.setStatusBarLightMode(it)
+        }
         getComponent().inject(this)
         (activity as AppCompatActivity?)?.setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
         setHasOptionsMenu(true)
         mBinding.vm = viewModel
-        enterTransition = null
-        exitTransition = null
         mBinding.navMainLayout?.navCodeLayout?.recyclerView?.run {
             adapter = this@MainFragment.adapter
             layoutManager = LinearLayoutManager(mContext)
@@ -137,18 +140,15 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
         }
     }
 
-    var isQuit = false;
+    fun needCloseDrawer(): Boolean {
+        return if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mBinding.drawerLayout.closeDrawer(GravityCompat.START)
+            true
+        } else {
 
-
-//    override fun onBackPressed() {
-//
-//        if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            mBinding.drawerLayout.closeDrawer(GravityCompat.START)
-//        } else {
-//            
-//
-//        }
-//    }
+            false
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.main, menu)
@@ -209,7 +209,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
                 R.id.code_tv, R.id.toggle_cate_btn -> viewModel.toggleCategory()
                 R.id.home_tv -> {
                     closeDrawer()
-//                    changeFragment(homeFragment)
                     changeFragment(R.id.homeFragment)
                 }
                 R.id.my_article_tv -> {

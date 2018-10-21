@@ -1,5 +1,6 @@
 package com.ditclear.paonet.view.search
 
+import android.support.transition.Slide
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
@@ -31,6 +32,7 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     override fun initView() {
         getComponent().inject(this)
+        exitTransition = Slide()
         mBinding.viewPager.adapter = pagerAdapter
         mBinding.viewPager.offscreenPageLimit = pagerAdapter.count
         (activity as SinglePageActivity?)?.getSearchFragment()?.run {

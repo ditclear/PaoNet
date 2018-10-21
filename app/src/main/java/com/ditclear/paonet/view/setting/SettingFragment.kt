@@ -3,9 +3,9 @@ package com.ditclear.paonet.view.setting
 
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.EmptyLayoutBinding
-import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.base.BaseFragment
 
-class SettingsActivity : BaseActivity<EmptyLayoutBinding>() {
+class SettingFragment : BaseFragment<EmptyLayoutBinding>() {
     override fun loadData(isRefresh:Boolean) {
 
     }

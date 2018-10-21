@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.support.annotation.NonNull
 import android.support.transition.TransitionListenerAdapter
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.BR
@@ -115,19 +114,6 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
             android.R.id.home -> onBackPressed()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    fun initBackToolbar(toolbar: Toolbar) {
-        setSupportActionBar(toolbar)
-
-        val bar = supportActionBar
-        if (bar != null) {
-            bar.title = null
-            bar.setDisplayHomeAsUpEnabled(true)
-            bar.setDisplayShowHomeEnabled(true)
-            bar.setDisplayShowTitleEnabled(true)
-            bar.setHomeButtonEnabled(true)
-        }
     }
 
     fun toastSuccess(msg: String?) {

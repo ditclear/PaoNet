@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/hint_highlight</item>
         <!--<item name="android:textColorHint">@color/tools_color</item>-->
         <!-- 允许使用transitions -->
         <item name="android:windowContentTransitions">true</item>
@@ -79,7 +79,7 @@
 
     <style name="TextAppearance.FloatLabelHint"
            parent="@android:style/TextAppearance.Material.Caption">
-        <item name="android:textColor">?android:colorAccent</item>
+        <item name="android:textColor">?android:colorPrimary</item>
     </style>
 
     <style name="Widget.Code.InlineActionButton" parent="@android:style/Widget.Material.Button">

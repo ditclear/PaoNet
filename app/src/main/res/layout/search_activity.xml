@@ -14,6 +14,7 @@
             android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
+                android:id="@+id/app_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:theme="@style/AppTheme.Secondary"
@@ -24,13 +25,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:contentInsetStart="@dimen/xdp_0"
+                    android:paddingTop="@dimen/xdp_16.0"
                     app:contentInsetStartWithNavigation="@dimen/xdp_0"
                     app:navigationIcon="@drawable/ic_arrow_back_black">
 
                 <android.support.v7.widget.SearchView
                         android:id="@+id/search_view"
                         android:layout_width="match_parent"
-                        android:layout_height="?actionBarSize"
+                        android:layout_height="?attr/actionBarSize"
                         android:focusedByDefault="false"
                         app:iconifiedByDefault="false"
                         app:queryBackground="@null"

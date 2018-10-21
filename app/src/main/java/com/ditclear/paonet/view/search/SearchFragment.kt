@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view.search
 
-import android.support.transition.Slide
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.View
@@ -10,6 +9,7 @@ import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SearchActivityBinding
 import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.Utils
+import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.view.base.BaseFragment
 
 
@@ -28,13 +28,10 @@ class SearchFragment : BaseFragment<SearchActivityBinding>() {
 
     override fun initView() {
         inList = false
-        val slide= Slide()
-        enterTransition = slide
-        exitTransition = slide
-        allowEnterTransitionOverlap=false
-        allowReturnTransitionOverlap=false
-        SystemBarHelper.setStatusBarDarkMode(activity)
-
+        activity?.let {
+            it.window?.statusBarColor = it.getCompactColor(android.R.color.transparent)
+            SystemBarHelper.setStatusBarDarkMode(it)
+        }
         mBinding.toolbar.setNavigationOnClickListener {
             Navigation.findNavController(it).navigateUp()
         }

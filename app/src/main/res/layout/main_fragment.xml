@@ -19,7 +19,7 @@
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
+            android:fitsSystemWindows="false"
             tools:openDrawer="start">
 
         <android.support.design.widget.CoordinatorLayout
@@ -29,6 +29,7 @@
                 tools:context="com.ditclear.paonet.view.home.SinglePageActivity">
 
             <android.support.design.widget.AppBarLayout
+                    android:id="@+id/app_bar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
@@ -37,9 +38,9 @@
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="?attr/actionBarSize"
+                        android:layout_height="@dimen/xdp_64.0"
                         android:background="?attr/colorPrimary"
-                        app:layout_scrollFlags="scroll|enterAlways"
+                        android:paddingTop="@dimen/xdp_16.0"
                         app:popupTheme="@style/AppTheme.PopupOverlay"
                         app:title="@string/app_name"/>
 

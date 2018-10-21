@@ -2,21 +2,14 @@ package com.ditclear.paonet.helper
 
 import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.ColorRes
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.navigation.Navigation
 import com.ditclear.paonet.R
-import com.ditclear.paonet.helper.transitions.FabTransform
-import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.view.auth.LoginActivity
 
 
 /**
@@ -54,24 +47,15 @@ fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=nu
     }else if (context is ContextThemeWrapper){
         startActivity=context.baseContext as Activity
     }
-    val login = Intent(startActivity, LoginActivity::class.java)
-    val startColor = ContextCompat.getColor(context, color)
-    if (triggeringView is FloatingActionButton) {
-        val fabIcon = triggeringView.getTag(R.integer.fab_icon) as Int? ?: R.color.background_light
-        FabTransform.addExtras(login, startColor, fabIcon)
-    } else {
-        MorphTransform.addExtras(login, startColor,radius)
-    }
-    startActivity?.let {
-
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                startActivity,
-                triggeringView, context.resources.getString(R.string.transition_login))
-
-        startActivity
-                .startActivityForResult(login, 1, options.toBundle())
-    }
+    navigateToAuth(startActivity)
 }
+
+fun navigateToAuth(activity: Activity?){
+    activity?.let {
+        Navigation.findNavController(it,R.id.nav_host).navigate(R.id.action_global_loginFragment)
+    }?:Log.e("navigateToSearch","activity is null")
+}
+
 
 //搜索
 fun navigateToSearch(activity: Activity?) {

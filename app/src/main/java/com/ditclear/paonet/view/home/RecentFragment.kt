@@ -84,7 +84,6 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     }
 
     override fun initView() {
-
         mBinding.apply {
             vm = viewModel
 

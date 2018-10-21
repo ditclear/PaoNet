@@ -21,16 +21,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-                android:name="com.ditclear.paonet.view.auth.LoginActivity"
-                android:exported="false"
-                android:theme="@style/AppTheme.Translucent.Login"
-                android:windowSoftInputMode="adjustResize">
-        </activity>
-        <activity
-                android:name="com.ditclear.paonet.view.setting.SettingsActivity"
-                android:label="@string/title_activity_settings">
-        </activity>
     </application>
 
 </manifest>

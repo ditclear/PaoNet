@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view.code
 
-import android.support.transition.Slide
 import android.support.v4.widget.NestedScrollView
 import android.view.View
 import androidx.navigation.Navigation
@@ -9,6 +8,7 @@ import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.CodeDetailActivityBinding
 import com.ditclear.paonet.helper.Constants
+import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
@@ -52,18 +52,16 @@ class CodeDetailFragment : BaseFragment<CodeDetailActivityBinding>() {
 
     override fun initView() {
         inList = false
-        val slide= Slide()
-        enterTransition = slide
-        exitTransition = slide
-        allowEnterTransitionOverlap=false
-        allowReturnTransitionOverlap=false
-
         if (mArticle == null) {
             activity?.let {
                 it.toast("文章不存在", ToastType.WARNING)
                 Navigation.findNavController(it,R.id.nav_host).navigateUp()
 
             }
+        }
+        activity?.let {
+            it.window?.statusBarColor = it.getCompactColor(android.R.color.transparent)
+            SystemBarHelper.setHeightAndPadding(it, mBinding.toolbar)
         }
         getComponent().inject(this)
 

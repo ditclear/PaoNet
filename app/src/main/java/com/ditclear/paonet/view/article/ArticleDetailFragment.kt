@@ -1,10 +1,6 @@
 package com.ditclear.paonet.view.article
 
-import android.support.transition.Slide
 import android.support.v4.widget.NestedScrollView
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import androidx.navigation.Navigation
 import com.ditclear.paonet.R
@@ -12,6 +8,7 @@ import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.helper.Constants
+import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
@@ -58,17 +55,18 @@ class ArticleDetailFragment : BaseFragment<ArticleDetailActivityBinding>() {
 
     override fun initView() {
         inList = false
-        val slide = Slide()
-        enterTransition = slide
-        exitTransition = slide
-        allowEnterTransitionOverlap = false
-        allowReturnTransitionOverlap = false
+        activity?.let {
+            it.window?.statusBarColor = it.getCompactColor(android.R.color.transparent)
+            SystemBarHelper.setHeightAndPadding(it, mBinding.toolbar)
+        }
+
         if (mArticle == null) {
             activity?.let {
                 it.toast("文章不存在", ToastType.WARNING)
                 Navigation.findNavController(it, R.id.nav_host).navigateUp()
             }
         }
+
         setHasOptionsMenu(true)
 
         getComponent().inject(this)
@@ -98,16 +96,6 @@ class ArticleDetailFragment : BaseFragment<ArticleDetailActivityBinding>() {
         })
     }
 
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_attention, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onDestroy() {
 

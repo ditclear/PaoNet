@@ -8,6 +8,8 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.NonNull
+import android.support.transition.Explode
+import android.support.transition.Fade
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -74,6 +76,8 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArgs(savedInstanceState)
+        enterTransition = Fade(Fade.MODE_IN)
+        exitTransition = Explode()
     }
 
     inline fun <reified T: ViewModel> getInjectViewModel(): T =
@@ -82,9 +86,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        savedInstanceState?.let {
-            return
-        }
         mContext = activity ?: throw Exception("activity 为null")
         retainInstance = true
         initView()
@@ -98,8 +99,9 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         }
     }
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
+        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
         mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         return mBinding.root

@@ -3,6 +3,7 @@ package com.ditclear.paonet.view.search
 import android.content.Context
 import android.databinding.ViewDataBinding
 import android.os.Bundle
+import android.support.transition.Slide
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RecentSearchFragmentBinding
@@ -28,8 +29,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     override fun getLayoutId(): Int = R.layout.recent_search_fragment
 
-    override fun onItemClick(v: View?, item: Any) { val f = activity?.supportFragmentManager?.findFragmentById(R.id.nav_host)?.childFragmentManager?.fragments?.firstOrNull()
-
+    override fun onItemClick(v: View?, item: Any) {
         (activity as SinglePageActivity?)?.getSearchFragment()?.setQuery(item as String)
     }
 
@@ -81,6 +81,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     override fun initView() {
         inList = false
+        exitTransition = Slide()
         mBinding.recyclerView.run {
             adapter = this@RecentSearchFragment.adapter
             layoutManager = FlexboxLayoutManager(mContext).apply {

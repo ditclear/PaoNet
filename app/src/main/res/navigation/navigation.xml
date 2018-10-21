@@ -3,40 +3,51 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation"
+
             app:startDestination="@id/mainFragment">
 
     <fragment
             android:id="@+id/mainFragment"
             android:name="com.ditclear.paonet.view.home.MainFragment"
-            tools:layout="@layout/main_fragment"
-            android:label="MainFragment">
+            android:label="PaoNet"
+            tools:layout="@layout/main_fragment">
         <action
                 android:id="@+id/action_mainFragment_to_main_navigation"
                 app:destination="@id/main_navigation"/>
         <action
                 android:id="@+id/action_mainFragment_to_articleDetailActivity"
-                app:destination="@id/articleDetailActivity"/>
+                app:destination="@id/articleDetailActivity"
+                app:popUpTo="@id/searchFragment"/>
         <action
                 android:id="@+id/action_mainFragment_to_codeDetailFragment"
                 app:destination="@id/codeDetailFragment"/>
         <action
                 android:id="@+id/action_mainFragment_to_searchFragment"
-                app:launchDocument="true"
                 app:destination="@id/searchFragment"/>
+        <action
+                android:id="@+id/action_mainFragment_to_settingFragment"
+                app:destination="@id/settingFragment"/>
     </fragment>
 
     <fragment
             android:id="@+id/articleDetailActivity"
             android:name="com.ditclear.paonet.view.article.ArticleDetailFragment"
-            tools:layout="@layout/article_detail_activity"
-            android:label="ArticleDetailActivity">
+            android:label="ArticleDetailActivity"
+            tools:layout="@layout/article_detail_activity">
     </fragment>
 
     <fragment
             android:id="@+id/codeDetailFragment"
             android:name="com.ditclear.paonet.view.code.CodeDetailFragment"
-            tools:layout="@layout/code_detail_activity"
-            android:label="CodeDetailFragment">
+            android:label="CodeDetailFragment"
+            tools:layout="@layout/code_detail_activity">
+    </fragment>
+
+    <fragment
+            android:id="@+id/settingFragment"
+            android:name="com.ditclear.paonet.view.setting.SettingFragment"
+            android:label="SettingFragment"
+            tools:layout="@layout/empty_layout">
     </fragment>
 
     <include app:graph="@navigation/main_navigation"/>
@@ -44,10 +55,20 @@
     <fragment
             android:id="@+id/searchFragment"
             android:name="com.ditclear.paonet.view.search.SearchFragment"
-            tools:layout="@layout/search_activity"
-            android:label="SearchFragment">
+            android:label="SearchFragment"
+            tools:layout="@layout/search_activity">
         <action
                 android:id="@+id/xml"
                 app:destination="@id/search_navigation.xml"/>
     </fragment>
+    <fragment
+            android:id="@+id/loginFragment"
+            android:name="com.ditclear.paonet.view.auth.LoginFragment"
+            android:label="LoginFragment"
+            tools:layout="@layout/login_activity"/>
+
+
+    <action
+            android:id="@+id/action_global_loginFragment"
+            app:destination="@id/loginFragment"/>
 </navigation>
