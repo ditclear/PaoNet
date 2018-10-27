@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 //aspectj
 apply plugin: 'android-aspectjx'
 
@@ -37,11 +37,6 @@ aspectjx {
     exclude 'android.support'
 }
 
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    mavenCentral()
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -63,7 +58,7 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
-    kapt "com.android.databinding:compiler:3.1.4"
+//    kapt "com.android.databinding:compiler:3.2.0"
     //aspectj
     implementation 'org.aspectj:aspectjrt:1.8.13'
 

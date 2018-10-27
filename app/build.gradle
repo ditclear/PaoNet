@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+//aspectj
+apply plugin: 'android-aspectjx'
+
 android {
     compileSdkVersion 28
 
@@ -41,7 +45,9 @@ dependencies {
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
-    kapt "com.android.databinding:compiler:3.1.4"
+//    kapt "com.android.databinding:compiler:3.2.0"
+    //aspectj
+    implementation 'org.aspectj:aspectjrt:1.8.13'
     ///////////unit test///////////////
     testImplementation 'junit:junit:4.12'
     //////////ui test//////////////////

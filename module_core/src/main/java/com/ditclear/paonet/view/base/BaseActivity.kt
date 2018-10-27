@@ -44,8 +44,7 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
     @NonNull
     fun getComponent(): ActivityComponent {
         if (activityComponent == null) {
-            val mainApplication = application as PaoApp
-            activityComponent = mainApplication.component.plus(ActivityModule(this))
+            activityComponent = PaoApp.component.plus(ActivityModule(this))
         }
         return activityComponent as ActivityComponent
     }
