@@ -39,7 +39,7 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
 
     val email = ObservableField<String>("")
 
-    val password = ObservableField<String>()
+    val password = ObservableField<String>("")
 
     private val callback by lazy {
         object :Observable.OnPropertyChangedCallback(){

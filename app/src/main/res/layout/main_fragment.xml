@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
-            tools:openDrawer="start">
+            tools:openDrawer="end">
 
         <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
@@ -33,16 +33,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fitsSystemWindows="true"
+                    android:paddingTop="@dimen/xdp_16.0"
                     android:theme="@style/AppTheme.AppBarOverlay">
 
                 <android.support.v7.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/xdp_64.0"
+                        android:layout_height="?actionBarSize"
                         android:background="?attr/colorPrimary"
-                        android:paddingTop="@dimen/xdp_16.0"
+                        app:contentInsetStartWithNavigation="@dimen/xdp_7.0"
+                        app:navigationIcon="@drawable/ic_menu"
                         app:popupTheme="@style/AppTheme.PopupOverlay"
-                        app:title="@string/app_name"/>
+                        app:title="@{vm.title}"
+                        tools:title="@string/app_name"/>
 
                 <android.support.design.widget.TabLayout
                         android:id="@+id/tab_layout"

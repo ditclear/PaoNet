@@ -20,6 +20,7 @@ import javax.inject.Inject
 @ActivityScope
 class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() {
 
+    val title = ObservableField<String>("泡在网上的日子")
     val user = ObservableField<User>(User())
     val categories = ObservableArrayList<CategoryItemViewModel>()
     val cateVisible=ObservableBoolean(false)

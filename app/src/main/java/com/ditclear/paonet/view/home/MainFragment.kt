@@ -2,6 +2,7 @@ package com.ditclear.paonet.view.home
 
 import android.support.annotation.IdRes
 import android.support.design.widget.TabLayout
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
@@ -102,7 +103,6 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
     override fun initView() {
         inList = false
         activity?.let {
-//            it.window?.statusBarColor = it.getCompactColor(R.color.colorPrimary)
             SystemBarHelper.setStatusBarLightMode(it)
         }
         getComponent().inject(this)
@@ -125,7 +125,10 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
 
             override fun onTabReselected(p0: TabLayout.Tab?) {
                 //再次点击，可见item个数大于5个回到顶部 ，小于5刷新当前页
-//                homeFragment.toTopOrRefresh()
+                val f = getTopFragment()
+                if (f is HomeFragment) {
+                    f.toTopOrRefresh()
+                }
             }
 
         })
@@ -185,17 +188,14 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
      * 切换fragment
      */
     private fun changeFragment(title: String = "泡在网上的日子") {
-        (activity as AppCompatActivity?)?.let {
-            it.supportActionBar?.title = title
-
-        }
+        viewModel.title.set(title)
     }
 
 
     private fun changeFragment(@IdRes id: Int, title: String = "泡在网上的日子") {
+        changeFragment(title)
+        (activity)?.let {
 
-        (activity as AppCompatActivity?)?.let {
-            it.supportActionBar?.title = title
             Navigation.findNavController(it, R.id.nav_main_host).navigate(id)
         }
 
@@ -221,5 +221,7 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
             }
         }
     }
+
+    private fun getTopFragment(): Fragment? = childFragmentManager.findFragmentById(R.id.nav_main_host)?.childFragmentManager?.fragments?.firstOrNull()
 
 }

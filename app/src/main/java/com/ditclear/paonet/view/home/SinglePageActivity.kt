@@ -2,12 +2,16 @@ package com.ditclear.paonet.view.home
 
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import androidx.navigation.Navigation
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SinglePageActivityBinding
 import com.ditclear.paonet.helper.SystemBarHelper
+import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.search.SearchFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 
 /**
  * 页面描述：SinglePageActivity
@@ -20,14 +24,18 @@ class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
     }
 
     override fun initView() {
-//        val finalHost = NavHostFragment.create(R.navigation.navigation)
-//        supportFragmentManager
-//                .beginTransaction()
-//                .replace(R.id.nav_host,finalHost)
-//                .setPrimaryNavigationFragment(finalHost)
-//                .commit()
 
-        SystemBarHelper.immersiveStatusBar(this,0f)
+        SystemBarHelper.immersiveStatusBar(this, 0f)
+
+        mExitSubject
+                .doOnNext {
+                    toast(msg = "再按一次退出程序")
+                    isQuit = true
+                }
+                .subscribeOn(Schedulers.io())
+                .delay(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { isQuit = false }
 
     }
 
@@ -35,26 +43,30 @@ class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
 
     private var isQuit = false
 
-//    override fun onBackPressed() {
-//        if (!Navigation.findNavController(this, R.id.nav_host).navigateUp()) {
-//
-//            if (needCloseDrawer()) {
-//
-//            } else if (!isQuit) {
-//                toast(msg = "再按一次退出程序")
-//                isQuit = true;
-//                //在两秒钟之后isQuit会变成false
-//                Single.just(isQuit)
-//                        .async(2000)
-//                        .bindLifeCycle(this)
-//                        .subscribe({ isQuit = false }, {})
-//            } else {
-//                super.onBackPressed()
-//            }
-//        }
-//    }
+    override fun onBackPressed() {
+        if (getTopFragment() is MainFragment) {
+            if (!needCloseDrawer()) {
+                exitByDoubleClick()
+            }
+        } else {
+            super.onBackPressed()
+        }
+    }
 
-    override fun onSupportNavigateUp() = Navigation.findNavController(this, R.id.nav_host).navigateUp()
+    private val mExitSubject by lazy {
+        PublishSubject.create<Boolean>()
+
+
+    }
+
+    private fun exitByDoubleClick() {
+        if (!isQuit) {
+            //在两秒钟之后isQuit会变成false
+            mExitSubject.onNext(isQuit)
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     fun needShowTab(b: Boolean) {
         val f = getTopFragment()
