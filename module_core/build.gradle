@@ -1,0 +1,128 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android'
+//aspectj
+apply plugin: 'android-aspectjx'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+//        applicationId "com.ditclear.paonet"
+        minSdkVersion 21
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding{
+        enabled = true
+    }
+
+}
+aspectjx {
+
+    exclude 'android.support'
+}
+
+repositories {
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    mavenCentral()
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'com.android.support:design:' + rootProject.supportLibVersion
+    implementation 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:palette-v7:' + rootProject.supportLibVersion
+    implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
+    implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
+
+    //navigation
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha06'
+    implementation "android.arch.navigation:navigation-ui:1.0.0-alpha06"
+    //ViewModel
+    implementation "android.arch.lifecycle:extensions:"+rootProject.archLifecycleVersion
+    implementation "android.arch.lifecycle:viewmodel:"+rootProject.archLifecycleVersion
+    kapt "android.arch.lifecycle:compiler:"+rootProject.archLifecycleVersion
+
+    //kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //data binding
+    kapt "com.android.databinding:compiler:3.1.4"
+    //aspectj
+    implementation 'org.aspectj:aspectjrt:1.8.13'
+
+    implementation 'androidx.core:core-ktx:0.3'
+    //rx android
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
+
+    //autodispose
+    implementation 'com.uber.autodispose:autodispose:0.8.0'
+    implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.8.0'
+
+    implementation 'com.google.android:flexbox:0.3.1'
+
+
+    //di
+    implementation "com.google.dagger:dagger:2.16"
+    kapt "com.google.dagger:dagger-compiler:2.16"
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:'+rootProject.retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:'+rootProject.retrofitVersion
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:'+rootProject.retrofitVersion
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    implementation 'com.google.code.gson:gson:2.8.2'
+
+    //room
+    implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
+    implementation 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
+    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+    // roomigrant
+    implementation 'com.github.MatrixDev.Roomigrant:RoomigrantLib:0.1.1'
+    kapt 'com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.1.1'
+
+    //image
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+
+    implementation 'us.feras.mdv:markdownview:1.1.0'
+
+    implementation 'org.jsoup:jsoup:1.11.1'
+
+    implementation 'com.github.GrenderG:Toasty:1.2.5'
+    
+    implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
+
+    ///////////unit test///////////////
+    testImplementation 'junit:junit:4.12'
+    //////////ui test//////////////////
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.google.code.findbugs', module: 'jsr305'
+    })
+
+}
+
+//https://github.com/google/dagger/issues/306
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "500" // or whatever number you want
+    }
+}

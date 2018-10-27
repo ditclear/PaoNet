@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.ditclear.paonet">
-
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.ditclear.app">
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -22,5 +21,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

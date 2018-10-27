@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
 android {
@@ -7,7 +7,6 @@ android {
 
 
     defaultConfig {
-//        applicationId "com.ditclear.app"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -23,13 +22,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    configurations.all {
-        resolutionStrategy.force "com.android.support:support-annotations:$rootProject.supportLibVersion"
-        resolutionStrategy.force "com.android.support:support-compact:$rootProject.supportLibVersion"
-        resolutionStrategy.force "com.android.support:support-core-utils:$rootProject.supportLibVersion"
-
-    }
     dataBinding{
         enabled = true
     }
@@ -37,11 +29,12 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    //kotlin
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
     kapt "com.android.databinding:compiler:3.1.4"
+    api project(':module_core')
+
     ///////////unit test///////////////
     testImplementation 'junit:junit:4.12'
     //////////ui test//////////////////
@@ -49,5 +42,5 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
-    api project(':module_core')
+
 }

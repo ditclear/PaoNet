@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#262626</color>
+    <color name="colorPrimaryDark">#262626</color>
+    <color name="colorAccent">#F5F5F5</color>
+    <color name="colorAccentAlpha">#88FFFFFF</color>
+    <color name="colorPrimaryAlpha">#f0262626</color>
+
+    <color name="theme">@color/colorPrimary</color>
+    <color name="tools_color">#DCDCDC</color>
+    <color name="divider_color">#DCDCDC</color>
+    <color name="background_item">#ffffff</color>
+    <color name="error_color">#fa364e</color>
+    <color name="stow_color">#fa364e</color>
+    <color name="hint_highlight">#b303a9f4</color>
+    <color name="disable_color">@color/tools_color</color>
+    <color name="background_light">#ffffffff</color>
+    <color name="deep_sky_blue">#03A9F4</color>
+    <color name="indigo">#5162b7</color>
+
+    <color name="scrim">#99323232</color>
+    <color name="mid_grey">#40808080</color>
+
+    <!--bg_search-->
+    <color name="spectrum_cyan">#00e0e0</color>
+    <color name="spectrum_yellow">#f0e000</color>
+    <color name="shadow">#25808080</color>
+    <color name="google_blue">#4285F4</color>
+    <color name="google_red">#EA4335</color>
+    <color name="google_green">#34A853</color>
+    <color name="google_yellow">#FBBC05</color>
+    <color name="pale_grey">#e8e9ee</color>
+</resources>

@@ -1,94 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimary</item>
-        <item name="colorAccent">@color/hint_highlight</item>
-        <!--<item name="android:textColorHint">@color/tools_color</item>-->
-        <!-- 允许使用transitions -->
-        <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">false</item>
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <item name="android:windowEnterTransition">@android:transition/slide_bottom</item>
-        <item name="android:windowExitTransition">@android:transition/no_transition</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
-
-    <style name="AppTheme.Secondary">
-        <item name="colorPrimaryDark">@color/background_light</item>
-        <item name="colorPrimary">@color/background_light</item>
-        <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/tools_color</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
-        <item name="android:editTextColor">@color/colorPrimary</item>
-    </style>
-
-    <style name="AppTheme.Translucent">
-        <!-- using a semi-transparent window background for the drag-back gesture -->
-        <item name="android:windowBackground">@color/scrim</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsFloating">false</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-    </style>
-
-
-    <style name="navigation" parent="AlertDialog.AppCompat.Light">
-        <item name="android:background">@color/background_light</item>
-    </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
-    <style name="TextAppearance.DarkButton"
-           parent="@android:style/TextAppearance.Material.Widget.Button">
-        <item name="android:textColor">@color/background_light</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">0.01</item>
-    </style>
-
-    <style name="AppTheme.Detail">
-    </style>
-
-    <style name="AppTheme.Translucent.Login">
-        <item name="android:windowAllowReturnTransitionOverlap">false</item>
-        <item name="android:colorControlActivated">?android:colorAccent</item>
-        <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:colorPrimary">@android:color/holo_blue_bright</item>
-        <item name="android:colorAccent">@android:color/holo_blue_bright</item>
-        <item name="android:colorButtonNormal">@android:color/holo_blue_bright</item>
-    </style>
-
-
-    <style name="searchView" parent="android:style/Widget.Material.SearchView">
-        <item name="colorControlActivated">?android:colorAccent</item>
-        <item name="android:searchIcon">@android:color/transparent</item>
-        <item name="android:queryBackground">@android:color/transparent</item>
-        <item name="android:submitBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="SearchWindowAnimations">
-        <item name="android:windowEnterAnimation">@null</item>
-        <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
-    </style>
-
-    <style name="TextAppearance.FloatLabelHint"
-           parent="@android:style/TextAppearance.Material.Caption">
-        <item name="android:textColor">?android:colorPrimary</item>
-    </style>
-
-    <style name="Widget.Code.InlineActionButton" parent="@android:style/Widget.Material.Button">
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Button</item>
-        <item name="android:drawablePadding">@dimen/spacing_micro</item>
-        <item name="android:stateListAnimator">@animator/active_raise</item>
-        <item name="android:background">?android:selectableItemBackgroundBorderless</item>
-    </style>
-
 
 </resources>

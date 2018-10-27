@@ -68,7 +68,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         app:layout_collapseMode="pin"
-                        app:contentInsetStart="@dimen/xdp_0"
+                        app:contentInsetStart="0dp"
                         app:contentInsetStartWithNavigation="@dimen/xdp_0"
                         app:navigationIcon="@drawable/ic_arrow_back"
                         app:popupTheme="@style/AppTheme.PopupOverlay"

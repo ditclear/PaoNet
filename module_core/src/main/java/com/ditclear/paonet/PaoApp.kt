@@ -15,24 +15,21 @@ import es.dmoral.toasty.Toasty
  * Created by ditclear on 2017/9/26.
  */
 
-class PaoApp : Application() {
+object PaoApp {
 
     lateinit var component: AppComponent
         private set
 
-    companion object {
-        private var instance: Application? = null
-        fun instance() = instance?:throw Throwable("instance 还未初始化")
-    }
+    private var instance: Application? = null
+    fun instance() = instance ?: throw Throwable("instance 还未初始化")
 
 
-    override fun onCreate() {
-        super.onCreate()
-        instance=this
-        NetMgr.registerProvider(BaseNetProvider(this))
-        SpUtil.init(this)
-        component = DaggerAppComponent.builder().appModule(AppModule(this)).build()
-        component.inject(this)
+    fun onCreate(app: Application) {
+        instance = app
+        NetMgr.registerProvider(BaseNetProvider(app))
+        SpUtil.init(app)
+        component = DaggerAppComponent.builder().appModule(AppModule(app)).build()
+        component.inject(app)
 
         Toasty.Config.getInstance().apply(); // required
     }

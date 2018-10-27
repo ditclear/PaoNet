@@ -1,1 +1,1 @@
-include ':app'
+include ':module_core', ':app', ':module_about'
