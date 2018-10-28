@@ -15,7 +15,7 @@ import com.ditclear.paonet.helper.annotation.ItemType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.widget.ColorBrewer
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.home.SinglePageActivity
+import com.ditclear.paonet.view.mine.SinglePageActivity
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent

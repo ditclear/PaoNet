@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/about_navigation"
+            app:startDestination="@id/aboutFragment">
+
+    <fragment
+            android:id="@+id/aboutFragment"
+            android:name="com.ditclear.about.view.AboutFragment"
+            android:label="AboutFragment"/>
+</navigation>

@@ -32,6 +32,7 @@ android {
         resolutionStrategy.force "com.android.support:support-annotations:$rootProject.supportLibVersion"
         resolutionStrategy.force "com.android.support:support-compact:$rootProject.supportLibVersion"
         resolutionStrategy.force "com.android.support:support-core-utils:$rootProject.supportLibVersion"
+        resolutionStrategy.force "com.android.support:transition:$rootProject.supportLibVersion"
 
     }
     dataBinding{
@@ -42,6 +43,21 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:design:' + rootProject.supportLibVersion
+
+    //navigation
+    implementation ('android.arch.navigation:navigation-fragment:1.0.0-alpha06',{
+        exclude group: 'com.android.support', module: 'support-core-ui'
+        exclude group: 'com.android.support', module: 'support-fragment'
+
+    })
+    implementation ("android.arch.navigation:navigation-ui:1.0.0-alpha06",{
+        exclude group: 'com.android.support', module: 'design'
+
+    })
+    //rx android
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //data binding
@@ -56,4 +72,5 @@ dependencies {
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })
     api project(':module_core')
+    api project(':module_about')
 }

@@ -30,7 +30,24 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:design:' + rootProject.supportLibVersion
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'us.feras.mdv:markdownview:1.1.0'
+
+
+    //navigation
+    implementation ('android.arch.navigation:navigation-fragment:1.0.0-alpha06',{
+        exclude group: 'com.android.support', module: 'support-core-ui'
+        exclude group: 'com.android.support', module: 'support-fragment'
+
+    })
+    implementation ("android.arch.navigation:navigation-ui:1.0.0-alpha06",{
+        exclude group: 'com.android.support', module: 'design'
+
+    })
+
     //data binding
 //    kapt "com.android.databinding:compiler:3.2.0"
     api project(':module_core')

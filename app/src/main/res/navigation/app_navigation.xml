@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/app_navigation"
+            app:startDestination="@id/navigation">
+
+
+    <!--<include app:graph="@navigation/navigation">-->
+
+    <!--</include>-->
+
+    <!--<fragment-->
+            <!--android:id="@+id/aboutFragment"-->
+            <!--android:name="com.ditclear.about.view.AboutFragment"-->
+            <!--android:label="AboutFragment"-->
+            <!--tools:layout="@layout/about_fragment">-->
+    <!--</fragment>-->
+</navigation>

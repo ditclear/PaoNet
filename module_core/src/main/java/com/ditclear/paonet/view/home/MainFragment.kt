@@ -31,6 +31,7 @@ import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
+import com.ditclear.paonet.view.mine.SinglePageActivity
 
 
 class MainFragment : BaseFragment<MainFragmentBinding>(),
@@ -133,6 +134,14 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
 
         })
 
+        val mActivity = activity
+        if (mActivity is SinglePageActivity) {
+            val navInflater = Navigation.findNavController(mActivity, R.id.nav_main_host).navInflater
+
+            Navigation.findNavController(mActivity, R.id.nav_main_host)
+                    .graph.addAll(navInflater.inflate (mActivity.aboutModuleId))
+        }
+
     }
 
 
@@ -216,6 +225,16 @@ class MainFragment : BaseFragment<MainFragmentBinding>(),
                 }
                 R.id.my_collect_tv -> {
                     switchMyCollect(this)
+                }
+                R.id.about_btn -> {
+                    (activity)?.let {
+                        if (it is SinglePageActivity){
+                            changeFragment("About")
+                            it.navigateToAboutModule()
+
+                        }
+                    }
+                    closeDrawer()
                 }
 
             }

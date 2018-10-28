@@ -16,7 +16,7 @@ import com.ditclear.paonet.helper.navigateToCodeDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
-import com.ditclear.paonet.view.home.SinglePageActivity
+import com.ditclear.paonet.view.mine.SinglePageActivity
 
 /**
  * 页面描述：ArticleListFragment

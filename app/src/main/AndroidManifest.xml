@@ -11,7 +11,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.ditclear.paonet.view.home.SinglePageActivity"
+        <activity android:name=".SingleAppActivity"
                   android:windowSoftInputMode="stateAlwaysHidden">
             <!--横屏容易出问题-->
             <intent-filter>

@@ -13,7 +13,6 @@ class PaoApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         PaoApp.onCreate(this)
     }
 }

@@ -9,11 +9,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-        <WebView
+        <us.feras.mdv.MarkdownView
                 android:id="@+id/web_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-        </WebView>
+                android:layout_height="match_parent"
+                android:paddingTop="@dimen/activity_vertical_margin"
+               />
     </LinearLayout>
 </layout>

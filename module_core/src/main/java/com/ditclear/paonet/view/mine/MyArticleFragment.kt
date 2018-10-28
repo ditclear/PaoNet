@@ -16,7 +16,6 @@ import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
-import com.ditclear.paonet.view.home.SinglePageActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
 
 /**

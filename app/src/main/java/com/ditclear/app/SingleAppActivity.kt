@@ -1,12 +1,14 @@
-package com.ditclear.paonet.view.home
+package com.ditclear.app
 
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
-import com.ditclear.paonet.R
+import androidx.navigation.Navigation
 import com.ditclear.paonet.databinding.SinglePageActivityBinding
 import com.ditclear.paonet.helper.SystemBarHelper
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.home.MainFragment
+import com.ditclear.paonet.view.mine.SinglePageActivity
 import com.ditclear.paonet.view.search.SearchFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -18,7 +20,9 @@ import java.util.concurrent.TimeUnit
  *
  * Created by ditclear on 2018/10/9.
  */
-class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
+class SingleAppActivity : BaseActivity<SinglePageActivityBinding>(), SinglePageActivity {
+
+
     override fun loadData(isRefresh: Boolean) {
 
     }
@@ -37,6 +41,13 @@ class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { isQuit = false }
 
+
+        Navigation.findNavController(this,R.id.nav_host)
+                .addOnNavigatedListener { controller, destination ->
+                    if (destination.id == R.id.mainFragment){
+
+                    }
+                }
     }
 
     override fun getLayoutId(): Int = R.layout.single_page_activity
@@ -68,14 +79,14 @@ class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
         }
     }
 
-    fun needShowTab(b: Boolean) {
+    override fun needShowTab(b: Boolean) {
         val f = getTopFragment()
         if (f is MainFragment) {
             f.needShowTab(b)
         }
     }
 
-    fun getSearchFragment(): SearchFragment? {
+    override fun getSearchFragment(): SearchFragment? {
         val f = getTopFragment()
         if (f is SearchFragment) {
             return f
@@ -91,13 +102,21 @@ class SinglePageActivity : BaseActivity<SinglePageActivityBinding>() {
         return false
     }
 
-    fun setupWithViewPager(viewPager: ViewPager) {
+    override fun setupWithViewPager(viewPager: ViewPager) {
         val f = supportFragmentManager.fragments.firstOrNull()?.childFragmentManager?.fragments?.find {
             it is MainFragment
         }
         (f as MainFragment?)?.setupWithViewPager(viewPager)
     }
 
-    fun getTopFragment(): Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.fragments?.firstOrNull()
+    override fun getTopFragment(): Fragment? = supportFragmentManager.findFragmentById(R.id.nav_host)?.childFragmentManager?.fragments?.firstOrNull()
 
+    override val aboutModuleId: Int = R.navigation.about_navigation
+
+    override fun navigateToAboutModule(){
+
+        Navigation.findNavController(this, R.id.nav_main_host).navigate(R.id.aboutFragment)
+
+
+    }
 }
