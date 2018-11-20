@@ -106,7 +106,9 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     ///////////unit test///////////////
+    testImplementation 'org.mockito:mockito-core:2.15.0'
     testImplementation 'junit:junit:4.12'
+    testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
     //////////ui test//////////////////
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'

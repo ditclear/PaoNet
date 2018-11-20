@@ -78,7 +78,10 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
-                .subscribe({},{
+
+                .subscribe({
+
+                },{
                     toastFailure(it)
                 })
     }

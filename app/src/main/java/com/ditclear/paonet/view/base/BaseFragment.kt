@@ -1,5 +1,6 @@
 package com.ditclear.paonet.view.base
 
+import android.app.Fragment
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
