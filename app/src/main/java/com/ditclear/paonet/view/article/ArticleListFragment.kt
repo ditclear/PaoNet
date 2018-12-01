@@ -27,7 +27,7 @@ import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
  *
  * Created by ditclear on 2017/10/3.
  */
-class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>,ToTopOrRefreshContract {
+class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ToTopOrRefreshContract {
 
 
     private val viewModel: ArticleListViewModel by lazy {
@@ -40,7 +40,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
         }
     }
 
-    val tid by lazy { autoWired(KEY_TID,ArticleType.ANDROID)?:ArticleType.ANDROID }
+    val tid by lazy { autoWired(KEY_TID, ArticleType.ANDROID) ?: ArticleType.ANDROID }
 
     val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
@@ -78,7 +78,10 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun loadData(isRefresh: Boolean) {
         viewModel.loadData(isRefresh).bindLifeCycle(this)
-                .subscribe({},{
+
+                .subscribe({
+
+                }, {
                     toastFailure(it)
                 })
     }
@@ -86,12 +89,12 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
 
         activity?.let {
-            val intent = Intent(mContext,ArticleDetailActivity::class.java)
+            val intent = Intent(mContext, ArticleDetailActivity::class.java)
             val bundle = Bundle()
             bundle.putSerializable(Constants.KEY_SERIALIZABLE, item.article)
             intent.putExtras(bundle)
             val options = ActivityOptionsCompat.makeSceneTransitionAnimation(it)
-            ActivityCompat.startActivity(mContext,intent,options.toBundle())
+            ActivityCompat.startActivity(mContext, intent, options.toBundle())
 
 
         }
@@ -99,36 +102,34 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        getComponent().inject(this)
+
 
     }
 
     override fun initView() {
         lazyLoad = true
+        mBinding.vm = viewModel
         viewModel.tid = tid
         viewModel.keyWord = keyWord
-        mBinding.run {
-            vm = viewModel
-            recyclerView.apply {
-                adapter = mAdapter
-                addItemDecoration(object : RecyclerView.ItemDecoration() {
-                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
-                        super.getItemOffsets(outRect, view, parent, state)
-                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
-                    }
-                })
-            }
-            isPrepared = true
+        mBinding.recyclerView.apply {
+            adapter = mAdapter
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                    super.getItemOffsets(outRect, view, parent, state)
+                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
+                }
+            })
         }
+        isPrepared = true
 
     }
 
-    override fun toTopOrRefresh(){
-        if (mBinding.recyclerView.layoutManager is LinearLayoutManager){
+    override fun toTopOrRefresh() {
+        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
             val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
-            if (layoutManager.findLastVisibleItemPosition()> 5){
+            if (layoutManager.findLastVisibleItemPosition() > 5) {
                 mBinding.recyclerView.smoothScrollToPosition(0)
-            }else{
+            } else {
                 mBinding.recyclerView.smoothScrollToPosition(0)
                 loadData(true)
             }

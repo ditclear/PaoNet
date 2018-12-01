@@ -1,7 +1,6 @@
 package com.ditclear.paonet.di.component
 
-import android.app.Application
-import com.ditclear.paonet.di.module.ActivityModule
+import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.di.module.AppModule
 import com.ditclear.paonet.di.module.ViewModelModule
 import dagger.Component
@@ -14,9 +13,15 @@ import javax.inject.Singleton
  */
 @Singleton
 @Component(modules = [(AppModule::class), (ViewModelModule::class)])
-interface AppComponent{
+interface AppComponent {
 
-    fun inject(app: Application)
+    fun inject(app: PaoApp)
 
-    fun plus(module: ActivityModule):ActivityComponent
+    @Component.Builder
+    interface Builder {
+
+        fun appModule(appModule: AppModule): Builder
+
+        fun build(): AppComponent
+    }
 }

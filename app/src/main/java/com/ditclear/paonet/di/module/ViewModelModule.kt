@@ -2,9 +2,9 @@ package com.ditclear.paonet.di.module
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
+import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
@@ -13,7 +13,6 @@ import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.ditclear.paonet.viewmodel.APPViewModelFactory
-import com.ditclear.paonet.viewmodel.ViewModelKey
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -28,7 +27,6 @@ abstract class ViewModelModule{
 
     @Binds
     @IntoMap
-    @ActivityScope
     @ViewModelKey(ArticleDetailViewModel::class)
     abstract fun bindArticleDetailViewModel(viewModel: ArticleDetailViewModel):ViewModel
 
@@ -72,6 +70,11 @@ abstract class ViewModelModule{
     @IntoMap
     @ViewModelKey(MyCollectViewModel::class)
     abstract fun bindMyCollectViewModel(viewModel: MyCollectViewModel):ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LoginViewModel::class)
+    abstract fun bindLoginViewModel(viewModel: LoginViewModel):ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory:APPViewModelFactory): ViewModelProvider.Factory

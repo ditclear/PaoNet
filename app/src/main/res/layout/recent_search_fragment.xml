@@ -4,8 +4,8 @@
 
     <data>
         <variable
-                name="adapter"
-                type="android.support.v7.widget.RecyclerView.Adapter"/>
+                name="vm"
+                type="com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel"/>
     </data>
 
     <android.support.v7.widget.RecyclerView

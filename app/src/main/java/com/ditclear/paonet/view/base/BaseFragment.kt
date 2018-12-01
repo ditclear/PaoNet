@@ -7,19 +7,15 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.annotation.NonNull
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.ditclear.paonet.BR
-import com.ditclear.paonet.di.component.FragmentComponent
-import com.ditclear.paonet.di.module.FragmentModule
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
-import javax.inject.Inject
 
 
 /**
@@ -47,25 +43,12 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
      */
     protected var hasLoadOnce: Boolean = false
 
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-
-    private var fragmentComponent: FragmentComponent? = null
-    protected lateinit var fragmentComponentBuilder: FragmentComponent.Builder
-    @NonNull
-    fun getComponent(): FragmentComponent {
-        if (fragmentComponent != null) {
-            return fragmentComponent as FragmentComponent
-        }
-
-        val activity = activity
+    val factory:ViewModelProvider.Factory by lazy {
         if (activity is BaseActivity<*>) {
-            fragmentComponentBuilder = activity.getComponent().supplyFragmentComponentBuilder()
-            fragmentComponent = fragmentComponentBuilder.fragmentModule(FragmentModule(this)).build()
-            return fragmentComponent as FragmentComponent
-        } else {
-            throw IllegalStateException(
-                    "The activity of this fragment is not an instance of BaseActivity")
+            val baseActivity = activity as BaseActivity<*>
+            return@lazy baseActivity.factory
+        }else{
+            throw IllegalStateException("activity is not BaseActivity")
         }
     }
 
@@ -74,7 +57,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         initArgs(savedInstanceState)
     }
 
-    inline fun <reified T: ViewModel> getInjectViewModel(): T =
+    protected inline fun <reified T: ViewModel> getInjectViewModel(): T =
             ViewModelProviders.of(this, factory).get(T::class.java)
 
 
@@ -96,6 +79,7 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
         mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
+        mBinding.setLifecycleOwner(this)
         return mBinding.root
     }
 

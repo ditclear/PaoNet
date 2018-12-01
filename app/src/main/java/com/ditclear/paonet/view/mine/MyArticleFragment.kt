@@ -8,7 +8,6 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.di.scope.FragmentScope
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
@@ -25,7 +24,7 @@ import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
  *
  * Created by ditclear on 2017/10/15.
  */
-@FragmentScope
+
 class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
     private val viewModel: MyArticleViewModel  by lazy {
@@ -65,17 +64,16 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        getComponent().inject(this)
+
 
     }
 
     override fun initView() {
         (activity as MainActivity).needShowTab(showTab)
-
-        mBinding.apply {
-            vm = viewModel
-            recyclerView.adapter = mAdapter
-            recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        mBinding.vm=viewModel
+        mBinding.recyclerView.apply {
+            this.adapter = mAdapter
+            this.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
                     outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0

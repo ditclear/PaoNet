@@ -2,7 +2,6 @@ package com.ditclear.paonet.helper
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
-import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.R
 import jp.wasabeef.glide.transformations.CropCircleTransformation
 
@@ -16,12 +15,12 @@ object ImageUtil {
 
     fun load(uri: String?, imageView: ImageView, isAvatar: Boolean = false) {
         if (!isAvatar) {
-            Glide.with(PaoApp.instance()).load(uri)
+            Glide.with(imageView.context).load(uri)
                     .placeholder(R.color.tools_color)
                     .error(R.color.tools_color)
                     .into(imageView)
         } else {
-            Glide.with(PaoApp.instance()).load(uri)
+            Glide.with(imageView.context).load(uri)
                     .bitmapTransform(CropCircleTransformation(imageView.context))
                     .placeholder(R.drawable.ic_face)
                     .error(R.drawable.ic_face)
