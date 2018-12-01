@@ -1,7 +1,6 @@
 package com.ditclear.paonet.helper.extens
 
 import android.app.Activity
-import android.app.Fragment
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleOwner
 import android.content.Intent

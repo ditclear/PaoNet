@@ -2,7 +2,6 @@ package com.ditclear.paonet.view.code.viewmodel
 
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.Utils
@@ -23,7 +22,6 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-@ActivityScope
 class CodeDetailViewModel @Inject
 constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 

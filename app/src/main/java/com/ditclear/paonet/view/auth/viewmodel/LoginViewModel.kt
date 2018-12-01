@@ -21,14 +21,13 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/10.
  */
 class LoginViewModel @Inject
-constructor( private val repo: UserRepository) : BaseViewModel() {
+constructor(private val repo: UserRepository) : BaseViewModel() {
 
     private val PASSWORD_PATTERN = "^[a-zA-Z0-9_]{6,16}$"
     private val EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$"
 
     private val emailPattern = Pattern.compile(EMAIL_PATTERN)
     private val passwordPattern = Pattern.compile(PASSWORD_PATTERN)
-
 
 
     val showLogin = ObservableBoolean(true)
@@ -39,29 +38,29 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
 
     val email = ObservableField<String>("")
 
-    val password = ObservableField<String>()
+    val password = ObservableField<String>("")
 
-    private val callback by lazy {
-        object :Observable.OnPropertyChangedCallback(){
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                when(sender){
-                    password ,email -> {
-                        isBtnEnabled.set(isBtnEnabled())
-                    }
-                    showLogin->{
-                        loading.set(!(showLogin.get() || showLogout.get()))
-                        loginVisibility.set(showLogin.get())
-                    }
-                    showLogout -> {
-                        loading.set(!(showLogin.get() || showLogout.get()))
-                        logoutVisibility.set(showLogout.get())
-                    }
+    private var callback =
+            object : Observable.OnPropertyChangedCallback() {
+                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                    when (sender) {
+                        password, email -> {
+                            isBtnEnabled.set(isBtnEnabled())
+                        }
+                        showLogin -> {
+                            loading.set(!(showLogin.get() || showLogout.get()))
+                            loginVisibility.set(showLogin.get())
+                        }
+                        showLogout -> {
+                            loading.set(!(showLogin.get() || showLogout.get()))
+                            logoutVisibility.set(showLogout.get())
+                        }
 
+                    }
                 }
+
             }
 
-        }
-    }
 
     init {
         password.addOnPropertyChangedCallback(callback)
@@ -80,10 +79,10 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
 
     val loginVisibility = ObservableBoolean(true)
 
-    val logoutVisibility=ObservableBoolean(false)
+    val logoutVisibility = ObservableBoolean(false)
 
 
-    fun attemptToLogIn() = repo.login(email.get()?:"", password.get()?:"")
+    fun attemptToLogIn() = repo.login(email.get() ?: "", password.get() ?: "")
             .subscribeOn(Schedulers.io())
             .delay(1, TimeUnit.SECONDS)
             .getOriginData()
@@ -98,10 +97,10 @@ constructor( private val repo: UserRepository) : BaseViewModel() {
 
     fun attemptToLogout() = repo.logout().getOriginData().async(1000)
             .doOnSubscribe {
-                showLogin .set(false)
-                showLogout .set(false)
+                showLogin.set(false)
+                showLogout.set(false)
             }
-            .doFinally { showLogout .set(true) }
+            .doFinally { showLogout.set(true) }
 
 
 }

@@ -41,7 +41,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    private val viewModel  by lazy {
+    private val viewModel by lazy {
         getInjectViewModel<MainViewModel>()
     }
 
@@ -101,12 +101,10 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     }
 
     override fun initView() {
-        getComponent().inject(this)
+
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
-
         mBinding.vm = viewModel
-
         mBinding.navMainLayout?.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
             layoutManager = LinearLayoutManager(mContext)

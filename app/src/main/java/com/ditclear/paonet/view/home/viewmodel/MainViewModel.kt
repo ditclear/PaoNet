@@ -4,7 +4,6 @@ import android.databinding.Observable
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
-import com.ditclear.paonet.di.scope.ActivityScope
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
@@ -17,7 +16,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/27.
  */
-@ActivityScope
+
 class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() {
 
     val user = ObservableField<User>(User())

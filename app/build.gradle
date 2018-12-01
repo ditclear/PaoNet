@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 //aspectj
 apply plugin: 'android-aspectjx'
 
@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.ditclear.paonet"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -21,16 +21,32 @@ android {
             }
         }
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'paonet'
+            keyPassword '111111'
+            storeFile file('debug-keystore.jks')
+            storePassword '111111'
+        }
+    }
+
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-    dataBinding{
+    dataBinding {
         enabled = true
     }
-
 }
 aspectjx {
 
@@ -43,68 +59,51 @@ repositories {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:design:' + rootProject.supportLibVersion
     implementation 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:palette-v7:' + rootProject.supportLibVersion
     implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
     implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
-
     //ViewModel
-    implementation "android.arch.lifecycle:extensions:"+rootProject.archLifecycleVersion
-    implementation "android.arch.lifecycle:viewmodel:"+rootProject.archLifecycleVersion
-    kapt "android.arch.lifecycle:compiler:"+rootProject.archLifecycleVersion
-
+    implementation "android.arch.lifecycle:extensions:" + rootProject.archLifecycleVersion
+    implementation "android.arch.lifecycle:viewmodel:" + rootProject.archLifecycleVersion
+    kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    //data binding
-    kapt "com.android.databinding:compiler:3.1.4"
     //aspectj
     implementation 'org.aspectj:aspectjrt:1.8.13'
     //rx android
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.8'
-
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
     //autodispose
     implementation 'com.uber.autodispose:autodispose:0.8.0'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.8.0'
-
     implementation 'com.google.android:flexbox:0.3.1'
-
-
     //di
-    implementation "com.google.dagger:dagger:2.16"
+    implementation 'com.google.dagger:dagger:2.16'
     kapt "com.google.dagger:dagger-compiler:2.16"
-
     //retrofit
-    implementation 'com.squareup.retrofit2:retrofit:'+rootProject.retrofitVersion
-    implementation 'com.squareup.retrofit2:converter-gson:'+rootProject.retrofitVersion
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:'+rootProject.retrofitVersion
+    implementation 'com.squareup.retrofit2:retrofit:' + rootProject.retrofitVersion
+    implementation 'com.squareup.retrofit2:converter-gson:' + rootProject.retrofitVersion
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:' + rootProject.retrofitVersion
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation 'com.google.code.gson:gson:2.8.2'
-
     //room
     implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
-    implementation 'android.arch.persistence.room:rxjava2:'+ rootProject.archRoomVersion
+    implementation 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
     kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
     // roomigrant
     implementation 'com.github.MatrixDev.Roomigrant:RoomigrantLib:0.1.1'
     kapt 'com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.1.1'
-
     //image
     implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation 'jp.wasabeef:glide-transformations:2.0.1'
-
     implementation 'us.feras.mdv:markdownview:1.1.0'
-
     implementation 'org.jsoup:jsoup:1.11.1'
-
     implementation 'com.github.GrenderG:Toasty:1.2.5'
-    
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
-
     ///////////unit test///////////////
     testImplementation 'org.mockito:mockito-core:2.15.0'
     testImplementation 'junit:junit:4.12'

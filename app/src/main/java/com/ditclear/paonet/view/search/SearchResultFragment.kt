@@ -1,13 +1,14 @@
 package com.ditclear.paonet.view.search
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
-import com.ditclear.paonet.helper.Constants
+import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
+import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.base.BaseFragment
-import javax.inject.Inject
-import javax.inject.Named
+import com.ditclear.paonet.view.code.CodeListFragment
 
 /**
  * 页面描述：SearchResultFragment
@@ -20,9 +21,20 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     val keyWord by lazy { autoWired(KEY_KEYWORD,"")?:"" }
 
-    @Inject
-    @field:Named(Constants.Qualifier_SEARCH)
-    lateinit var pagerAdapter: FragmentStatePagerAdapter
+    private val pagerAdapter: FragmentStatePagerAdapter by lazy {
+        object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
+            override fun getItem(pos: Int): Fragment? {
+                if (list[pos] == null) {
+                    when (pos) {
+                        0 -> list[pos] = ArticleListFragment.newInstance(keyWord)
+                        1 -> list[pos] = CodeListFragment.newInstance(keyWord)
+                    }
+                }
+                return list[pos]
+            }
+
+        }
+    }
 
     companion object {
         private val KEY_KEYWORD = "keyWord"
@@ -42,7 +54,7 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
     }
 
     override fun initView() {
-        getComponent().inject(this)
+
         mBinding.viewPager.adapter = pagerAdapter
         mBinding.viewPager.offscreenPageLimit = pagerAdapter.count
         (activity as SearchActivity).needShowTab(true)

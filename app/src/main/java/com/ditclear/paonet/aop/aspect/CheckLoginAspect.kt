@@ -2,7 +2,6 @@ package com.ditclear.paonet.aop.aspect
 
 import android.view.View
 import android.widget.Toast
-import com.ditclear.paonet.PaoApp
 import com.ditclear.paonet.R
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.needsLogin
@@ -32,17 +31,16 @@ class CheckLoginAspect {
         for (arg in joinPoint.args) {
             if (arg is View) view = arg
         }
-        if (null == SpUtil.user) {
-            if (view != null) {
-                val startColor: Int = view.getTag(R.integer.start_color) as Int? ?: R.color.colorAccent
+        if (view != null) {
+            if (null == SpUtil.user) {
+                val startColor: Int = view.getTag(R.integer.start_color) as Int?
+                        ?: R.color.colorAccent
                 needsLogin(startColor, view)
             } else {
-                Toasty.warning(PaoApp.instance(), "请先登录", Toast.LENGTH_SHORT).show()
+                Toasty.warning(view.context, "请先登录", Toast.LENGTH_SHORT).show()
             }
             return
         }
-
-
         joinPoint.proceed()//执行原方法
     }
 

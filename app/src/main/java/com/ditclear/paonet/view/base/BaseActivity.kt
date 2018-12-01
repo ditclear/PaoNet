@@ -7,7 +7,6 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
-import android.support.annotation.NonNull
 import android.support.transition.TransitionListenerAdapter
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
@@ -15,12 +14,9 @@ import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.BR
 import com.ditclear.paonet.PaoApp
-import com.ditclear.paonet.di.component.ActivityComponent
-import com.ditclear.paonet.di.module.ActivityModule
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.dispatchFailure
 import com.ditclear.paonet.helper.extens.toast
-import javax.inject.Inject
 
 
 /**
@@ -28,72 +24,65 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/9/27.
  */
-abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Presenter {
+abstract class BaseActivity< VB : ViewDataBinding> : AppCompatActivity(), Presenter {
 
     protected lateinit var mBinding: VB
 
     protected lateinit var mContext: Context
 
-    private var activityComponent: ActivityComponent? = null
+    protected var autoRefresh = true
+    protected var delayToTransition = false
 
-    protected var autoRefresh =true
-    protected var delayToTransition =false
-
-    @Inject
-    lateinit var factory: ViewModelProvider.Factory
-
-    @NonNull
-    fun getComponent(): ActivityComponent {
-        if (activityComponent == null) {
+    val factory: ViewModelProvider.Factory by lazy {
+        if (application is PaoApp) {
             val mainApplication = application as PaoApp
-            activityComponent = mainApplication.component.plus(ActivityModule(this))
+            return@lazy mainApplication.factory
+        } else {
+            throw IllegalStateException("application is not PaoApp")
         }
-        return activityComponent as ActivityComponent
     }
 
-    inline fun <reified T :ViewModel> getInjectViewModel ()= ViewModelProviders.of(this,factory).get(T::class.java)
+    protected inline fun <reified T:ViewModel> getInjectViewModel() = ViewModelProviders.of(this, factory).get(T::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
-        mBinding.setVariable(BR.presenter,this)
+        mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)
         mContext = this
 
         initView()
-        if (delayToTransition){
+        if (delayToTransition) {
             afterEnterTransition()
-        } else if (autoRefresh){
+        } else if (autoRefresh) {
             loadData(true)
         }
-
-
     }
 
-    private val enterTransitionListener by lazy {
-        object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
-            override fun onTransitionResume(transition: android.transition.Transition?) {
+    private var enterTransitionListener =
+            object : TransitionListenerAdapter(), android.transition.Transition.TransitionListener {
+                override fun onTransitionResume(transition: android.transition.Transition?) {
+
+                }
+
+                override fun onTransitionPause(transition: android.transition.Transition?) {
+                }
+
+                override fun onTransitionCancel(transition: android.transition.Transition?) {
+                }
+
+                override fun onTransitionStart(transition: android.transition.Transition?) {
+                }
+
+                override fun onTransitionEnd(transition: android.transition.Transition?) {
+                    loadData(true)
+                }
 
             }
 
-            override fun onTransitionPause(transition: android.transition.Transition?) {
-            }
 
-            override fun onTransitionCancel(transition: android.transition.Transition?) {
-            }
-
-            override fun onTransitionStart(transition: android.transition.Transition?) {
-            }
-
-            override fun onTransitionEnd(transition: android.transition.Transition?) {
-                loadData(true)
-            }
-
-        }
-    }
-
-    private fun afterEnterTransition(){
+    private fun afterEnterTransition() {
         window.enterTransition.addListener(enterTransitionListener)
     }
 
@@ -102,12 +91,11 @@ abstract class BaseActivity<VB : ViewDataBinding> : AppCompatActivity(), Present
         window.enterTransition.removeListener(enterTransitionListener)
     }
 
-    abstract override fun loadData(isRefresh:Boolean)
+    abstract override fun loadData(isRefresh: Boolean)
 
     abstract fun initView()
 
     abstract fun getLayoutId(): Int
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

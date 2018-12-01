@@ -28,11 +28,11 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
-    private val viewModel: ArticleDetailViewModel by lazy { getInjectViewModel<ArticleDetailViewModel>() }
+    private val viewModel by lazy { getInjectViewModel<ArticleDetailViewModel>() }
 
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
-    override fun loadData(isRefresh:Boolean) {
+    override fun loadData(isRefresh: Boolean) {
 
         viewModel.loadData().bindLifeCycle(this)
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
@@ -57,10 +57,8 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
             toast("文章不存在", ToastType.WARNING)
             finish()
         }
-
-        getComponent().inject(this)
-
         mBinding.vm = viewModel.apply {
+
             mArticle?.let {
                 this.article = it
             }

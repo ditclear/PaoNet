@@ -1,6 +1,5 @@
 package com.ditclear.paonet.view.search
 
-import android.content.Context
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.View
@@ -41,7 +40,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
         fun newInstance() = RecentSearchFragment()
     }
 
-    val adapter: MultiTypeAdapter by lazy {
+    private val adapter: MultiTypeAdapter by lazy {
         MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
             override fun getViewType(item: Any): Int {
                 val pos = viewModel.list.indexOf(item)
@@ -76,12 +75,8 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
 
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        getComponent().inject(this)
-    }
-
     override fun initView() {
+        mBinding.vm = viewModel
         mBinding.recyclerView.run {
             adapter = this@RecentSearchFragment.adapter
             layoutManager = FlexboxLayoutManager(mContext).apply {

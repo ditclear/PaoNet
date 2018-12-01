@@ -2,27 +2,45 @@ package com.ditclear.paonet.view.home
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
-import com.ditclear.paonet.di.scope.FragmentScope
+import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
+import com.ditclear.paonet.helper.annotation.ArticleType
+import com.ditclear.paonet.view.article.ArticleListFragment
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
-import javax.inject.Inject
-import javax.inject.Named
 
 /**
  * 页面描述：首页
  *
  * Created by ditclear on 2017/9/30.
  */
-@FragmentScope
+
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
 
-    @Inject
-    @field:Named("home")
-    lateinit var pagerAdapter: FragmentStatePagerAdapter
+    private val pagerAdapter: FragmentStatePagerAdapter by lazy {
+        object : AbstractPagerAdapter(childFragmentManager, arrayOf("Recent", "ANDROID", "程序设计", "前端开发", "IOS", "数据库", "开发日志", "应用推荐", "每日一站")) {
+            override fun getItem(pos: Int): Fragment? {
+                if (list[pos] == null) {
+                    when (pos) {
+                        0 -> list[pos] = RecentFragment.newInstance()
+                        1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
+                        2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.PROGRAME)
+                        3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.FRONT_END)
+                        4 -> list[pos] = ArticleListFragment.newInstance(ArticleType.IOS)
+                        5 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DB)
+                        6 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DEVLOG)
+                        7 -> list[pos] = ArticleListFragment.newInstance(ArticleType.RECOMMAND)
+                        8 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DAILY)
+                    }
+                }
+                return list[pos]
+            }
+        }
+    }
 
     companion object {
 
@@ -37,7 +55,7 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        getComponent().inject(this)
+
 
     }
 

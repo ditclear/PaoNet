@@ -25,12 +25,12 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
 
-    private val viewModel by lazy {
+    private val viewModel :CodeDetailViewModel by lazy {
         getInjectViewModel<CodeDetailViewModel>()
     }
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
-    override fun loadData(isRefresh:Boolean) {
+    override fun loadData(isRefresh: Boolean) {
 
         viewModel.loadData().bindLifeCycle(this).subscribe({ isStow(it) },
                 { toastFailure(it) })
@@ -52,25 +52,22 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
             finish()
             overridePendingTransition(0, 0)
         }
-        getComponent().inject(this)
+
 
         delayToTransition = true
-        viewModel.article.set(mArticle)
-        viewModel
-        mBinding.run {
-            vm = viewModel.apply {
-                this.article.set(mArticle)
-                this.nameAndDate.set("""${mArticle?.user?.nickname ?: "佚名"}
+        mBinding.vm=viewModel.apply {
+            this.article.set(mArticle)
+            this.nameAndDate.set("""${mArticle?.user?.nickname ?: "佚名"}
                                         |${mArticle?.pubDate}""".trimMargin())
-            }
-            scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (scrollY - oldScrollY > 10) {
-                    mBinding.fab.hide()
-                } else if (scrollY - oldScrollY < -10) {
-                    mBinding.fab.show()
-                }
-            })
         }
+        mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+            if (scrollY - oldScrollY > 10) {
+                mBinding.fab.hide()
+            } else if (scrollY - oldScrollY < -10) {
+                mBinding.fab.show()
+            }
+        })
+
         initBackToolbar(mBinding.toolbar)
 
     }

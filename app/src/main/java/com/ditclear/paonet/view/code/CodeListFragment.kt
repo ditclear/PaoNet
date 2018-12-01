@@ -78,19 +78,17 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        getComponent().inject(this)
+
 
     }
 
     override fun initView() {
+        mBinding.vm=viewModel.apply {
+            category = cate
+            keyWord = this@CodeListFragment.keyWord
+        }
         mBinding.run {
-
-            vm = viewModel.apply {
-                category = cate
-                keyWord = this@CodeListFragment.keyWord
-            }
             recyclerView.apply {
-
                 adapter = mAdapter
                 addItemDecoration(object : RecyclerView.ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
