@@ -1,11 +1,9 @@
 package com.ditclear.paonet.aop.aspect
 
 import android.view.View
-import android.widget.Toast
 import com.ditclear.paonet.R
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.needsLogin
-import es.dmoral.toasty.Toasty
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -31,17 +29,19 @@ class CheckLoginAspect {
         for (arg in joinPoint.args) {
             if (arg is View) view = arg
         }
+
         if (view != null) {
             if (null == SpUtil.user) {
                 val startColor: Int = view.getTag(R.integer.start_color) as Int?
                         ?: R.color.colorAccent
                 needsLogin(startColor, view)
-            } else {
-                Toasty.warning(view.context, "请先登录", Toast.LENGTH_SHORT).show()
+            }else{
+                joinPoint.proceed()//执行原方法
             }
-            return
+        }else{
+            joinPoint.proceed()//执行原方法
         }
-        joinPoint.proceed()//执行原方法
+
     }
 
 }
