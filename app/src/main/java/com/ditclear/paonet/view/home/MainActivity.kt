@@ -12,29 +12,26 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.MainActivityBinding
-import com.ditclear.paonet.helper.SpUtil
+import com.ditclear.paonet.helper.*
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.switchFragment
 import com.ditclear.paonet.helper.extens.toast
-import com.ditclear.paonet.helper.navigateToSearch
-import com.ditclear.paonet.helper.needsLogin
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
-import com.ditclear.paonet.view.mine.MyArticleFragment
-import com.ditclear.paonet.view.mine.MyCollectFragment
 import io.reactivex.Single
 
-
+@Route(path = Constants.ROUTER_HOME)
 class MainActivity : BaseActivity<MainActivityBinding>(),
         ItemClickPresenter<CategoryItemViewModel> {
 
@@ -63,8 +60,12 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     val defaultEmptyUser by lazy { User() }
 
     private val homeFragment = HomeFragment.newInstance()
-    private val myArticleFragment = MyArticleFragment.newInstance()
-    private val myCollectFragment = MyCollectFragment.newInstance()
+    private val myArticleFragment: Fragment? by lazy {
+        routeToMineArticle()
+    }
+    private val myCollectFragment: Fragment? by lazy {
+        routeToMineCollect()
+    }
 
 
     override fun loadData(isRefresh:Boolean) {
@@ -182,13 +183,17 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     @CheckLogin
     private fun switchMyArticle(v: View?) {
-        changeFragment(myArticleFragment, "我的文章")
+        myArticleFragment?.let {
+            changeFragment(it, "我的文章")
+        }
         closeDrawer()
     }
 
     @CheckLogin
     private fun switchMyCollect(v: View?) {
-        changeFragment(myCollectFragment, "我的收藏")
+        myCollectFragment?.let {
+            changeFragment(it, "我的收藏")
+        }
         closeDrawer()
 
     }

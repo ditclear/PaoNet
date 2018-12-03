@@ -20,8 +20,8 @@ import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 
 class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
-
     private val pagerAdapter: FragmentStatePagerAdapter by lazy {
+
         object : AbstractPagerAdapter(childFragmentManager, arrayOf("Recent", "ANDROID", "程序设计", "前端开发", "IOS", "数据库", "开发日志", "应用推荐", "每日一站")) {
             override fun getItem(pos: Int): Fragment? {
                 if (list[pos] == null) {
