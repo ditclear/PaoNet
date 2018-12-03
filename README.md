@@ -11,8 +11,11 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [master](https://github.com/ditclear/PaoNet)                 | 稳定版本                                                     |
 | [develop](https://github.com/ditclear/PaoNet/tree/develop)   | 开发分支                                                     |
-| [sinlge_page](https://github.com/ditclear/PaoNet/tree/single_page) | 基于[Navigation组件](https://developer.android.google.cn/topic/libraries/architecture/navigation/navigation-implementing)，对PaoNet进行了单页面(单Activity+多Fragment)改造 |
+| [modularization](https://github.com/ditclear/PaoNet/tree/modularization) | 伪·模块化(工程化)分支，基于BuildType和SourceSet进行的工程化改造 |
+| [sinlge_page](https://github.com/ditclear/PaoNet/tree/single_page) | 基于[Navigation](https://developer.android.google.cn/topic/libraries/architecture/navigation/navigation-implementing)组件，对PaoNet进行了单页面(单Activity+多Fragment)改造 |
 | [multi_module](https://github.com/ditclear/PaoNet/tree/multi_module) [WIP] | 基于[sinlge_page](https://github.com/ditclear/PaoNet/tree/single_page)分支进行的模块化改造 |
+
+
 
 
 
