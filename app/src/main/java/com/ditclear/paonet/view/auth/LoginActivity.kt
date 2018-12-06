@@ -7,6 +7,7 @@ import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.LoginActivityBinding
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.extens.bindLifeCycle
+import com.ditclear.paonet.helper.extens.set
 import com.ditclear.paonet.helper.transitions.FabTransform
 import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.User

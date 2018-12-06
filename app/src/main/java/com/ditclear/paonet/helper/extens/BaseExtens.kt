@@ -1,8 +1,7 @@
 package com.ditclear.paonet.helper.extens
 
 import android.app.Activity
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.*
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -28,8 +27,10 @@ import com.uber.autodispose.AutoDispose
 import com.uber.autodispose.SingleSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import es.dmoral.toasty.Toasty
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.android.MainThreadDisposable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
@@ -156,4 +157,28 @@ fun Fragment.navigateToWebPage(@NonNull url: String?) {
         intent.launchUrl(activity, Uri.parse(url))
     }
 }
+
+//////////////////////////LiveData///////////////////////////////////
+
+fun <T> MutableLiveData<T>.set(t: T?) = this.postValue(t)
+fun <T> MutableLiveData<T>.get() = this.value
+
+fun <T> MutableLiveData<T>.get(t: T): T = get() ?: t
+
+fun <T> MutableLiveData<T>.init(t: T) = MutableLiveData<T>().apply {
+    postValue(t)
+}
+
+fun <T> LiveData<T>.toFlowable(): Flowable<T> = Flowable.create({ emitter ->
+    val observer = Observer<T> { data ->
+        data?.let { emitter.onNext(it) }
+    }
+    observeForever(observer)
+
+    emitter.setCancellable {
+        object : MainThreadDisposable() {
+            override fun onDispose() = removeObserver(observer)
+        }
+    }
+}, BackpressureStrategy.LATEST)
 

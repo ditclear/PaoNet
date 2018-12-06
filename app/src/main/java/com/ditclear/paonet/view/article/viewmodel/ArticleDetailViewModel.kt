@@ -1,12 +1,13 @@
 package com.ditclear.paonet.view.article.viewmodel
 
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
+import android.arch.lifecycle.MutableLiveData
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.Utils
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.helper.extens.getOriginData
+import com.ditclear.paonet.helper.extens.init
+import com.ditclear.paonet.helper.extens.set
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.BaseResponse
 import com.ditclear.paonet.model.repository.PaoRepository
@@ -25,9 +26,9 @@ import javax.inject.Inject
 class  ArticleDetailViewModel @Inject
 constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
-    val loading = ObservableBoolean(true)
+    val loading = MutableLiveData<Boolean>().init(true)
 
-    val markdown = ObservableField<String>()
+    val markdown = MutableLiveData<String>()
 
     lateinit var article: Article
         set

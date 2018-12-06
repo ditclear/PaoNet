@@ -10,6 +10,7 @@ import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
+import com.ditclear.paonet.helper.extens.set
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.base.BaseActivity

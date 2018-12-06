@@ -1,14 +1,13 @@
 package com.ditclear.paonet.view.auth.viewmodel
 
-import android.databinding.Observable
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import com.ditclear.paonet.helper.extens.async
-import com.ditclear.paonet.helper.extens.getOriginData
+import android.arch.lifecycle.MutableLiveData
+import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.UserModel
 import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
@@ -30,56 +29,41 @@ constructor(private val repo: UserRepository) : BaseViewModel() {
     private val passwordPattern = Pattern.compile(PASSWORD_PATTERN)
 
 
-    val showLogin = ObservableBoolean(true)
+    val showLogin = MutableLiveData<Boolean>().init(true)
 
 
-    val showLogout = ObservableBoolean()
+    val showLogout = MutableLiveData<Boolean>().init(false)
 
 
-    val email = ObservableField<String>("")
+    val email = MutableLiveData<String>().init("")
 
-    val password = ObservableField<String>("")
-
-    private var callback =
-            object : Observable.OnPropertyChangedCallback() {
-                override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                    when (sender) {
-                        password, email -> {
-                            isBtnEnabled.set(isBtnEnabled())
-                        }
-                        showLogin -> {
-                            loading.set(!(showLogin.get() || showLogout.get()))
-                            loginVisibility.set(showLogin.get())
-                        }
-                        showLogout -> {
-                            loading.set(!(showLogin.get() || showLogout.get()))
-                            logoutVisibility.set(showLogout.get())
-                        }
-
-                    }
-                }
-
-            }
-
+    val password = MutableLiveData<String>().init("")
 
     init {
-        password.addOnPropertyChangedCallback(callback)
-        email.addOnPropertyChangedCallback(callback)
-        showLogin.addOnPropertyChangedCallback(callback)
-        showLogout.addOnPropertyChangedCallback(callback)
+
+        Flowable.combineLatest(password.toFlowable<String>(), email.toFlowable<String>(), BiFunction<String, String, Boolean> { t1, t2 ->
+            return@BiFunction !(!emailPattern.matcher(t2).matches()
+                    || !passwordPattern.matcher(t1).matches())
+        }).doOnNext { isBtnEnabled.set(it) }.subscribe()
+
+        showLogin.toFlowable().doOnNext {
+            loading.set(!(showLogin.get(false) || showLogout.get(false)))
+            loginVisibility.set(showLogin.get(false))
+        }.subscribe()
+
+        showLogout.toFlowable().doOnNext {
+            loading.set(!(showLogin.get(false) || showLogout.get(false)))
+            logoutVisibility.set(showLogout.get(false))
+        }.subscribe()
     }
 
-    val isBtnEnabled = ObservableBoolean()
-    val loading = ObservableBoolean()
+    val isBtnEnabled = MutableLiveData<Boolean>().init(false)
+    val loading = MutableLiveData<Boolean>().init(false)
 
-    fun isBtnEnabled(): Boolean {
-        return !(!emailPattern.matcher(email.get()).matches()
-                || !passwordPattern.matcher(password.get()).matches())
-    }
 
-    val loginVisibility = ObservableBoolean(true)
+    val loginVisibility = MutableLiveData<Boolean>().init(true)
 
-    val logoutVisibility = ObservableBoolean(false)
+    val logoutVisibility = MutableLiveData<Boolean>().init(false)
 
 
     fun attemptToLogIn() = repo.login(email.get() ?: "", password.get() ?: "")
