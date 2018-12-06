@@ -1,12 +1,10 @@
 package com.ditclear.paonet.view.code.viewmodel
 
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
+import android.arch.lifecycle.MutableLiveData
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.Utils
-import com.ditclear.paonet.helper.extens.async
-import com.ditclear.paonet.helper.extens.getOriginData
+import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.BaseResponse
 import com.ditclear.paonet.model.repository.PaoRepository
@@ -25,10 +23,10 @@ import javax.inject.Inject
 class CodeDetailViewModel @Inject
 constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
-    val loading = ObservableBoolean(true)
-    val markdown = ObservableField<String>()
-    val article = ObservableField<Article>()
-    val nameAndDate = ObservableField<String>()
+    val loading = MutableLiveData<Boolean>().init(true)
+    val markdown = MutableLiveData<String>()
+    val article = MutableLiveData<Article>()
+    val nameAndDate = MutableLiveData<String>()
 
 
     //加载详情

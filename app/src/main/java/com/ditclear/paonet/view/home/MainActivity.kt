@@ -67,15 +67,15 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     private val myCollectFragment = MyCollectFragment.newInstance()
 
 
-    override fun loadData(isRefresh:Boolean) {
+    override fun loadData(isRefresh: Boolean) {
         viewModel.getCodeCategories().bindLifeCycle(this)
-                .subscribe ({},{})
+                .subscribe({}, {})
     }
 
 
     override fun onResume() {
         super.onResume()
-        viewModel.user.set(SpUtil.user?:defaultEmptyUser)
+        viewModel.user.set(SpUtil.user ?: defaultEmptyUser)
 
     }
 
@@ -110,7 +110,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
             layoutManager = LinearLayoutManager(mContext)
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
-        mBinding.tabLayout.addOnTabSelectedListener(object :TabLayout.OnTabSelectedListener{
+        mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabUnselected(p0: TabLayout.Tab?) {
             }
 
@@ -124,11 +124,12 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
             }
 
         })
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState ==null){
+        if (savedInstanceState == null) {
             changeFragment(homeFragment)
         }
     }
@@ -152,7 +153,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
                 Single.just(isQuit)
                         .async(2000)
                         .bindLifeCycle(this)
-                        .subscribe({isQuit = false },{})
+                        .subscribe({ isQuit = false }, {})
             } else {
                 super.onBackPressed()
             }
@@ -176,7 +177,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     }
 
-    private fun closeDrawer(){
+    private fun closeDrawer() {
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
     }
 
@@ -198,7 +199,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
      */
     private fun changeFragment(fragment: Fragment, title: String = "泡在网上的日子") {
         supportActionBar?.title = title
-        switchFragment(temp, fragment,fragment.javaClass.simpleName)
+        switchFragment(temp, fragment, fragment.javaClass.simpleName)
         temp = fragment
     }
 
@@ -206,8 +207,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         v?.run {
             when (id) {
                 R.id.toggle_btn -> toggleLog(this)
-                R.id.code_tv,R.id.toggle_cate_btn -> viewModel.toggleCategory()
-                R.id.home_tv ->{
+                R.id.code_tv, R.id.toggle_cate_btn -> viewModel.toggleCategory()
+                R.id.home_tv -> {
                     closeDrawer()
                     changeFragment(homeFragment)
                 }
