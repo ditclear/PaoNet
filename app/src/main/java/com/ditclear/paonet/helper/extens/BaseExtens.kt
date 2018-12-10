@@ -3,6 +3,9 @@ package com.ditclear.paonet.helper.extens
 import android.app.Activity
 import android.arch.lifecycle.*
 import android.content.Intent
+import android.databinding.Observable
+import android.databinding.ObservableBoolean
+import android.databinding.ObservableField
 import android.net.Uri
 import android.os.Bundle
 import android.support.annotation.ColorRes
@@ -24,6 +27,7 @@ import com.ditclear.paonet.helper.annotation.ToastType
 import com.ditclear.paonet.model.data.BaseResponse
 import com.ditclear.paonet.model.remote.exception.EmptyException
 import com.uber.autodispose.AutoDispose
+import com.uber.autodispose.FlowableSubscribeProxy
 import com.uber.autodispose.SingleSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
 import es.dmoral.toasty.Toasty
@@ -131,6 +135,10 @@ fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
 fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> =
         this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
 
+fun <T> Flowable<T>.bindLifeCycle(owner: LifecycleOwner): FlowableSubscribeProxy<T> =
+        this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
+
+
 fun Activity.navigateToWebPage(@NonNull url: String) {
     if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {
         return
@@ -182,3 +190,33 @@ fun <T> LiveData<T>.toFlowable(): Flowable<T> = Flowable.create({ emitter ->
     }
 }, BackpressureStrategy.LATEST)
 
+//////////////////////////DataBinding///////////////////////////////////
+fun <T> ObservableField<T>.toFlowable(): Flowable<T> = Flowable.create({ emitter ->
+    val observer = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            get()?.let { emitter.onNext(it) }
+        }
+    }
+    addOnPropertyChangedCallback(observer)
+
+    emitter.setCancellable {
+        object : MainThreadDisposable() {
+            override fun onDispose() = removeOnPropertyChangedCallback(observer)
+        }
+    }
+}, BackpressureStrategy.LATEST)
+
+fun ObservableBoolean.toFlowable(): Flowable<Boolean> = Flowable.create({ emitter ->
+    val observer = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            emitter.onNext(get())
+        }
+    }
+    addOnPropertyChangedCallback(observer)
+
+    emitter.setCancellable {
+        object : MainThreadDisposable() {
+            override fun onDispose() = removeOnPropertyChangedCallback(observer)
+        }
+    }
+}, BackpressureStrategy.LATEST)

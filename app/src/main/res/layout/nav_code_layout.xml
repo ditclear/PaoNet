@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-        >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
+
         <variable
-                name="vm"
-                type="com.ditclear.paonet.view.home.viewmodel.MainViewModel"/>
+            name="vm"
+            type="com.ditclear.paonet.view.home.viewmodel.MainViewModel" />
+
         <variable
-                name="presenter"
-                type="com.ditclear.paonet.view.base.Presenter"/>
+            name="presenter"
+            type="com.ditclear.paonet.view.base.Presenter" />
     </data>
 
     <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
-                android:id="@+id/code_tv"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:drawableLeft="@drawable/ic_code"
-                android:drawablePadding="@dimen/activity_horizontal_margin"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:text="Code"
-                android:onClick="@{(v)->presenter.onClick(v)}"
-                android:textAppearance="@android:style/TextAppearance.Material.Menu"/>
+            android:id="@+id/code_tv"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:drawableLeft="@drawable/ic_code"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:gravity="center_vertical"
+            android:onClick="@{(v)->presenter.onClick(v)}"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:text="Code"
+            android:textAppearance="@android:style/TextAppearance.Material.Menu" />
 
         <ImageButton
-                android:id="@+id/toggle_cate_btn"
-                android:layout_width="?actionBarSize"
-                android:layout_height="?actionBarSize"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:rotation="@{vm.cateVisible?180f:0f}"
-                android:onClick="@{(v)->presenter.onClick(v)}"
-                android:background="?actionBarItemBackground"
-                android:src="@drawable/ic_keyboard_arrow_down"/>
+            android:id="@+id/toggle_cate_btn"
+            android:layout_width="?actionBarSize"
+            android:layout_height="?actionBarSize"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:background="?actionBarItemBackground"
+            android:onClick="@{(v)->presenter.onClick(v)}"
+            android:src="@drawable/ic_keyboard_arrow_down" />
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="@{vm.cateVisible?View.VISIBLE:View.GONE}"
-                android:layout_below="@id/code_tv">
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/code_tv"
+            android:visibility="gone">
 
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
