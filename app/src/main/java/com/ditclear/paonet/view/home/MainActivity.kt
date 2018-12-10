@@ -19,10 +19,7 @@ import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
-import com.ditclear.paonet.helper.extens.async
-import com.ditclear.paonet.helper.extens.bindLifeCycle
-import com.ditclear.paonet.helper.extens.switchFragment
-import com.ditclear.paonet.helper.extens.toast
+import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.helper.navigateToSearch
 import com.ditclear.paonet.helper.needsLogin
 import com.ditclear.paonet.model.data.User
@@ -32,7 +29,6 @@ import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
-import io.reactivex.Single
 
 
 class MainActivity : BaseActivity<MainActivityBinding>(),
@@ -105,7 +101,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
         mBinding.vm = viewModel
-        mBinding.navMainLayout?.navCodeLayout?.recyclerView?.run {
+        mBinding.navMainLayout.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
             layoutManager = LinearLayoutManager(mContext)
             addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
@@ -125,6 +121,18 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
         })
 
+        viewModel.exit()
+                .bindLifeCycle(this)
+                .subscribe()
+
+        viewModel.cateVisible.toFlowable()
+                .doOnNext {
+                    mBinding.navMainLayout.navCodeLayout.recyclerView.visibility = if (it) View.VISIBLE else View.GONE
+                    mBinding.navMainLayout.navCodeLayout.toggleCateBtn.rotation = if (it) 180f else 0f
+                }
+                .bindLifeCycle(this)
+                .subscribe()
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,21 +147,14 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         needsLogin(R.color.hint_highlight, v, this, radius = 0)
     }
 
-    var isQuit = false;
-
     override fun onBackPressed() {
 
         if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             mBinding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if (!isQuit) {
+            if (!viewModel.exitEvent.get()) {
                 toast(msg = "再按一次退出程序")
-                isQuit = true;
-                //在两秒钟之后isQuit会变成false
-                Single.just(isQuit)
-                        .async(2000)
-                        .bindLifeCycle(this)
-                        .subscribe({ isQuit = false }, {})
+                viewModel.exitEvent.set(true)
             } else {
                 super.onBackPressed()
             }
@@ -207,7 +208,9 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         v?.run {
             when (id) {
                 R.id.toggle_btn -> toggleLog(this)
-                R.id.code_tv, R.id.toggle_cate_btn -> viewModel.toggleCategory()
+                R.id.code_tv, R.id.toggle_cate_btn -> {
+                    viewModel.toggleCategory()
+                }
                 R.id.home_tv -> {
                     closeDrawer()
                     changeFragment(homeFragment)

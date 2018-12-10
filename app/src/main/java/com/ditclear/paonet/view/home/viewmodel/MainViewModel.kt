@@ -1,10 +1,9 @@
 package com.ditclear.paonet.view.home.viewmodel
 
-import android.databinding.Observable
+import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
-import com.ditclear.paonet.helper.extens.async
+import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.remote.api.PaoService
@@ -19,26 +18,29 @@ import javax.inject.Inject
 
 class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() {
 
-    val user = ObservableField<User>(User())
+    val user = MutableLiveData<User>().init(User())
     val categories = ObservableArrayList<CategoryItemViewModel>()
-    val cateVisible=ObservableBoolean(false)
 
-    val face = ObservableField<String>()
+    val cateVisible=MutableLiveData<Boolean>().init(false)
 
-    var qianming = ObservableField<String>()
-    var navHeaderName = ObservableField<String>()
-    var loginBtnText = ObservableField<String>("LOG IN")
+    val face = MutableLiveData<String>()
+
+    var qianming = MutableLiveData<String>()
+    var navHeaderName = MutableLiveData<String>()
+    var loginBtnText = MutableLiveData<String>().init("LOG IN")
+
+    val exitEvent = ObservableBoolean(false)
+
+    fun exit()=exitEvent.toFlowable().async(2000).doOnNext { exitEvent.set(false) }
 
     init {
-        user.addOnPropertyChangedCallback(object :Observable.OnPropertyChangedCallback(){
-            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
-                face.set(user.get()?.face)
-                qianming.set(user.get()?.qianming)
-                navHeaderName.set(user.get()?.nickname ?: "")
-                loginBtnText.set( if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
-            }
-
-        })
+        user.toFlowable()
+                .doOnNext {
+                    face.set(user.get()?.face)
+                    qianming.set(user.get()?.qianming)
+                    navHeaderName.set(user.get()?.nickname ?: "")
+                    loginBtnText.set( if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
+                }.subscribe()
     }
 
 
@@ -52,6 +54,7 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
                 categories.addAll(it.map { CategoryItemViewModel(it) }) }
 
     fun toggleCategory(){
-        cateVisible.set(!cateVisible.get())
+        val visible = cateVisible.get()?:false
+        cateVisible.set(!visible)
     }
 }
