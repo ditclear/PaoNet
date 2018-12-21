@@ -1,7 +1,7 @@
 # PaoNet
 泡网第三方客户端（待完善）
 
-技术栈 : MVVM/Kotlin/DataBinding/Rxjava2/Retrofit2/Room/Dagger2/AOP
+技术栈 : MVVM/Kotlin/DataBinding/Rxjava2/Retrofit2/Room/Koin/AOP/Navigation
 
 [demo下载](demo.apk)
 
