@@ -21,6 +21,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：ArticleListFragment
@@ -30,12 +31,10 @@ import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ToTopOrRefreshContract {
 
 
-    private val viewModel: ArticleListViewModel by lazy {
-        getInjectViewModel<ArticleListViewModel>()
-    }
+    private val mViewModel: ArticleListViewModel by viewModel()
 
     private val mAdapter by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.list).apply {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, mViewModel.list).apply {
             itemPresenter = this@ArticleListFragment
         }
     }
@@ -77,7 +76,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh).bindLifeCycle(this)
+        mViewModel.loadData(isRefresh).bindLifeCycle(this)
 
                 .subscribe({
 
@@ -108,9 +107,9 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun initView() {
         lazyLoad = true
-        mBinding.vm = viewModel
-        viewModel.tid = tid
-        viewModel.keyWord = keyWord
+        mBinding.vm = mViewModel
+        mViewModel.tid = tid
+        mViewModel.keyWord = keyWord
         mBinding.recyclerView.apply {
             adapter = mAdapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {

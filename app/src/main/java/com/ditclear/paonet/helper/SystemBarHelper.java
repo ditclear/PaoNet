@@ -231,7 +231,7 @@ public class SystemBarHelper {
     public static void setStatusBarDarkMode(Window window) {
         if (isFlyme4Later()) {
             setStatusBarDarkModeForFlyme4(window, true);
-        } else if (isMIUI6Later()) {
+        } else if (isMIUI6LaterAnd9Before()) {
             setStatusBarDarkModeForMIUI6(window, true);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setStatusBarDarkModeForM(window);
@@ -378,14 +378,14 @@ public class SystemBarHelper {
     /**
      * 判断是否为MIUI6以上
      */
-    public static boolean isMIUI6Later() {
+    public static boolean isMIUI6LaterAnd9Before() {
         try {
             Class<?> clz = Class.forName("android.os.SystemProperties");
             Method mtd = clz.getMethod("get", String.class);
             String val = (String) mtd.invoke(null, "ro.miui.ui.version.name");
             val = val.replaceAll("[vV]", "");
             int version = Integer.parseInt(val);
-            return version >= 6;
+            return version >= 6 && version < 9;
         } catch (Exception e) {
             return false;
         }

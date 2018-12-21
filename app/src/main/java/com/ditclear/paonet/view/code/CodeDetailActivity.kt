@@ -15,6 +15,7 @@ import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：ArticleDetailActivity
@@ -26,14 +27,12 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
 
-    private val viewModel :CodeDetailViewModel by lazy {
-        getInjectViewModel<CodeDetailViewModel>()
-    }
+    private val mViewModel :CodeDetailViewModel by viewModel()
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
 
     override fun loadData(isRefresh: Boolean) {
 
-        viewModel.loadData().bindLifeCycle(this).subscribe({ isStow(it) },
+        mViewModel.loadData().bindLifeCycle(this).subscribe({ isStow(it) },
                 { toastFailure(it) })
     }
 
@@ -56,7 +55,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
 
         delayToTransition = true
-        mBinding.vm=viewModel.apply {
+        mBinding.vm=mViewModel.apply {
             this.article.set(mArticle)
             this.nameAndDate.set("""${mArticle?.user?.nickname ?: "佚名"}
                                         |${mArticle?.pubDate}""".trimMargin())
@@ -77,7 +76,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.fab -> viewModel.stow().bindLifeCycle(this)
+            R.id.fab -> mViewModel.stow().bindLifeCycle(this)
                     .subscribe({ toastSuccess(it.message) }
                             , { toastFailure(it) })
         }

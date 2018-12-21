@@ -26,27 +26,15 @@ import com.ditclear.paonet.helper.extens.toast
  */
 abstract class BaseActivity< VB : ViewDataBinding> : AppCompatActivity(), Presenter {
 
-    protected lateinit var mBinding: VB
+    protected val  mBinding: VB by lazy { DataBindingUtil.setContentView<VB>(this, getLayoutId()) }
 
     protected lateinit var mContext: Context
 
     protected var autoRefresh = true
     protected var delayToTransition = false
 
-    val factory: ViewModelProvider.Factory by lazy {
-        if (application is PaoApp) {
-            val mainApplication = application as PaoApp
-            return@lazy mainApplication.factory
-        } else {
-            throw IllegalStateException("application is not PaoApp")
-        }
-    }
-
-    protected inline fun <reified T:ViewModel> getInjectViewModel() = ViewModelProviders.of(this, factory).get(T::class.java)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView<VB>(this, getLayoutId())
         mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)

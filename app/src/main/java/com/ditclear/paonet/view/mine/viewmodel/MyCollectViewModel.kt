@@ -12,7 +12,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-class MyCollectViewModel @Inject constructor(private val repo: UserRepository) : PagedViewModel() {
+class MyCollectViewModel constructor(private val repo: UserRepository) : PagedViewModel() {
 
     val list = ObservableArrayList<ArticleItemViewModel>()
 

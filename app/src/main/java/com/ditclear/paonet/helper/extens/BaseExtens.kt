@@ -14,6 +14,7 @@ import android.support.annotation.NonNull
 import android.support.customtabs.CustomTabsIntent
 import android.support.v4.app.ActivityOptionsCompat
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.text.TextUtils
@@ -80,6 +81,9 @@ fun Activity.dispatchFailure(error: Throwable?) {
         }
     }
 }
+
+fun <T : Any> FragmentActivity.argument(key: String) =
+        lazy { intent.extras[key] as? T ?: error("Intent Argument $key is missing") }
 
 fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String? = null) {
     val ft = supportFragmentManager.beginTransaction()

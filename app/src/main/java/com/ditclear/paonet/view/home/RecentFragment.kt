@@ -18,6 +18,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：RecentFragment
@@ -35,16 +36,14 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
         }
     }
 
-    private val viewModel: RecentViewModel by lazy {
-        getInjectViewModel<RecentViewModel>()
-    }
+    private val mVieModel: RecentViewModel by viewModel()
 
     val sliderAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, viewModel.sliders).apply { itemPresenter = this@RecentFragment }
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, mVieModel.sliders).apply { itemPresenter = this@RecentFragment }
     }
 
     val mAdapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
+        MultiTypeAdapter(mContext, mVieModel.list, object : MultiTypeAdapter.MultiViewTyper {
             override fun getViewType(item: Any): Int =
                     if (item is Dummy) ItemType.HEADER else ItemType.ITEM
         }).apply {
@@ -73,13 +72,8 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
         fun newInstance(): RecentFragment = RecentFragment()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-    }
-
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(true).bindLifeCycle(this)
+        mVieModel.loadData(true).bindLifeCycle(this)
                 .subscribe({}, { toastFailure(it) })
 
 
@@ -87,7 +81,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
     override fun initView() {
 
-        mBinding.vm=viewModel
+        mBinding.vm=mVieModel
         mBinding.recyclerView.apply {
             adapter = mAdapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {

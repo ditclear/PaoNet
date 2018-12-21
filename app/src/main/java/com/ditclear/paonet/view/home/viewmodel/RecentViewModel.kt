@@ -16,7 +16,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentViewModel @Inject constructor(private val repo: PaoRepository) : PagedViewModel() {
+class RecentViewModel constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val sliders = ObservableArrayList<ArticleItemViewModel>()
     val list = ObservableArrayList<Any>()

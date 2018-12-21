@@ -10,12 +10,15 @@ import com.ditclear.paonet.aop.annotation.SingleClick
 import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.annotation.ToastType
+import com.ditclear.paonet.helper.extens.argument
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.getCompactColor
 import com.ditclear.paonet.helper.extens.toast
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
 import com.ditclear.paonet.view.base.BaseActivity
+import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 
 /**
@@ -28,13 +31,13 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
-    private val viewModel by lazy { getInjectViewModel<ArticleDetailViewModel>() }
+    private val mArticle by argument<Article>(Constants.KEY_SERIALIZABLE)
 
-    private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
+    private val mViewModel by viewModel<ArticleDetailViewModel> { parametersOf(mArticle) }
 
     override fun loadData(isRefresh: Boolean) {
 
-        viewModel.loadData().bindLifeCycle(this)
+        mViewModel.loadData().bindLifeCycle(this)
                 .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
                         { toastFailure(it) })
 
@@ -53,16 +56,8 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun initView() {
 
-        if (mArticle == null) {
-            toast("文章不存在", ToastType.WARNING)
-            finish()
-        }
-        mBinding.vm = viewModel.apply {
+        mBinding.vm = mViewModel
 
-            mArticle?.let {
-                this.article = it
-            }
-        }
         initBackToolbar(mBinding.toolbar)
 
         delayToTransition = true
@@ -111,12 +106,12 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
     }
 
     private fun attentionTo() {
-        viewModel.attentionTo().bindLifeCycle(this)
+        mViewModel.attentionTo().bindLifeCycle(this)
                 .subscribe({}, { toastFailure(it) })
     }
 
     private fun stow() {
-        viewModel.stow().bindLifeCycle(this)
+        mViewModel.stow().bindLifeCycle(this)
                 .subscribe({ toastSuccess(it.message) }
                         , { toastFailure(it) })
     }

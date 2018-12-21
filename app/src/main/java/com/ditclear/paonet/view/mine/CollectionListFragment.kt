@@ -18,6 +18,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：CollectionListFragment
@@ -26,9 +27,7 @@ import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
  */
 class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
-    private val viewModel: MyCollectViewModel  by lazy {
-        getInjectViewModel<MyCollectViewModel>()
-    }
+    private val mVieModel: MyCollectViewModel  by viewModel()
 
     val layoutItemId by lazy {
         if (collectionType != 1) {
@@ -36,7 +35,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         } else R.layout.article_list_item
     }
     val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, layoutItemId, viewModel.list).apply {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, layoutItemId, mVieModel.list).apply {
             itemPresenter = this@CollectionListFragment
         }
     }
@@ -68,7 +67,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
 
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh).bindLifeCycle(this)
+        mVieModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe({}, { toastFailure(it) })
     }
 
@@ -92,7 +91,7 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
 
     override fun initView() {
         lazyLoad = true
-        mBinding.vm=viewModel.apply {
+        mBinding.vm=mVieModel.apply {
             type = collectionType
         }
         mBinding.recyclerView.apply {

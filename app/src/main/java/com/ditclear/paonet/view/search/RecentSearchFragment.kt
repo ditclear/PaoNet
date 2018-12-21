@@ -16,6 +16,7 @@ import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.flexbox.JustifyContent
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：RecentSearchFragment
@@ -30,9 +31,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
         (activity as SearchActivity).setQuery(keyWord = item as String)
     }
 
-    private val viewModel: RecentSearchViewModel  by lazy {
-        getInjectViewModel<RecentSearchViewModel>()
-    }
+    private val mVieModel: RecentSearchViewModel  by viewModel()
 
     private val colorArray by lazy { ColorBrewer.Pastel2.getColorPalette(20) }
 
@@ -41,9 +40,9 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     private val adapter: MultiTypeAdapter by lazy {
-        MultiTypeAdapter(mContext, viewModel.list, object : MultiTypeAdapter.MultiViewTyper {
+        MultiTypeAdapter(mContext, mVieModel.list, object : MultiTypeAdapter.MultiViewTyper {
             override fun getViewType(item: Any): Int {
-                val pos = viewModel.list.indexOf(item)
+                val pos = mVieModel.list.indexOf(item)
                 return if (pos == 0) ItemType.HEADER else ItemType.ITEM
             }
 
@@ -67,7 +66,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(true).bindLifeCycle(this)
+        mVieModel.loadData(true).bindLifeCycle(this)
                 .subscribe ({},{toastFailure(it)})
     }
 
@@ -76,7 +75,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     }
 
     override fun initView() {
-        mBinding.vm = viewModel
+        mBinding.vm = mVieModel
         mBinding.recyclerView.run {
             adapter = this@RecentSearchFragment.adapter
             layoutManager = FlexboxLayoutManager(mContext).apply {
