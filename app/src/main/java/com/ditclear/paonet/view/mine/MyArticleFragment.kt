@@ -18,6 +18,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.MainActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：MyArticleActivity
@@ -27,12 +28,10 @@ import com.ditclear.paonet.view.mine.viewmodel.MyArticleViewModel
 
 class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
-    private val viewModel: MyArticleViewModel  by lazy {
-        getInjectViewModel<MyArticleViewModel>()
-    }
+    private val mVieModel: MyArticleViewModel  by viewModel()
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, viewModel.list).apply { itemPresenter = this@MyArticleFragment }
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, mVieModel.list).apply { itemPresenter = this@MyArticleFragment }
     }
 
     val showTab by lazy { autoWired(SHOW_TAB,false)?:false }
@@ -53,7 +52,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
     }
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh).bindLifeCycle(this)
+        mVieModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe ({},{toastFailure(it)})
     }
 
@@ -70,7 +69,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
     override fun initView() {
         (activity as MainActivity).needShowTab(showTab)
-        mBinding.vm=viewModel
+        mBinding.vm=mVieModel
         mBinding.recyclerView.apply {
             this.adapter = mAdapter
             this.addItemDecoration(object : RecyclerView.ItemDecoration() {

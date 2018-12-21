@@ -26,7 +26,7 @@ import com.ditclear.paonet.helper.extens.toast
 
 abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
 
-    protected lateinit var mBinding: VB
+    protected val mBinding by lazy { DataBindingUtil.inflate<VB>(layoutInflater, getLayoutId(), null, false) }
 
     protected lateinit var mContext: Context
 
@@ -43,23 +43,11 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
      */
     protected var hasLoadOnce: Boolean = false
 
-    val factory:ViewModelProvider.Factory by lazy {
-        if (activity is BaseActivity<*>) {
-            val baseActivity = activity as BaseActivity<*>
-            return@lazy baseActivity.factory
-        }else{
-            throw IllegalStateException("activity is not BaseActivity")
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initArgs(savedInstanceState)
     }
-
-    protected inline fun <reified T: ViewModel> getInjectViewModel(): T =
-            ViewModelProviders.of(this, factory).get(T::class.java)
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -76,7 +64,6 @@ abstract class BaseFragment<VB : ViewDataBinding> : Fragment(), Presenter {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), null, false)
         mBinding.setVariable(BR.presenter, this)
         mBinding.executePendingBindings()
         mBinding.setLifecycleOwner(this)

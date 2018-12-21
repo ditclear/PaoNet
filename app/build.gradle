@@ -84,6 +84,8 @@ dependencies {
     //di
     implementation 'com.google.dagger:dagger:2.16'
     kapt "com.google.dagger:dagger-compiler:2.16"
+    // Koin for Kotlin
+    implementation "org.koin:koin-android-viewmodel:$koin_version"
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:' + rootProject.retrofitVersion
     implementation 'com.squareup.retrofit2:converter-gson:' + rootProject.retrofitVersion

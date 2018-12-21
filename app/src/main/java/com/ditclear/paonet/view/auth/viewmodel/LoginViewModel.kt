@@ -19,7 +19,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/10.
  */
-class LoginViewModel @Inject
+class LoginViewModel
 constructor(private val repo: UserRepository) : BaseViewModel() {
 
     private val PASSWORD_PATTERN = "^[a-zA-Z0-9_]{6,16}$"

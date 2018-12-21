@@ -14,7 +14,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/30.
  */
-class UserRepository @Inject constructor(val remote: UserService, val local: UserDao) {
+class UserRepository (private val remote: UserService, private val local: UserDao) {
 
     fun login(userid: String, pwd: String): Single<BaseResponse> = remote.login(userid, pwd)
 

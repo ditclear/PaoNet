@@ -7,6 +7,7 @@ import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.remote.api.PaoService
+import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
 import javax.inject.Inject
 
@@ -16,12 +17,12 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/27.
  */
 
-class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() {
+class MainViewModel(private val repo: PaoRepository) : BaseViewModel() {
 
     val user = MutableLiveData<User>().init(User())
     val categories = ObservableArrayList<CategoryItemViewModel>()
 
-    val cateVisible=MutableLiveData<Boolean>().init(false)
+    val cateVisible = MutableLiveData<Boolean>().init(false)
 
     val face = MutableLiveData<String>()
 
@@ -31,7 +32,7 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
 
     val exitEvent = ObservableBoolean(false)
 
-    fun exit()=exitEvent.toFlowable().async(2000).doOnNext { exitEvent.set(false) }
+    fun exit() = exitEvent.toFlowable().async(2000).doOnNext { exitEvent.set(false) }
 
     init {
         user.toFlowable()
@@ -39,7 +40,7 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
                     face.set(user.get()?.face)
                     qianming.set(user.get()?.qianming)
                     navHeaderName.set(user.get()?.nickname ?: "")
-                    loginBtnText.set( if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
+                    loginBtnText.set(if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
                 }.subscribe()
     }
 
@@ -51,10 +52,11 @@ class MainViewModel @Inject constructor(val repo: PaoService) : BaseViewModel() 
     fun getCodeCategories() = repo.getCodeCategory().async()
             .map {
                 categories.add(CategoryItemViewModel(Category("全部(All)")))
-                categories.addAll(it.map { CategoryItemViewModel(it) }) }
+                categories.addAll(it.map { CategoryItemViewModel(it) })
+            }
 
-    fun toggleCategory(){
-        val visible = cateVisible.get()?:false
+    fun toggleCategory() {
+        val visible = cateVisible.get() ?: false
         cateVisible.set(!visible)
     }
 }

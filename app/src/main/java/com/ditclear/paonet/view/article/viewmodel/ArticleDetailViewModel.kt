@@ -23,15 +23,13 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-class  ArticleDetailViewModel @Inject
-constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
+class  ArticleDetailViewModel constructor(private val article : Article,private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
     val loading = MutableLiveData<Boolean>().init(true)
 
     val markdown = MutableLiveData<String>()
 
-    lateinit var article: Article
-        set
+    fun getArticle()=article
 
     //加载详情
     fun loadData() = repo.getArticle(article.id).subscribeOn(Schedulers.io())

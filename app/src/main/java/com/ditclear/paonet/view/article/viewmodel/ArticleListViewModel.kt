@@ -13,7 +13,6 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/3.
  */
 class ArticleListViewModel
-@Inject
 constructor(private val repo: PaoRepository) : PagedViewModel() {
 
     val list = ObservableArrayList<ArticleItemViewModel>()

@@ -29,6 +29,7 @@ import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
+import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity<MainActivityBinding>(),
@@ -37,13 +38,11 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    private val viewModel by lazy {
-        getInjectViewModel<MainViewModel>()
-    }
+    private val mViewModel :MainViewModel by viewModel()
 
     val adapter by lazy {
         SingleTypeAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
-                viewModel.categories).apply {
+                mViewModel.categories).apply {
             itemPresenter = this@MainActivity
         }
     }
@@ -64,14 +63,14 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.getCodeCategories().bindLifeCycle(this)
+        mViewModel.getCodeCategories().bindLifeCycle(this)
                 .subscribe({}, {})
     }
 
 
     override fun onResume() {
         super.onResume()
-        viewModel.user.set(SpUtil.user ?: defaultEmptyUser)
+        mViewModel.user.set(SpUtil.user ?: defaultEmptyUser)
 
     }
 
@@ -100,7 +99,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
-        mBinding.vm = viewModel
+        mBinding.vm = mViewModel
         mBinding.navMainLayout.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
             layoutManager = LinearLayoutManager(mContext)
@@ -121,11 +120,11 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
         })
 
-        viewModel.exit()
+        mViewModel.exit()
                 .bindLifeCycle(this)
                 .subscribe()
 
-        viewModel.cateVisible.toFlowable()
+        mViewModel.cateVisible.toFlowable()
                 .doOnNext {
                     mBinding.navMainLayout.navCodeLayout.recyclerView.visibility = if (it) View.VISIBLE else View.GONE
                     mBinding.navMainLayout.navCodeLayout.toggleCateBtn.rotation = if (it) 180f else 0f
@@ -152,9 +151,9 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         if (mBinding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             mBinding.drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            if (!viewModel.exitEvent.get()) {
+            if (!mViewModel.exitEvent.get()) {
                 toast(msg = "再按一次退出程序")
-                viewModel.exitEvent.set(true)
+                mViewModel.exitEvent.set(true)
             } else {
                 super.onBackPressed()
             }
@@ -209,7 +208,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
             when (id) {
                 R.id.toggle_btn -> toggleLog(this)
                 R.id.code_tv, R.id.toggle_cate_btn -> {
-                    viewModel.toggleCategory()
+                    mViewModel.toggleCategory()
                 }
                 R.id.home_tv -> {
                     closeDrawer()

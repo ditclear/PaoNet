@@ -17,6 +17,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.MainActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：ArticleListFragment
@@ -25,13 +26,11 @@ import com.ditclear.paonet.view.home.MainActivity
  */
 class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
-    private val viewModel: CodeListViewModel by lazy {
-        getInjectViewModel<CodeListViewModel>()
-    }
+    private val mViewModel: CodeListViewModel by viewModel()
 
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, viewModel.list).apply {
+        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, mViewModel.list).apply {
             itemPresenter = this@CodeListFragment
         }
     }
@@ -67,7 +66,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
 
     override fun loadData(isRefresh: Boolean) {
-        viewModel.loadData(isRefresh).bindLifeCycle(this)
+        mViewModel.loadData(isRefresh).bindLifeCycle(this)
                 .subscribe({},{toastFailure(it)})
     }
 
@@ -83,7 +82,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     }
 
     override fun initView() {
-        mBinding.vm=viewModel.apply {
+        mBinding.vm=mViewModel.apply {
             category = cate
             keyWord = this@CodeListFragment.keyWord
         }

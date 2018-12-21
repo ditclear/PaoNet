@@ -11,7 +11,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/22.
  */
-class RecentSearchViewModel @Inject constructor( val repo: PaoRepository) : PagedViewModel() {
+class RecentSearchViewModel constructor( val repo: PaoRepository) : PagedViewModel() {
 
     val list = ObservableArrayList<Any>()
 

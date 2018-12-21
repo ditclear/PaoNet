@@ -13,6 +13,7 @@ import com.ditclear.paonet.helper.transitions.MorphTransform
 import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.auth.viewmodel.LoginViewModel
 import com.ditclear.paonet.view.base.BaseActivity
+import org.koin.android.viewmodel.ext.android.viewModel
 
 /**
  * 页面描述：LoginActivity
@@ -21,7 +22,7 @@ import com.ditclear.paonet.view.base.BaseActivity
  */
 class LoginActivity : BaseActivity<LoginActivityBinding>() {
 
-    private val viewModel by lazy { getInjectViewModel<LoginViewModel>() }
+    private val mViewModel :LoginViewModel by viewModel()
 
     //login success
     fun onLoginSuccess(user: User?) {
@@ -35,7 +36,7 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
 
     override fun initView() {
 
-        mBinding.vm=viewModel.apply {
+        mBinding.vm=mViewModel.apply {
             showLogin .set(SpUtil.user == null)
             showLogout.set(SpUtil.user!=null)
         }
@@ -61,11 +62,11 @@ class LoginActivity : BaseActivity<LoginActivityBinding>() {
     @SingleClick
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.login_btn -> viewModel.attemptToLogIn().bindLifeCycle(this)
+            R.id.login_btn -> mViewModel.attemptToLogIn().bindLifeCycle(this)
                     .subscribe({onLoginSuccess(it)  }
                             , { toastFailure(it)  })
 
-            R.id.logout_btn -> viewModel.attemptToLogout().bindLifeCycle(this)
+            R.id.logout_btn -> mViewModel.attemptToLogout().bindLifeCycle(this)
                     .subscribe({
                         SpUtil.logout()
                         dismiss(v)

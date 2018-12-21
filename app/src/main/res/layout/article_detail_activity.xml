@@ -44,7 +44,7 @@
                         android:contentDescription="@string/thumbnail"
                         android:scaleType="centerCrop"
                         android:fitsSystemWindows="true"
-                        bind:url="@{vm.article.thumbnail}"
+                        url="@{vm.article.thumbnail}"
                         android:duplicateParentState="true"
                         android:transitionName="@string/transition_image"
                         android:background="?selectableItemBackground"/>

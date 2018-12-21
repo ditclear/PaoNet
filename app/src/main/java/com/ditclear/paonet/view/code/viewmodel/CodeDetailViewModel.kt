@@ -20,7 +20,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/3.
  */
-class CodeDetailViewModel @Inject
+class CodeDetailViewModel
 constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
     val loading = MutableLiveData<Boolean>().init(true)

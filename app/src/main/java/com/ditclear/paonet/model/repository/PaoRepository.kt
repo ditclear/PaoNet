@@ -14,7 +14,7 @@ import javax.inject.Inject
  *
  * Created by ditclear on 2017/10/30.
  */
-class PaoRepository @Inject constructor(private val remote: PaoService, private val local: ArticleDao) {
+class PaoRepository(private val remote: PaoService, private val local: ArticleDao) {
 
 
     /**
@@ -71,4 +71,6 @@ class PaoRepository @Inject constructor(private val remote: PaoService, private 
      * 获取热门搜索
      */
     fun getHotSearch(): Single<TagList> = remote.getHotSearch()
+
+    fun getCodeCategory() = remote.getCodeCategory()
 }
