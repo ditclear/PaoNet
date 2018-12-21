@@ -48,25 +48,21 @@ val viewModelModule = module {
 val remoteModule = module {
     single<Retrofit> { NetMgr.getRetrofit(Constants.HOST_API) }
 
-    single<PaoService> { createService(get()) }
-    single<UserService> { createService(get()) }
+    single<PaoService> { get<Retrofit>().create(PaoService::class.java) }
+    single<UserService> { get<Retrofit>().create(UserService::class.java) }
 }
-
-private inline fun <reified S> createService(retrofit: Retrofit) = retrofit.create(S::class.java)
 
 val localModule = module {
     single<AppDatabase> { AppDatabase.getInstance(androidApplication()) }
 
-    single<UserDao> { getForClass("", AppDatabase::class.java).userDao() }
-    single<ArticleDao> { getForClass("", AppDatabase::class.java).articleDao() }
+    single<UserDao> { get<AppDatabase>().userDao() }
+    single<ArticleDao> { get<AppDatabase>().articleDao() }
 
 }
 
 val repoModule = module {
     single { PaoRepository(get(), get()) }
     single { UserRepository(get(), get()) }
-
-
 }
 
 
