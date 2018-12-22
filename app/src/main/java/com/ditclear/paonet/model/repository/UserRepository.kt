@@ -7,7 +7,7 @@ import com.ditclear.paonet.model.local.dao.UserDao
 import com.ditclear.paonet.model.remote.api.UserService
 import io.reactivex.Single
 import okhttp3.ResponseBody
-import javax.inject.Inject
+
 
 /**
  * 页面描述：UserRepository

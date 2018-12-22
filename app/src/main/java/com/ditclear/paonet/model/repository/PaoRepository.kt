@@ -7,7 +7,7 @@ import com.ditclear.paonet.model.data.TagList
 import com.ditclear.paonet.model.local.dao.ArticleDao
 import com.ditclear.paonet.model.remote.api.PaoService
 import io.reactivex.Single
-import javax.inject.Inject
+
 
 /**
  * 页面描述：PaoRepository

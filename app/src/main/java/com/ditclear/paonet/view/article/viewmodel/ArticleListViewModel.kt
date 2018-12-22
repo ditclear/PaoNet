@@ -5,7 +5,7 @@ import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.viewmodel.PagedViewModel
-import javax.inject.Inject
+
 
 /**
  * 页面描述：ArticleListViewModel
@@ -13,18 +13,13 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/3.
  */
 class ArticleListViewModel
-constructor(private val repo: PaoRepository) : PagedViewModel() {
+constructor(val tid: Int = ArticleType.ANDROID, val keyWord: String? = null, private val repo: PaoRepository) : PagedViewModel() {
 
     val list = ObservableArrayList<ArticleItemViewModel>()
 
-    var tid = ArticleType.ANDROID
-        set
-
-    var keyWord: String? = null
-        set
 
     fun loadData(isRefresh: Boolean) = if (keyWord != null) {
-        repo.getSearchArticles(getPage(isRefresh), keyWord ?: "")
+        repo.getSearchArticles(getPage(isRefresh), keyWord)
     } else {
         repo.getArticleList(getPage(isRefresh), tid)
     }

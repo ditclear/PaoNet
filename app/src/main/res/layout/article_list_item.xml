@@ -46,8 +46,6 @@
                         android:scaleType="fitCenter"
                         app:url="@{item.face}"
                         app:avatar="@{true}"
-                        android:duplicateParentState="false"
-                        android:foreground="?selectableItemBackground"
                         tools:src="@drawable/ic_face"/>
 
                 <TextView

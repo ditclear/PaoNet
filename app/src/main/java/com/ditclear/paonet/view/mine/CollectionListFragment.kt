@@ -19,6 +19,7 @@ import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.CodeDetailActivity
 import com.ditclear.paonet.view.mine.viewmodel.MyCollectViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * 页面描述：CollectionListFragment
@@ -27,7 +28,10 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
-    private val mVieModel: MyCollectViewModel  by viewModel()
+    private val collectionType by lazy { autoWired(COLLECTION_TYPE, 1) ?: 1 }
+
+
+    private val mVieModel: MyCollectViewModel  by viewModel { parametersOf(collectionType) }
 
     val layoutItemId by lazy {
         if (collectionType != 1) {
@@ -40,7 +44,6 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         }
     }
 
-    val collectionType by lazy { autoWired(COLLECTION_TYPE,1)?:1 }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -86,20 +89,17 @@ class CollectionListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClick
         super.onAttach(context)
 
 
-
     }
 
     override fun initView() {
         lazyLoad = true
-        mBinding.vm=mVieModel.apply {
-            type = collectionType
-        }
+        mBinding.vm = mVieModel
         mBinding.recyclerView.apply {
             this.adapter = mAdapter
             this.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                 }
             })
         }

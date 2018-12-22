@@ -13,7 +13,7 @@ import com.ditclear.paonet.viewmodel.BaseViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
+
 
 /**
  * 页面描述：ArticleDetailViewModel
@@ -21,12 +21,12 @@ import javax.inject.Inject
  * Created by ditclear on 2017/10/3.
  */
 class CodeDetailViewModel
-constructor(private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
+constructor(code: Article, nameDate:String,private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
     val loading = MutableLiveData<Boolean>().init(true)
     val markdown = MutableLiveData<String>()
-    val article = MutableLiveData<Article>()
-    val nameAndDate = MutableLiveData<String>()
+    val article = MutableLiveData<Article>().init(code)
+    val nameAndDate = MutableLiveData<String>().init(nameDate)
 
 
     //加载详情

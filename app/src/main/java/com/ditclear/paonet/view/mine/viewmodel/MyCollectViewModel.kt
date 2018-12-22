@@ -5,19 +5,18 @@ import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel
-import javax.inject.Inject
+
 
 /**
- * 页面描述：MyArticleViewModel
+ * 页面描述：MyCollectViewModel
+ * @param type  1 ：文章；-19 ：代码
  *
  * Created by ditclear on 2017/10/3.
  */
-class MyCollectViewModel constructor(private val repo: UserRepository) : PagedViewModel() {
+class MyCollectViewModel constructor(private val type:Int=1,private val repo: UserRepository) : PagedViewModel() {
 
     val list = ObservableArrayList<ArticleItemViewModel>()
 
-    //1 ：文章；-19 ：代码
-    var type = 1
 
     fun loadData(isRefresh: Boolean) =
             repo.collectionArticle(getPage(isRefresh), type).async(1000)
