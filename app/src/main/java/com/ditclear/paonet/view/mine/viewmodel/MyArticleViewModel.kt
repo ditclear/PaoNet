@@ -5,7 +5,7 @@ import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.viewmodel.PagedViewModel
-import javax.inject.Inject
+
 
 /**
  * 页面描述：MyArticleViewModel

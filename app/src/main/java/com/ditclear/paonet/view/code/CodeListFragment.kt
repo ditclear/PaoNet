@@ -18,6 +18,7 @@ import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.MainActivity
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * 页面描述：ArticleListFragment
@@ -26,7 +27,6 @@ import org.koin.android.viewmodel.ext.android.viewModel
  */
 class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
 
-    private val mViewModel: CodeListViewModel by viewModel()
 
 
     private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
@@ -40,6 +40,9 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
     val cate by lazy { autoWired<Int>(KEY_CATE) }
 
     val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
+
+    private val mViewModel: CodeListViewModel by viewModel { parametersOf(cate,keyWord)}
+
 
     companion object {
 
@@ -75,17 +78,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         activity?.navigateToActivity(CodeDetailActivity::class.java, item.article)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-
-    }
-
     override fun initView() {
-        mBinding.vm=mViewModel.apply {
-            category = cate
-            keyWord = this@CodeListFragment.keyWord
-        }
+        mBinding.vm=mViewModel
         mBinding.run {
             recyclerView.apply {
                 adapter = mAdapter

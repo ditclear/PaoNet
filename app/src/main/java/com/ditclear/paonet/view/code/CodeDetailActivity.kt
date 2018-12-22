@@ -16,6 +16,7 @@ import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.viewmodel.CodeDetailViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * 页面描述：ArticleDetailActivity
@@ -27,8 +28,12 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.code_detail_activity
 
-    private val mViewModel :CodeDetailViewModel by viewModel()
     private val mArticle by lazy { autoWired<Article>(Constants.KEY_SERIALIZABLE) }
+
+    private val mViewModel: CodeDetailViewModel by viewModel() {
+        parametersOf(mArticle, """${mArticle?.user?.nickname ?: "佚名"}
+                                        |${mArticle?.pubDate}""".trimMargin())
+    }
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -55,11 +60,7 @@ class CodeDetailActivity : BaseActivity<CodeDetailActivityBinding>() {
 
 
         delayToTransition = true
-        mBinding.vm=mViewModel.apply {
-            this.article.set(mArticle)
-            this.nameAndDate.set("""${mArticle?.user?.nickname ?: "佚名"}
-                                        |${mArticle?.pubDate}""".trimMargin())
-        }
+        mBinding.vm = mViewModel
         mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY - oldScrollY > 10) {
                 mBinding.fab.hide()

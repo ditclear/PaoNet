@@ -9,7 +9,7 @@ import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
-import javax.inject.Inject
+
 
 /**
  * 页面描述：MainViewModel

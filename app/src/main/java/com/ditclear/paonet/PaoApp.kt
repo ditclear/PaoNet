@@ -9,10 +9,10 @@ import com.ditclear.paonet.model.remote.BaseNetProvider
 import es.dmoral.toasty.Toasty
 import org.koin.android.ext.android.startKoin
 import org.koin.android.logger.AndroidLogger
-import javax.inject.Inject
+
 
 /**
- * 页面描述：
+ * 页面描述：PaoApp
  *
  * Created by ditclear on 2017/9/26.
  */
@@ -24,7 +24,7 @@ class PaoApp : Application() {
         NetMgr.registerProvider(BaseNetProvider(this))
         SpUtil.init(this)
 
-        startKoin(this, appModule, logger = AndroidLogger(showDebug = true))
+        startKoin(this, appModule, logger = AndroidLogger(showDebug = BuildConfig.DEBUG))
 
         Toasty.Config.getInstance().apply(); // required
     }

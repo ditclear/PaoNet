@@ -22,6 +22,7 @@ import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 /**
  * 页面描述：ArticleListFragment
@@ -31,17 +32,18 @@ import org.koin.android.viewmodel.ext.android.viewModel
 class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ToTopOrRefreshContract {
 
 
-    private val mViewModel: ArticleListViewModel by viewModel()
-
     private val mAdapter by lazy {
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, mViewModel.list).apply {
             itemPresenter = this@ArticleListFragment
         }
     }
 
-    val tid by lazy { autoWired(KEY_TID, ArticleType.ANDROID) ?: ArticleType.ANDROID }
+    private val tid by lazy { autoWired(KEY_TID, ArticleType.ANDROID) ?: ArticleType.ANDROID }
 
-    val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
+    private val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
+
+    private val mViewModel: ArticleListViewModel by viewModel { parametersOf(tid, keyWord) }
+
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -99,17 +101,9 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
         }
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-
-    }
-
     override fun initView() {
         lazyLoad = true
         mBinding.vm = mViewModel
-        mViewModel.tid = tid
-        mViewModel.keyWord = keyWord
         mBinding.recyclerView.apply {
             adapter = mAdapter
             addItemDecoration(object : RecyclerView.ItemDecoration() {

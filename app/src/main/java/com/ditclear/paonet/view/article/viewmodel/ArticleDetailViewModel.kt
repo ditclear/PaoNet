@@ -16,7 +16,7 @@ import com.ditclear.paonet.viewmodel.BaseViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import javax.inject.Inject
+
 
 /**
  * 页面描述：ArticleDetailViewModel

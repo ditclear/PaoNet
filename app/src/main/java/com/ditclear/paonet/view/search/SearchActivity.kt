@@ -9,6 +9,7 @@ import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.SearchActivityBinding
 import com.ditclear.paonet.helper.SystemBarHelper
+import com.ditclear.paonet.helper.SystemBarHelper.setStatusBarDarkMode
 import com.ditclear.paonet.helper.Utils
 import com.ditclear.paonet.helper.extens.switchFragment
 import com.ditclear.paonet.view.base.BaseActivity
@@ -31,7 +32,7 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
 
     override fun initView() {
 
-        SystemBarHelper.setStatusBarDarkMode(this)
+        setStatusBarDarkMode(this)
         setSupportActionBar(mBinding.toolbar)
         delayToTransition = true
         mBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
