@@ -1,36 +1,45 @@
 package com.ditclear.paonet.view.article
 
-import android.support.v4.widget.NestedScrollView
-import android.view.Menu
-import android.view.MenuItem
+import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
-import com.ditclear.paonet.databinding.ArticleDetailActivityBinding
+import com.ditclear.paonet.databinding.ArticleDetailFragmentBinding
 import com.ditclear.paonet.helper.Constants
-import com.ditclear.paonet.helper.extens.argument
 import com.ditclear.paonet.helper.extens.bindLifeCycle
-import com.ditclear.paonet.helper.extens.getCompactColor
+import com.ditclear.paonet.helper.extens.init
 import com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel
-import com.ditclear.paonet.view.base.BaseActivity
+import com.ditclear.paonet.view.base.BaseFragment
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 
 /**
- * 页面描述：ArticleDetailActivity
+ * 页面描述：ArticleDetailFragment
  *
  * Created by ditclear on 2017/10/1.
  */
-class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
+class ArticleDetailFragment : BaseFragment<ArticleDetailFragmentBinding>() {
 
 
-    override fun getLayoutId(): Int = R.layout.article_detail_activity
+    override fun getLayoutId(): Int = R.layout.article_detail_fragment
 
-    private val articleId by argument<Int>(Constants.KEY_DATA)
+
+    private val articleId by lazy { autoWired<Int>(Constants.KEY_DATA) }
 
     private val mViewModel by viewModel<ArticleDetailViewModel> { parametersOf(articleId) }
+
+
+    companion object {
+
+        fun newInstance(id: Int) = ArticleDetailFragment().apply {
+            arguments = Bundle().apply {
+                putInt(Constants.KEY_DATA, id)
+            }
+        }
+    }
 
     override fun loadData(isRefresh: Boolean) {
 
@@ -43,51 +52,25 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     //是否收藏过
     private fun isStow(stow: Boolean) {
-        mBinding.fab.drawable.setTint(
-                if (stow) {
-                    getCompactColor(R.color.stow_color)
-                } else {
-                    getCompactColor(R.color.tools_color)
-                })
     }
 
     override fun initView() {
 
         mBinding.vm = mViewModel
 
-        initBackToolbar(mBinding.toolbar)
-
-        delayToTransition = true
-
-        mBinding.scrollView.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            if (scrollY - oldScrollY > 10) {
-                mBinding.fab.hide()
-            } else if (scrollY - oldScrollY < -10) {
-                mBinding.fab.show()
-            }
-        })
+        mBinding.webView.init()
     }
 
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_attention, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
+    fun observeArticle() = mViewModel.article
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-
-            R.id.action_attention -> onClick(mBinding.toolbar.findViewById(item.itemId))
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
     override fun onDestroy() {
 
         mBinding.webView.clearHistory()
         mBinding.webView.onPause()
         mBinding.webView.destroy()
-        mBinding.scrollView.removeAllViews()
+        (mBinding.webView.rootView as ViewGroup).removeAllViews()
         System.gc();
         super.onDestroy()
     }
@@ -101,7 +84,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
             R.id.action_attention -> attentionTo()
         }
     }
-
 
     private fun attentionTo() {
         mViewModel.attentionTo().bindLifeCycle(this)

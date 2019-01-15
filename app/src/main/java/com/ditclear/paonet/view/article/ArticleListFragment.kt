@@ -1,17 +1,12 @@
 package com.ditclear.paonet.view.article
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.annotation.ArticleType
@@ -20,6 +15,7 @@ import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.home.MainActivity
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -75,6 +71,21 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
         }
         hasLoadOnce = true
         loadData(true)
+
+    }
+
+    fun getArrayIds(startId: String? = null): Array<String> {
+        val array = mViewModel.list.map { it.article.id.toString() }.toTypedArray()
+        if (startId == null) {
+            return mViewModel.list.map { it.article.id.toString() }.toTypedArray()
+        } else {
+            val index = array.indexOf(startId)
+            if (index == -1) {
+                return array
+            } else {
+                return array.sliceArray(IntRange(index, array.size - 1))
+            }
+        }
     }
 
     override fun loadData(isRefresh: Boolean) {
@@ -89,16 +100,17 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
 
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
 
-        activity?.let {
-            val intent = Intent(mContext, ArticleDetailActivity::class.java)
-            val bundle = Bundle()
-            bundle.putSerializable(Constants.KEY_SERIALIZABLE, item.article)
-            intent.putExtras(bundle)
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(it)
-            ActivityCompat.startActivity(mContext, intent, options.toBundle())
-
-
-        }
+        check(activity is MainActivity)
+        (activity as MainActivity).showBottomDrawer(item.article.id.toString())
+//        activity?.let {
+//            val intent = Intent(mContext, ArticleDetailActivity::class.java)
+//            val bundle = Bundle()
+//            bundle.putInt(Constants.KEY_DATA, item.article.id)
+//            intent.putExtras(bundle)
+//            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(it)
+//            ActivityCompat.startActivity(mContext, intent, options.toBundle())
+//
+//        }
     }
 
     override fun initView() {

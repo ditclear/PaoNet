@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="android.view.Gravity" />
+
+        <variable
+            name="vm"
+            type="com.ditclear.paonet.view.article.viewmodel.ArticleDetailViewModel" />
+
+        <variable
+            name="presenter"
+            type="com.ditclear.paonet.view.base.Presenter" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/loading"
+            android:visibility="@{vm.loading?View.VISIBLE:View.GONE}" />
+
+        <us.feras.mdv.MarkdownView
+            android:id="@+id/web_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:markdown="@{vm.markdown}" />
+    </LinearLayout>
+</layout>

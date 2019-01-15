@@ -4,9 +4,9 @@ import android.arch.lifecycle.MutableLiveData
 import android.databinding.ObservableArrayList
 import android.databinding.ObservableBoolean
 import com.ditclear.paonet.helper.extens.*
+import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
-import com.ditclear.paonet.model.remote.api.PaoService
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.viewmodel.BaseViewModel
 
@@ -26,8 +26,11 @@ class MainViewModel(private val repo: PaoRepository) : BaseViewModel() {
 
     val face = MutableLiveData<String>()
 
-    var qianming = MutableLiveData<String>()
-    var navHeaderName = MutableLiveData<String>()
+    val qianming = MutableLiveData<String>()
+    val navHeaderName = MutableLiveData<String>()
+    val currentNickname = MutableLiveData<String>()
+    val currentTitle = MutableLiveData<String>()
+
     var loginBtnText = MutableLiveData<String>().init("LOG IN")
 
     val exitEvent = ObservableBoolean(false)
@@ -42,6 +45,11 @@ class MainViewModel(private val repo: PaoRepository) : BaseViewModel() {
                     navHeaderName.set(user.get()?.nickname ?: "")
                     loginBtnText.set(if (user.get()?.nickname == null) "LOG IN" else "LOG OUT")
                 }.subscribe()
+    }
+
+    fun resetBottom(article: Article?) {
+        currentNickname.set(article?.user?.nickname)
+        currentTitle.set(article?.title)
     }
 
 

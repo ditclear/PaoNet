@@ -79,6 +79,12 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
         }
     }
 
+    fun getArrayIds(startId: String? = null): Array<String> {
+        val f = pagerAdapter.getItem(mBinding.viewPager.currentItem)
+        require(f is ArticleListFragment)
+        return f.getArrayIds(startId)
+    }
+
     fun show() {
         (activity as MainActivity).needShowTab(true)
         (activity as MainActivity).setupWithViewPager(mBinding.viewPager)

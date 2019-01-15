@@ -23,13 +23,11 @@ import com.ditclear.paonet.view.search.viewmodel.RecentSearchViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.ext.koin.viewModel
 import org.koin.dsl.module.module
-import org.koin.experimental.builder.create
-import org.koin.experimental.builder.getForClass
 import retrofit2.Retrofit
 
 val viewModelModule = module {
 
-    viewModel { (article: Article) -> ArticleDetailViewModel(article, get(), get()) }
+    viewModel { (id: Int) -> ArticleDetailViewModel(id, get(), get()) }
     viewModel { (article: Article, nameDate: String) -> CodeDetailViewModel(article, nameDate, get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { RecentViewModel(get()) }

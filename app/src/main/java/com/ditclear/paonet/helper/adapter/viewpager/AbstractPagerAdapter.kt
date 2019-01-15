@@ -10,17 +10,23 @@ import android.support.v4.app.FragmentStatePagerAdapter
  * Created by ditclear on 2017/9/30.
  */
 
-abstract class AbstractPagerAdapter(fm: FragmentManager, var title: Array<String>) : FragmentStatePagerAdapter(fm) {
-    var list :MutableList<Fragment?> = mutableListOf()
+abstract class AbstractPagerAdapter(fm: FragmentManager, var title: Array<String>? = null) : FragmentStatePagerAdapter(fm) {
+    var list: MutableList<Fragment?> = mutableListOf()
 
     init {
-        title.iterator().forEach { list.add(null) }
+        title?.iterator()?.forEach { list.add(null) }
     }
 
-    override fun getCount(): Int = title.size
+    override fun getCount(): Int = title?.size ?: 0
 
     abstract override fun getItem(pos: Int): Fragment?
 
-    override fun getPageTitle(position: Int): CharSequence = title[position]
+    override fun getPageTitle(position: Int): CharSequence = title?.get(position) ?: ""
 
+
+    fun initWith(title: Array<String>?) {
+        this.title = title
+        title?.iterator()?.forEach { list.add(null) }
+        notifyDataSetChanged()
+    }
 }

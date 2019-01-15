@@ -1,8 +1,10 @@
 package com.ditclear.paonet.view.home
 
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.GravityCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBarDrawerToggle
@@ -12,6 +14,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.LinearLayout
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -19,10 +22,12 @@ import com.ditclear.paonet.databinding.MainActivityBinding
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
+import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
 import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.helper.navigateToSearch
 import com.ditclear.paonet.helper.needsLogin
 import com.ditclear.paonet.model.data.User
+import com.ditclear.paonet.view.article.ArticleDetailFragment
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
@@ -38,7 +43,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    private val mViewModel :MainViewModel by viewModel()
+    private val mViewModel: MainViewModel by viewModel()
 
     val adapter by lazy {
         SingleTypeAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
@@ -120,6 +125,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
         })
 
+        setupBottomDrawer()
+
         mViewModel.exit()
                 .bindLifeCycle(this)
                 .subscribe()
@@ -177,6 +184,72 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
 
     }
 
+    private var bottomDrawerBehavior: BottomSheetBehavior<View>? = null
+
+    private fun setupBottomDrawer() {
+        val bottomDrawer = mBinding.coordinatorLayout.findViewById<LinearLayout>(R.id.bottom_drawer)
+        bottomDrawerBehavior = BottomSheetBehavior.from<View>(bottomDrawer)
+        bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_HIDDEN
+        bottomDrawerBehavior?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(p0: View, p1: Float) {
+
+            }
+
+            override fun onStateChanged(p0: View, p1: Int) {
+                if (p1 == BottomSheetBehavior.STATE_EXPANDED) {
+                    mBinding.articleToolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_down_white)
+                } else {
+                    mBinding.articleToolbar.setNavigationIcon(R.drawable.ic_keyboard_arrow_up_white_24dp)
+                }
+            }
+
+        })
+
+        mBinding.articleToolbar.apply {
+            inflateMenu(R.menu.menu_stow)
+            setOnMenuItemClickListener {
+                if (it.itemId == R.id.action_attention) {
+//                    onClick(mBinding.toolbar.findViewById(it.itemId))
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }.setNavigationOnClickListener {
+            showBottomDrawer()
+        }
+
+
+        mBinding.articleViewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(p0: Int) {
+
+            }
+
+            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+            }
+
+            override fun onPageSelected(p0: Int) {
+                if (mBinding.articleViewPager.adapter is FragmentPagerAdapter) {
+                    val adapter = mBinding.articleViewPager.adapter as FragmentPagerAdapter
+                    require(adapter.getItem(p0) is ArticleDetailFragment)
+                    mViewModel.resetBottom((adapter.getItem(p0) as ArticleDetailFragment).observeArticle())
+                }
+            }
+
+        })
+    }
+
+    private fun initArticlePager() {
+        mBinding.articleViewPager.offscreenPageLimit = 1
+        mBinding.articleViewPager.adapter = object : AbstractPagerAdapter(supportFragmentManager, homeFragment.getArrayIds(startId)) {
+            override fun getItem(pos: Int): Fragment? {
+                if (list[pos] == null) {
+                    list[pos] = ArticleDetailFragment.newInstance(getPageTitle(pos).toString().toInt())
+                }
+                return list[pos]
+            }
+
+        }
+    }
+
     private fun closeDrawer() {
         mBinding.drawerLayout.closeDrawer(GravityCompat.START)
     }
@@ -221,7 +294,15 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
                     switchMyCollect(this)
                 }
 
+                R.id.article_view_pager -> showBottomDrawer()
             }
         }
+    }
+
+    var startId: String? = null
+    fun showBottomDrawer(startId: String? = null) {
+        this.startId = startId
+        initArticlePager()
+        bottomDrawerBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 }

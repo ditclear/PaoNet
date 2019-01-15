@@ -23,43 +23,48 @@ import io.reactivex.schedulers.Schedulers
  *
  * Created by ditclear on 2017/10/3.
  */
-class  ArticleDetailViewModel constructor(private val article : Article,private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
+class ArticleDetailViewModel constructor(private val id: Int, private val repo: PaoRepository, private val userRepo: UserRepository) : BaseViewModel() {
 
     val loading = MutableLiveData<Boolean>().init(true)
 
     val markdown = MutableLiveData<String>()
 
-    fun getArticle()=article
+    val thumbnail = MutableLiveData<String>()
+    val nickname = MutableLiveData<String>()
+    val subTitle = MutableLiveData<String>()
 
+    var article: Article? = null
     //加载详情
-    fun loadData() = repo.getArticle(article.id).subscribeOn(Schedulers.io())
+    fun loadData() = repo.getArticle(id).subscribeOn(Schedulers.io())
             .doOnSuccess {
-                it?.content?.let {
-                    val data = Utils.processImgSrc(it, Constants.HOST_PAO)
-                    markdown.set(data)
-                }
-                loading.set(false)
+                renderDetail(it)
             }.flatMap {
-        if (SpUtil.user == null) {
-            return@flatMap Single.just(false)
-        } else {
-            return@flatMap userRepo.isStow(article.id).getOriginData()
-                    .map { t: BaseResponse? -> t?.data?.contentEquals("1") }
+                if (SpUtil.user == null) {
+                    return@flatMap Single.just(false)
+                } else {
+                    return@flatMap userRepo.isStow(id).getOriginData()
+                            .map { t: BaseResponse? -> t?.data?.contentEquals("1") }
+                }
+            }.observeOn(AndroidSchedulers.mainThread()).doAfterTerminate { loading.set(false) }
+
+    private fun renderDetail(article: Article?) {
+        this.article = article
+        article?.content?.let {
+            val data = Utils.processImgSrc(it, Constants.HOST_PAO)
+            markdown.set(data)
         }
-    }.observeOn(AndroidSchedulers.mainThread())
+        thumbnail.set(article?.thumbnail)
+        nickname.set(article?.user?.nickname)
+        subTitle.set(article?.title)
+    }
 
 
     //关注
-    fun attentionTo()=Single.create<Int> {submit->
-        article.user?.id?.let {
-            submit.onSuccess(it)
-        }?:submit.onError(Throwable("用户不存在"))
-    }.flatMap { userRepo.followUser(it) }.getOriginData().async()
-
+    fun attentionTo() = userRepo.followUser(id).getOriginData().async()
 
 
     //收藏
-    fun stow() = userRepo.stow(article.id).getOriginData().async()
+    fun stow() = userRepo.stow(id).getOriginData().async()
 
 
 }

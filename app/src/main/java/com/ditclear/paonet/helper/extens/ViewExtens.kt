@@ -15,6 +15,16 @@ fun MarkdownView.loadMarkdownWithBaseURL(baseUrl: String?, txt: String?, cssFile
     loadDataWithBaseURL(baseUrl, html, "text/html", "UTF-8", null)
 }
 
-fun MarkdownView.setMarkdown(markdown : String?){
-    loadMarkdown(markdown,"file:///android_asset/markdown.css")
+fun MarkdownView.setMarkdown(markdown: String?) {
+    loadMarkdown(markdown, "file:///android_asset/markdown.css")
+}
+
+
+fun MarkdownView.init() {
+    settings.javaScriptEnabled = false
+    settings.setSupportZoom(true)
+    settings.setAllowFileAccess(true)
+    settings.setDomStorageEnabled(true)
+    setVerticalScrollBarEnabled(false)
+    settings.setAllowUniversalAccessFromFileURLs(true)
 }

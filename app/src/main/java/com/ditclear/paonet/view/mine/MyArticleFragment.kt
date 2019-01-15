@@ -12,8 +12,7 @@ import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.view.article.ArticleDetailActivity
+import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.home.MainActivity
@@ -34,7 +33,7 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
         SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, mVieModel.list).apply { itemPresenter = this@MyArticleFragment }
     }
 
-    val showTab by lazy { autoWired(SHOW_TAB,false)?:false }
+    val showTab by lazy { autoWired(SHOW_TAB, false) ?: false }
 
     override fun getLayoutId(): Int = R.layout.refresh_fragment
 
@@ -53,12 +52,14 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
     override fun loadData(isRefresh: Boolean) {
         mVieModel.loadData(isRefresh).bindLifeCycle(this)
-                .subscribe ({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
     }
 
     @SingleClick
     override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity?.navigateToActivity(ArticleDetailActivity::class.java, item.article)
+        activity?.let {
+            navigateToArticleDetail(it, article = item.article)
+        }
     }
 
     override fun onAttach(context: Context?) {
@@ -69,13 +70,13 @@ class MyArticleFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPrese
 
     override fun initView() {
         (activity as MainActivity).needShowTab(showTab)
-        mBinding.vm=mVieModel
+        mBinding.vm = mVieModel
         mBinding.recyclerView.apply {
             this.adapter = mAdapter
             this.addItemDecoration(object : RecyclerView.ItemDecoration() {
                 override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
-                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                    outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                 }
             })
         }
