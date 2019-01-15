@@ -27,25 +27,20 @@
 
 ![MVVM](http://upload-images.jianshu.io/upload_images/3722695-70230207c39b8601.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-### 使用Kotlin构建MVVM应用程序系列
+#### 小专栏
 
-> [使用 Kotlin 构建 Android MVVM 应用程序—总览篇](https://xiaozhuanlan.com/topic/1736458920)
->
-> [使用Kotlin构建MVVM应用程序—第一部分：入门篇](https://xiaozhuanlan.com/topic/7590648312)
->
-> [使用Kotlin构建MVVM应用程序—第二部分：Retrofit及RxJava](https://xiaozhuanlan.com/topic/9560382174)
->
-> [使用Kotlin构建MVVM应用程序—第三部分：Room](https://xiaozhuanlan.com/topic/8076241593)
->
-> [使用Kotlin构建MVVM应用程序—第四部分：ViewModel](https://xiaozhuanlan.com/topic/6705498213)
->
-> [使用Kotlin构建MVVM应用程序—第五部分：依赖检索容器Koin](https://xiaozhuanlan.com/topic/1562439780)
->
-> [使用 Kotlin 构建 MVVM 应用程序—第六部分：LiveData](https://xiaozhuanlan.com/topic/9753861024)
->
-> [使用Kotlin构建MVVM应用程序—第七部分：单元测试](https://xiaozhuanlan.com/topic/9320864751)
->
-> [使用Kotlin构建MVVM应用程序—完结篇：快速开发](https://xiaozhuanlan.com/topic/7635981042)
+- [使用Kotlin构建MVVM应用程序—总览篇](https://xiaozhuanlan.com/topic/1736458920)
+
+- [使用Kotlin构建MVVM应用程序—第一部分：入门篇](https://xiaozhuanlan.com/topic/7590648312)
+
+- [使用Kotlin构建MVVM应用程序—第二部分：Retrofit及RxJava](https://xiaozhuanlan.com/topic/9560382174)
+
+- [使用Kotlin构建MVVM应用程序—第三部分：Room](https://xiaozhuanlan.com/topic/8076241593)
+- [使用Kotlin构建MVVM应用程序—第四部分：ViewModel](https://xiaozhuanlan.com/topic/6705498213)
+- [使用Kotlin构建MVVM应用程序—第五部分：依赖检索容器Koin](https://xiaozhuanlan.com/topic/1562439780)
+- [使用Kotlin构建MVVM应用程序—第六部分：LiveData](https://xiaozhuanlan.com/topic/9753861024)
+- [使用Kotlin构建MVVM应用程序—第七部分：单元测试](https://xiaozhuanlan.com/topic/9320864751)
+- [使用Kotlin构建MVVM应用程序—完结篇：快速开发](https://xiaozhuanlan.com/topic/7635981042)
 
 ### Todo
 
