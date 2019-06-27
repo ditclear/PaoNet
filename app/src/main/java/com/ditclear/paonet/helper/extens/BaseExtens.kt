@@ -31,7 +31,6 @@ import com.uber.autodispose.AutoDispose
 import com.uber.autodispose.FlowableSubscribeProxy
 import com.uber.autodispose.SingleSubscribeProxy
 import com.uber.autodispose.android.lifecycle.AndroidLifecycleScopeProvider
-import es.dmoral.toasty.Toasty
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -55,10 +54,10 @@ fun Activity.getCompactColor(@ColorRes colorRes: Int): Int = ContextCompat.getCo
 
 fun Activity.toast(msg: CharSequence, duration: Int = Toast.LENGTH_SHORT, @ToastType type: Int = ToastType.NORMAL) {
     when (type) {
-        ToastType.WARNING -> Toasty.warning(this, msg, duration, true).show()
-        ToastType.ERROR -> Toasty.error(this, msg, duration, true).show()
-        ToastType.NORMAL -> Toasty.info(this, msg, duration, false).show()
-        ToastType.SUCCESS -> Toasty.success(this, msg, duration, true).show()
+        ToastType.WARNING -> Toast.makeText(this, msg, duration).show()
+        ToastType.ERROR ->  Toast.makeText(this, msg, duration).show()
+        ToastType.NORMAL ->  Toast.makeText(this, msg, duration).show()
+        ToastType.SUCCESS ->  Toast.makeText(this, msg, duration).show()
     }
 }
 

@@ -6,7 +6,6 @@ import com.ditclear.paonet.di.appModule
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.network.NetMgr
 import com.ditclear.paonet.model.remote.BaseNetProvider
-import es.dmoral.toasty.Toasty
 import org.koin.android.ext.android.startKoin
 import org.koin.android.logger.AndroidLogger
 
@@ -26,6 +25,5 @@ class PaoApp : Application() {
 
         startKoin(this, appModule, logger = AndroidLogger(showDebug = BuildConfig.DEBUG))
 
-        Toasty.Config.getInstance().apply(); // required
     }
 }
