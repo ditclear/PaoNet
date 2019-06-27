@@ -1,6 +1,6 @@
 package com.ditclear.paonet.model.repository
 
-import android.arch.persistence.room.EmptyResultSetException
+import androidx.room.EmptyResultSetException
 import com.ditclear.paonet.model.data.Article
 import com.ditclear.paonet.model.data.ArticleList
 import com.ditclear.paonet.model.data.TagList

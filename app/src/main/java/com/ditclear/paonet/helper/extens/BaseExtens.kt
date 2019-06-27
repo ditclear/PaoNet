@@ -1,22 +1,21 @@
 package com.ditclear.paonet.helper.extens
 
 import android.app.Activity
-import android.arch.lifecycle.*
+import androidx.lifecycle.*
 import android.content.Intent
-import android.databinding.Observable
-import android.databinding.ObservableBoolean
-import android.databinding.ObservableField
+import androidx.databinding.Observable
+import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import android.net.Uri
 import android.os.Bundle
-import android.support.annotation.ColorRes
-import android.support.annotation.DimenRes
-import android.support.annotation.NonNull
-import android.support.customtabs.CustomTabsIntent
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
+import androidx.annotation.NonNull
+import androidx.core.app.ActivityOptionsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.text.TextUtils
 import android.util.Log
 import android.webkit.URLUtil
@@ -81,10 +80,10 @@ fun Activity.dispatchFailure(error: Throwable?) {
     }
 }
 
-fun <T : Any> FragmentActivity.argument(key: String) =
+fun <T : Any> androidx.fragment.app.FragmentActivity.argument(key: String) =
         lazy { intent.extras[key] as? T ?: error("Intent Argument $key is missing") }
 
-fun AppCompatActivity.switchFragment(current: Fragment?, targetFg: Fragment, tag: String? = null) {
+fun AppCompatActivity.switchFragment(current: androidx.fragment.app.Fragment?, targetFg: androidx.fragment.app.Fragment, tag: String? = null) {
     val ft = supportFragmentManager.beginTransaction()
     current?.run { ft.hide(this) }
     if (!targetFg.isAdded) {
@@ -141,33 +140,6 @@ fun <T> Single<T>.bindLifeCycle(owner: LifecycleOwner): SingleSubscribeProxy<T> 
 fun <T> Flowable<T>.bindLifeCycle(owner: LifecycleOwner): FlowableSubscribeProxy<T> =
         this.`as`(AutoDispose.autoDisposable(AndroidLifecycleScopeProvider.from(owner, Lifecycle.Event.ON_DESTROY)))
 
-
-fun Activity.navigateToWebPage(@NonNull url: String) {
-    if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {
-        return
-    }
-
-    val intent = CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .setToolbarColor(ContextCompat.getColor(this, R.color.theme))
-            .build()
-
-    intent.launchUrl(this, Uri.parse(url))
-}
-
-fun Fragment.navigateToWebPage(@NonNull url: String?) {
-    if (TextUtils.isEmpty(url) || !URLUtil.isNetworkUrl(url)) {
-        return
-    }
-    context?.let {
-        val intent = CustomTabsIntent.Builder()
-                .setShowTitle(true)
-                .setToolbarColor(ContextCompat.getColor(it, R.color.theme))
-                .build()
-
-        intent.launchUrl(activity, Uri.parse(url))
-    }
-}
 
 //////////////////////////LiveData///////////////////////////////////
 

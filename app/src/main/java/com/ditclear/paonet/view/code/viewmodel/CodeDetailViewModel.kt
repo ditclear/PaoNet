@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.code.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.Utils

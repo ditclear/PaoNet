@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.search
 
-import android.databinding.ViewDataBinding
+import androidx.databinding.ViewDataBinding
 import android.os.Bundle
 import android.view.View
 import com.ditclear.paonet.R

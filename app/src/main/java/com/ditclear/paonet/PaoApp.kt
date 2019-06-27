@@ -1,7 +1,7 @@
 package com.ditclear.paonet
 
 import android.app.Application
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import com.ditclear.paonet.di.appModule
 import com.ditclear.paonet.helper.SpUtil
 import com.ditclear.paonet.helper.network.NetMgr

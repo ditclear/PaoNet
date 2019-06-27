@@ -14,7 +14,7 @@
                 type="com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter"/>
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="@dimen/xdp_200.0"
             android:foreground="@drawable/mid_grey_ripple"
@@ -40,5 +40,5 @@
                 android:text="@{item.title}"
                 android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium.Inverse"
                 tools:text="@string/thumbnail"/>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -1,12 +1,12 @@
 package com.ditclear.paonet.helper.adapter.recyclerview
 
 import android.content.Context
-import android.databinding.DataBindingUtil
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableList
-import android.databinding.ViewDataBinding
-import android.support.annotation.LayoutRes
-import android.support.v4.util.ArrayMap
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableList
+import androidx.databinding.ViewDataBinding
+import androidx.annotation.LayoutRes
+import androidx.collection.ArrayMap
 import android.view.ViewGroup
 
 /**
@@ -18,7 +18,7 @@ class MultiTypeAdapter(context: Context, list: ObservableArrayList<Any>, val mul
 
     protected var mCollectionViewType: MutableList<Int> = mutableListOf()
 
-    private val mItemTypeToLayoutMap = ArrayMap<Int, Int>()
+    private val mItemTypeToLayoutMap = androidx.collection.ArrayMap<Int, Int>()
 
     init {
         list.addOnListChangedCallback(object : ObservableList.OnListChangedCallback<ObservableList<Any>>() {

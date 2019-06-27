@@ -1,14 +1,14 @@
 package com.ditclear.paonet.view.home
 
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v4.view.ViewPager
-import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.widget.DividerItemDecoration
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
+import androidx.core.view.GravityCompat
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -53,7 +53,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         changeFragment(CodeListFragment.newInstance(item.value), item.catename!!)
     }
 
-    var temp: Fragment? = null
+    var temp: androidx.fragment.app.Fragment? = null
 
     val defaultEmptyUser by lazy { User() }
 
@@ -82,7 +82,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         toggle.syncState()
     }
 
-    fun setupWithViewPager(viewPager: ViewPager) {
+    fun setupWithViewPager(viewPager: androidx.viewpager.widget.ViewPager) {
         mBinding.tabLayout.setupWithViewPager(viewPager)
     }
 
@@ -102,8 +102,8 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         mBinding.vm = mViewModel
         mBinding.navMainLayout.navCodeLayout?.recyclerView?.run {
             adapter = this@MainActivity.adapter
-            layoutManager = LinearLayoutManager(mContext)
-            addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(mContext)
+            addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(mContext, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
         }
         mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabUnselected(p0: TabLayout.Tab?) {
@@ -197,7 +197,7 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     /**
      * 切换fragment
      */
-    private fun changeFragment(fragment: Fragment, title: String = "泡在网上的日子") {
+    private fun changeFragment(fragment: androidx.fragment.app.Fragment, title: String = "泡在网上的日子") {
         supportActionBar?.title = title
         switchFragment(temp, fragment, fragment.javaClass.simpleName)
         temp = fragment

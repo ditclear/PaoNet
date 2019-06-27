@@ -13,7 +13,7 @@
                 type="com.ditclear.paonet.view.base.Presenter"/>
     </data>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -35,10 +35,10 @@
                     app:loadMore="@{vm}"
                     app:loadMorePresenter="@{presenter}"
                     tools:listitem="@android:layout/simple_expandable_list_item_1">
-            </android.support.v7.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
             <include layout="@layout/empty_layout"
                     android:visibility="@{vm.empty?View.VISIBLE:View.GONE}"/>
         </FrameLayout>
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

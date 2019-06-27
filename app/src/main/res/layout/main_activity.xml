@@ -15,24 +15,24 @@
 
     </data>
 
-    <android.support.v4.widget.DrawerLayout
+    <androidx.drawerlayout.widget.DrawerLayout
             android:id="@+id/drawer_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             tools:openDrawer="start">
 
-        <android.support.design.widget.CoordinatorLayout
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.ditclear.paonet.view.MainActivity">
 
-            <android.support.design.widget.AppBarLayout
+            <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/AppTheme.AppBarOverlay">
 
-                <android.support.v7.widget.Toolbar
+                <androidx.appcompat.widget.Toolbar
                         android:id="@+id/toolbar"
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
@@ -41,7 +41,7 @@
                         app:popupTheme="@style/AppTheme.PopupOverlay"
                         app:title="@string/app_name"/>
 
-                <android.support.design.widget.TabLayout
+                <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tab_layout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -50,8 +50,8 @@
                         app:tabPaddingStart="@dimen/activity_horizontal_margin"
                         app:tabSelectedTextColor="@color/colorAccent"
                         app:tabTextColor="@color/colorAccentAlpha">
-                </android.support.design.widget.TabLayout>
-            </android.support.design.widget.AppBarLayout>
+                </com.google.android.material.tabs.TabLayout>
+            </com.google.android.material.appbar.AppBarLayout>
 
             <FrameLayout
                     android:id="@+id/container"
@@ -62,9 +62,9 @@
             </FrameLayout>
 
 
-        </android.support.design.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <android.support.design.widget.NavigationView
+        <com.google.android.material.navigation.NavigationView
                 android:id="@+id/nav_view"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -111,7 +111,7 @@
                         android:text="@string/action_about"
                         android:textAllCaps="false"/>
             </LinearLayout>
-        </android.support.design.widget.NavigationView>
+        </com.google.android.material.navigation.NavigationView>
 
-    </android.support.v4.widget.DrawerLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

@@ -41,7 +41,7 @@ import static com.ditclear.paonet.helper.annotation.CodeType.VIEW_LAYOUT;
 import static com.ditclear.paonet.helper.annotation.CodeType.VIEW_TRANSITION;
 import static com.ditclear.paonet.helper.annotation.CodeType.WEBVIEW;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

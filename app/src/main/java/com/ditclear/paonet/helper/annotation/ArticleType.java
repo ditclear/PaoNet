@@ -9,7 +9,7 @@ import static com.ditclear.paonet.helper.annotation.ArticleType.IOS;
 import static com.ditclear.paonet.helper.annotation.ArticleType.PROGRAME;
 import static com.ditclear.paonet.helper.annotation.ArticleType.RECOMMAND;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

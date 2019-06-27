@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.search.viewmodel
 
-import android.databinding.ObservableArrayList
+import androidx.databinding.ObservableArrayList
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.viewmodel.PagedViewModel

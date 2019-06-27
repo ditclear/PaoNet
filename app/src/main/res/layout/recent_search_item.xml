@@ -24,7 +24,7 @@
                 android:text="@{item}"
                 tools:text="@string/search_hint"/>
 
-        <android.support.v7.widget.ActionMenuView
+        <androidx.appcompat.widget.ActionMenuView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -33,6 +33,6 @@
                     android:layout_height="@dimen/xdp_48.0"
                     android:background="?selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_arrow_back_black"/>
-        </android.support.v7.widget.ActionMenuView>
+        </androidx.appcompat.widget.ActionMenuView>
     </LinearLayout>
 </layout>

@@ -4,7 +4,7 @@ import static com.ditclear.paonet.helper.annotation.ItemType.FOOTER;
 import static com.ditclear.paonet.helper.annotation.ItemType.HEADER;
 import static com.ditclear.paonet.helper.annotation.ItemType.ITEM;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

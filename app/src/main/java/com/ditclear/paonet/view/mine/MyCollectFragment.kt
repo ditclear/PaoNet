@@ -1,8 +1,8 @@
 package com.ditclear.paonet.view.mine
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.HomeFragmentBinding
 import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
@@ -18,9 +18,9 @@ import com.ditclear.paonet.view.home.MainActivity
 class MyCollectFragment : BaseFragment<HomeFragmentBinding>() {
 
 
-    private val collectAdapter: FragmentStatePagerAdapter by lazy {
+    private val collectAdapter: androidx.fragment.app.FragmentStatePagerAdapter by lazy {
         object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
-            override fun getItem(pos: Int): Fragment? {
+            override fun getItem(pos: Int): androidx.fragment.app.Fragment? {
                 if (list[pos] == null) {
                     when (pos) {
                         0 -> list[pos] = CollectionListFragment.newInstance(1)

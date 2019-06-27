@@ -1,9 +1,9 @@
 package com.ditclear.paonet.helper.adapter.recyclerview
 
 import android.content.Context
-import android.databinding.ObservableList
-import android.databinding.ViewDataBinding
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.ObservableList
+import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.DecelerateInterpolator
@@ -15,7 +15,7 @@ import com.ditclear.paonet.helper.adapter.recyclerview.animators.ScaleInItemAnim
  *
  * Created by ditclear on 2017/10/30.
  */
-abstract class BaseViewAdapter<T>(context: Context, private val list: ObservableList<T>) : RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
+abstract class BaseViewAdapter<T>(context: Context, private val list: ObservableList<T>) : androidx.recyclerview.widget.RecyclerView.Adapter<BindingViewHolder<ViewDataBinding>>() {
 
     protected val mLayoutInflater: LayoutInflater = LayoutInflater.from(context)
 

@@ -7,7 +7,7 @@ import static com.ditclear.paonet.helper.annotation.EmptyState.EMPTY_COLLECT;
 import static com.ditclear.paonet.helper.annotation.EmptyState.EMPTY_SEARCH;
 import static com.ditclear.paonet.helper.annotation.EmptyState.NORMAL;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

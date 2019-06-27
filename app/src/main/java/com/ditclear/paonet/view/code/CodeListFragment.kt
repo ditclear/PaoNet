@@ -3,7 +3,7 @@ package com.ditclear.paonet.view.code
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -83,8 +83,8 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
         mBinding.run {
             recyclerView.apply {
                 adapter = mAdapter
-                addItemDecoration(object : RecyclerView.ItemDecoration() {
-                    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
                         outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
                     }

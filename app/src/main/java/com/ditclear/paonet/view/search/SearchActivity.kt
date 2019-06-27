@@ -1,9 +1,9 @@
 package com.ditclear.paonet.view.search
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.SearchView
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.SearchView
 import android.view.MenuItem
 import android.view.View
 import com.ditclear.paonet.R
@@ -76,17 +76,17 @@ class SearchActivity : BaseActivity<SearchActivityBinding>() {
         return super.onOptionsItemSelected(item)
     }
 
-    var temp: Fragment? = null
+    var temp: androidx.fragment.app.Fragment? = null
     /**
      * 切换fragment
      */
-    private fun changeFragment(fragment: Fragment) {
+    private fun changeFragment(fragment: androidx.fragment.app.Fragment) {
 
         switchFragment(temp, fragment)
         temp = fragment
     }
 
-    fun setupWithViewPager(viewPager: ViewPager) {
+    fun setupWithViewPager(viewPager: androidx.viewpager.widget.ViewPager) {
         mBinding.tabLayout.setupWithViewPager(viewPager)
     }
 
