@@ -15,7 +15,7 @@
                 type="com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter"/>
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:foreground="@drawable/mid_grey_ripple"
@@ -74,5 +74,5 @@
                     android:text="@{item.codeDateAndClicks}"
                     tools:text="324查看	  	21下载   2017-10-09"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

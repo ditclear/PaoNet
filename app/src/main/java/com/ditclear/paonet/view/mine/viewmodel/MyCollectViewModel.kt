@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.mine.viewmodel
 
-import android.databinding.ObservableArrayList
+import androidx.databinding.ObservableArrayList
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.UserRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel

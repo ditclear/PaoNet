@@ -5,10 +5,10 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.ColorRes
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.ActivityOptionsCompat
-import android.support.v4.content.ContextCompat
+import androidx.annotation.ColorRes
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.content.ContextCompat
 import android.view.ContextThemeWrapper
 import android.view.View
 import com.ditclear.paonet.R

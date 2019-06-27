@@ -1,7 +1,7 @@
 package com.ditclear.paonet.helper
 
 import android.content.Context
-import android.support.v4.os.ResultReceiver
+import android.os.ResultReceiver
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import org.jsoup.Jsoup

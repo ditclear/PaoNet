@@ -1,7 +1,7 @@
 package com.ditclear.paonet.helper
 
-import android.support.animation.DynamicAnimation
-import android.support.animation.FlingAnimation
+import androidx.dynamicanimation.animation.DynamicAnimation
+import androidx.dynamicanimation.animation.FlingAnimation
 import android.view.View
 
 /**

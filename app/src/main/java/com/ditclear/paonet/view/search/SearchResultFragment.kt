@@ -1,8 +1,8 @@
 package com.ditclear.paonet.view.search
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.ContentMainBinding
 import com.ditclear.paonet.helper.adapter.viewpager.AbstractPagerAdapter
@@ -21,9 +21,9 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     val keyWord by lazy { autoWired(KEY_KEYWORD,"")?:"" }
 
-    private val pagerAdapter: FragmentStatePagerAdapter by lazy {
+    private val pagerAdapter: androidx.fragment.app.FragmentStatePagerAdapter by lazy {
         object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
-            override fun getItem(pos: Int): Fragment? {
+            override fun getItem(pos: Int): androidx.fragment.app.Fragment? {
                 if (list[pos] == null) {
                     when (pos) {
                         0 -> list[pos] = ArticleListFragment.newInstance(keyWord)

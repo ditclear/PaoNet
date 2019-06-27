@@ -1,6 +1,6 @@
 package com.ditclear.paonet.helper.adapter.recyclerview
 
-import android.databinding.ViewDataBinding
+import androidx.databinding.ViewDataBinding
 import android.view.View
 
 

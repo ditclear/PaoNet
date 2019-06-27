@@ -1,10 +1,10 @@
 package com.ditclear.paonet.view.home
 
 import android.content.Context
-import android.databinding.ViewDataBinding
+import androidx.databinding.ViewDataBinding
 import android.graphics.Rect
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
@@ -84,17 +84,17 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
         mBinding.vm=mVieModel
         mBinding.recyclerView.apply {
             adapter = mAdapter
-            addItemDecoration(object : RecyclerView.ItemDecoration() {
+            addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
 
-                override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
                     super.getItemOffsets(outRect, view, parent, state)
                     val layoutManager = parent.layoutManager
                     val current = parent.getChildLayoutPosition(view)
                     if (current == -1) {
                         return
                     }
-                    if (layoutManager is LinearLayoutManager) {
-                        if (layoutManager.orientation == LinearLayoutManager.VERTICAL) {
+                    if (layoutManager is androidx.recyclerview.widget.LinearLayoutManager) {
+                        if (layoutManager.orientation == androidx.recyclerview.widget.LinearLayoutManager.VERTICAL) {
                             if (current != 0) {
                                 outRect.bottom = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                             }
@@ -108,8 +108,8 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
     }
 
     override fun toTopOrRefresh() {
-        if (mBinding.recyclerView.layoutManager is LinearLayoutManager) {
-            val layoutManager = mBinding.recyclerView.layoutManager as LinearLayoutManager
+        if (mBinding.recyclerView.layoutManager is androidx.recyclerview.widget.LinearLayoutManager) {
+            val layoutManager = mBinding.recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager
             if (layoutManager.findLastVisibleItemPosition() > 5) {
                 mBinding.recyclerView.smoothScrollToPosition(0)
             } else {

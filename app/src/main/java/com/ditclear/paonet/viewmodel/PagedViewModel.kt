@@ -1,7 +1,7 @@
 package com.ditclear.paonet.viewmodel
 
-import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableBoolean
+import androidx.lifecycle.ViewModel
+import androidx.databinding.ObservableBoolean
 
 /**
  * 页面描述：PagedViewModel

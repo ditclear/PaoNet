@@ -7,8 +7,8 @@ import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
@@ -21,7 +21,7 @@ import com.ditclear.paonet.R
  * Created by ditclear on 2017/11/6.
  */
 class CircleIndicator : View {
-    private var viewPager: RecyclerView ?=null
+    private var viewPager: androidx.recyclerview.widget.RecyclerView?=null
     private var tabItems: MutableList<ShapeHolder>? = null
     private var movingItem: ShapeHolder? = null
 
@@ -87,7 +87,7 @@ class CircleIndicator : View {
         typedArray.recycle()
     }
 
-    fun setViewPager(viewPager: RecyclerView) {
+    fun setViewPager(viewPager: androidx.recyclerview.widget.RecyclerView) {
         this.viewPager = viewPager
         createTabItems()
         createMovingItem()
@@ -95,14 +95,14 @@ class CircleIndicator : View {
     }
 
     private fun setUpListener() {
-        viewPager?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        viewPager?.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: androidx.recyclerview.widget.RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
             }
 
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val first = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                val first = (recyclerView.layoutManager as androidx.recyclerview.widget.LinearLayoutManager).findFirstVisibleItemPosition()
                 trigger(first, 0f)
             }
         })

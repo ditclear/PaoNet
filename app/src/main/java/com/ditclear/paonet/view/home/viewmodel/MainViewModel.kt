@@ -1,8 +1,8 @@
 package com.ditclear.paonet.view.home.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.databinding.ObservableArrayList
-import android.databinding.ObservableBoolean
+import androidx.lifecycle.MutableLiveData
+import androidx.databinding.ObservableArrayList
+import androidx.databinding.ObservableBoolean
 import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User

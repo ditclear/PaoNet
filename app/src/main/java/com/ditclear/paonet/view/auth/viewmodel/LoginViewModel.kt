@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.auth.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.UserModel
 import com.ditclear.paonet.model.repository.UserRepository

@@ -5,7 +5,7 @@ import static com.ditclear.paonet.helper.annotation.ToastType.NORMAL;
 import static com.ditclear.paonet.helper.annotation.ToastType.SUCCESS;
 import static com.ditclear.paonet.helper.annotation.ToastType.WARNING;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 
 /**
  * 页面描述：ToastType

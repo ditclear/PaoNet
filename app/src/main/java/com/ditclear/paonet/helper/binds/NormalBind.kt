@@ -1,12 +1,12 @@
 package com.ditclear.paonet.helper.binds
 
-import android.databinding.BindingAdapter
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.PagerSnapHelper
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.BindingAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
@@ -51,12 +51,12 @@ fun bindVisibility(v: View, visible: Boolean) {
 }
 
 @BindingAdapter(value = ["loadMore","loadMorePresenter"])
-fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?,presenter: Presenter) {
-    v.layoutManager = LinearLayoutManager(v.context)
-    v.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+fun bindLoadMore(v: androidx.recyclerview.widget.RecyclerView, vm: PagedViewModel?, presenter: Presenter) {
+    v.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(v.context)
+    v.addOnScrollListener(object : androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
+        override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
-            if (recyclerView.layoutManager is LinearLayoutManager) {
+            if (recyclerView.layoutManager is androidx.recyclerview.widget.LinearLayoutManager) {
                 //表示是否能向上滚动，false表示已经滚动到底部
                 //防止多次拉取同样的数据
                 if (!recyclerView.canScrollVertically(1)) {
@@ -72,20 +72,20 @@ fun bindLoadMore(v: RecyclerView, vm: PagedViewModel?,presenter: Presenter) {
 }
 
 @BindingAdapter(value = ["onRefresh"])
-fun bindOnRefresh(v: SwipeRefreshLayout, presenter: Presenter) {
+fun bindOnRefresh(v: androidx.swiperefreshlayout.widget.SwipeRefreshLayout, presenter: Presenter) {
     v.setOnRefreshListener { presenter.loadData(true) }
 }
 
 @BindingAdapter(value = ["vertical"], requireAll = false)
-fun bindSlider(v: RecyclerView, vertical: Boolean = true) {
+fun bindSlider(v: androidx.recyclerview.widget.RecyclerView, vertical: Boolean = true) {
 
     if (vertical) {
-        v.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.VERTICAL, false)
+        v.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(v.context, androidx.recyclerview.widget.LinearLayoutManager.VERTICAL, false)
     } else {
         if (v.onFlingListener == null) {
-            PagerSnapHelper().attachToRecyclerView(v)
+            androidx.recyclerview.widget.PagerSnapHelper().attachToRecyclerView(v)
         }
-        v.layoutManager = LinearLayoutManager(v.context, LinearLayoutManager.HORIZONTAL, false)
+        v.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(v.context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false)
     }
 }
 

@@ -15,7 +15,7 @@
                 type="com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter"/>
     </data>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/background_item"
@@ -67,7 +67,7 @@
                         tools:text="2 days ago · 2 min read"/>
 
             </RelativeLayout>
-            <android.support.v4.widget.Space
+            <androidx.legacy.widget.Space
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/activity_vertical_margin"/>
 
@@ -121,7 +121,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin">
-                <android.support.v7.widget.ActionMenuView
+                <androidx.appcompat.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:gravity="center_vertical">
@@ -130,7 +130,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_thumb"
                             android:layout_marginEnd="@dimen/xdp_6.0"/>
-                    <android.support.v4.widget.Space
+                    <androidx.legacy.widget.Space
                             android:layout_width="@dimen/xdp_6.0"
                             android:layout_height="wrap_content"/>
                     <TextView
@@ -139,9 +139,9 @@
                             tools:text="1K"
                             android:text="@{item.upvote}"/>
 
-                </android.support.v7.widget.ActionMenuView>
+                </androidx.appcompat.widget.ActionMenuView>
 
-                <android.support.v4.widget.Space
+                <androidx.legacy.widget.Space
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -151,7 +151,7 @@
                         tools:text="13 respones ·  "
                         android:layout_marginStart="@dimen/activity_horizontal_margin"
                         android:text="@{item.articleListResponses}"/>
-                <android.support.v7.widget.ActionMenuView
+                <androidx.appcompat.widget.ActionMenuView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent">
                     <ImageView
@@ -159,9 +159,9 @@
                             android:layout_height="match_parent"
                             android:src="@drawable/ic_bookmark"
                             android:contentDescription="stow"/>
-                </android.support.v7.widget.ActionMenuView>
+                </androidx.appcompat.widget.ActionMenuView>
             </LinearLayout>
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 </layout>

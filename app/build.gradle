@@ -13,7 +13,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -60,16 +60,15 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:design:' + rootProject.supportLibVersion
-    implementation 'com.android.support:cardview-v7:' + rootProject.supportLibVersion
-    implementation 'com.android.support:recyclerview-v7:' + rootProject.supportLibVersion
-    implementation 'com.android.support:palette-v7:' + rootProject.supportLibVersion
-    implementation 'com.android.support:support-dynamic-animation:' + rootProject.supportLibVersion
-    implementation 'com.android.support:customtabs:' + rootProject.supportLibVersion
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
     //ViewModel
-    implementation "android.arch.lifecycle:extensions:" + rootProject.archLifecycleVersion
-    implementation "android.arch.lifecycle:viewmodel:" + rootProject.archLifecycleVersion
-    kapt "android.arch.lifecycle:compiler:" + rootProject.archLifecycleVersion
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.0.0-rc01'
+    kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0-rc01'
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //aspectj
@@ -90,9 +89,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.9.0'
     implementation 'com.google.code.gson:gson:2.8.2'
     //room
-    implementation 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion
-    implementation 'android.arch.persistence.room:rxjava2:' + rootProject.archRoomVersion
-    kapt "android.arch.persistence.room:compiler:" + rootProject.archRoomVersion
+    implementation 'androidx.room:room-runtime:2.0.0-rc01'
+    implementation 'androidx.room:room-rxjava2:2.0.0-rc01'
+    kapt 'androidx.room:room-compiler:2.0.0-rc01'
     // roomigrant
     implementation 'com.github.MatrixDev.Roomigrant:RoomigrantLib:0.1.1'
     kapt 'com.github.MatrixDev.Roomigrant:RoomigrantCompiler:0.1.1'
@@ -107,7 +106,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.github.fabioCollini.daggermock:daggermock:0.8.4'
     //////////ui test//////////////////
-    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.google.code.findbugs', module: 'jsr305'
     })

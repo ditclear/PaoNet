@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.article
 
-import android.support.v4.widget.NestedScrollView
+import androidx.core.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View

@@ -1,6 +1,6 @@
 package com.ditclear.paonet.view.code
 
-import android.support.v4.widget.NestedScrollView
+import androidx.core.widget.NestedScrollView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
