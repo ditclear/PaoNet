@@ -3,7 +3,7 @@
 
 技术栈 : MVVM/Kotlin/DataBinding/Rxjava2/Retrofit2/Room/Koin/AOP/Navigation
 
-[demo下载](https://fabu.love/paonet)
+[demo下载](https://github.com/ditclear/PaoNet/releases/download/1.0/app-release.apk)
 
 ##### 项目介绍
 
