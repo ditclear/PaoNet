@@ -1,9 +1,7 @@
 package com.ditclear.paonet.model.repository
 
 import androidx.room.EmptyResultSetException
-import com.ditclear.paonet.model.data.Article
-import com.ditclear.paonet.model.data.ArticleList
-import com.ditclear.paonet.model.data.TagList
+import com.ditclear.paonet.model.data.*
 import com.ditclear.paonet.model.local.dao.ArticleDao
 import com.ditclear.paonet.model.remote.api.PaoService
 import io.reactivex.Single
@@ -20,12 +18,15 @@ class PaoRepository(private val remote: PaoService, private val local: ArticleDa
     /**
      * 轮播图数据
      */
-    fun getSlider(): Single<ArticleList> = remote.getSlider()
+    fun getSlider() = remote.getSlider()
+
+    // 文章置顶
+    fun getTopList() = remote.getTopList()
 
     /**
      * 文章列表
      */
-    fun getArticleList(page: Int, tid: Int? = null): Single<ArticleList> = remote.getArticleList(page, tid)
+    fun getArticleList(page: Int, tid: Int)= remote.getArticleList( tid,page)
 
 
     /**
@@ -40,7 +41,7 @@ class PaoRepository(private val remote: PaoService, private val local: ArticleDa
     /**
      * 代码列表
      */
-    fun getCodeList(category: Int? = null, page: Int): Single<ArticleList> = remote.getCodeList(category, page)
+    fun getCodeList(category: Int? = null, page: Int) = remote.getCodeList(page,category)
 
     /**
      * 代码详情
@@ -57,7 +58,7 @@ class PaoRepository(private val remote: PaoService, private val local: ArticleDa
      * @param key 关键词
      * @param p 分页数
      */
-    fun getSearchArticles(p: Int, key: String): Single<ArticleList> = remote.getSearchArticles(p, key)
+    fun getSearchArticles(p: Int, key: String) = remote.getSearchArticles(p, key)
 
     /**
      * 代码搜索
@@ -70,7 +71,7 @@ class PaoRepository(private val remote: PaoService, private val local: ArticleDa
     /**
      * 获取热门搜索
      */
-    fun getHotSearch(): Single<TagList> = remote.getHotSearch()
+    fun getHotSearch()= remote.getHotSearch()
 
     fun getCodeCategory() = remote.getCodeCategory()
 }

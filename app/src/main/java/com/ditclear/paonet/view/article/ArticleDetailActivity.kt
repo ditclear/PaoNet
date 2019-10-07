@@ -4,6 +4,10 @@ import androidx.core.widget.NestedScrollView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.webkit.WebChromeClient
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -31,15 +35,12 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
 
     override fun getLayoutId(): Int = R.layout.article_detail_activity
 
-    private val mArticle by argument<Article>(Constants.KEY_SERIALIZABLE)
+    private val url by argument<String>(Constants.KEY_DATA)
+    private val title by argument<String>(Constants.KEY_OTHER)
 
-    private val mViewModel by viewModel<ArticleDetailViewModel> { parametersOf(mArticle) }
+    private val mViewModel by viewModel<ArticleDetailViewModel> { parametersOf(title)}
 
     override fun loadData(isRefresh: Boolean) {
-
-        mViewModel.loadData().bindLifeCycle(this)
-                .subscribe({ t: Boolean? -> t?.run { isStow(t) } },
-                        { toastFailure(it) })
 
     }
 
@@ -69,6 +70,15 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
                 mBinding.fab.show()
             }
         })
+
+        mBinding.webView.webViewClient = object :WebViewClient(){
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+//                view?.loadUrl(request?.url.toString())
+                return false
+            }
+        }
+
+        mBinding.webView.loadUrl(url)
     }
 
 
@@ -93,27 +103,6 @@ class ArticleDetailActivity : BaseActivity<ArticleDetailActivityBinding>() {
         mBinding.scrollView.removeAllViews()
         System.gc();
         super.onDestroy()
-    }
-
-
-    @CheckLogin
-    @SingleClick
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.fab -> stow()
-            R.id.action_attention -> attentionTo()
-        }
-    }
-
-    private fun attentionTo() {
-        mViewModel.attentionTo().bindLifeCycle(this)
-                .subscribe({}, { toastFailure(it) })
-    }
-
-    private fun stow() {
-        mViewModel.stow().bindLifeCycle(this)
-                .subscribe({ toastSuccess(it.message) }
-                        , { toastFailure(it) })
     }
 
 }

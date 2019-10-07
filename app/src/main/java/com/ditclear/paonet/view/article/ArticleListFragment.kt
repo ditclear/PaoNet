@@ -1,25 +1,19 @@
 package com.ditclear.paonet.view.article
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.app.ActivityOptionsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.databinding.RefreshFragmentBinding
-import com.ditclear.paonet.helper.Constants
 import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
+import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleListViewModel
 import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.home.viewmodel.ArticleItemViewModelWrapper
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
@@ -29,16 +23,16 @@ import org.koin.core.parameter.parametersOf
  *
  * Created by ditclear on 2017/10/3.
  */
-class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel>, ToTopOrRefreshContract {
+class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModelWrapper>, ToTopOrRefreshContract {
 
 
     private val mAdapter by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.article_list_item, mViewModel.list).apply {
+        SingleTypeAdapter<ArticleItemViewModelWrapper>(mContext, R.layout.article_list_item, mViewModel.list).apply {
             itemPresenter = this@ArticleListFragment
         }
     }
 
-    private val tid by lazy { autoWired(KEY_TID, ArticleType.ANDROID) ?: ArticleType.ANDROID }
+    private val tid by lazy { autoWired(KEY_TID, ArticleType.HONGYANG) ?: ArticleType.HONGYANG }
 
     private val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
@@ -50,7 +44,7 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
     companion object {
         val KEY_TID = "TID"
         val KEY_KEYWORD = "keyWord"
-        fun newInstance(tid: Int = ArticleType.ANDROID): ArticleListFragment {
+        fun newInstance(tid: Int = ArticleType.HONGYANG): ArticleListFragment {
 
             val bundle = Bundle()
             bundle.putInt(KEY_TID, tid)
@@ -87,16 +81,10 @@ class ArticleListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPre
                 })
     }
 
-    override fun onItemClick(v: View?, item: ArticleItemViewModel) {
+    override fun onItemClick(v: View?, item: ArticleItemViewModelWrapper) {
 
         activity?.let {
-            val intent = Intent(mContext, ArticleDetailActivity::class.java)
-            val bundle = Bundle()
-            bundle.putSerializable(Constants.KEY_SERIALIZABLE, item.article)
-            intent.putExtras(bundle)
-            val options = ActivityOptionsCompat.makeSceneTransitionAnimation(it)
-            ActivityCompat.startActivity(mContext, intent, options.toBundle())
-
+            navigateToArticleDetail(it, v, item.url, item.title)
 
         }
     }

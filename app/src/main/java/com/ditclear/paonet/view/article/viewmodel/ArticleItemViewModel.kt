@@ -35,4 +35,5 @@ class ArticleItemViewModel(val article:Article){
 
     val articleListResponses=if (comments<10) "$comments response" else "$comments responses"
 
+
 }

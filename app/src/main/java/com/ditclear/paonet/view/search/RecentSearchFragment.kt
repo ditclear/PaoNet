@@ -28,6 +28,7 @@ class RecentSearchFragment : BaseFragment<RecentSearchFragmentBinding>(), ItemCl
     override fun getLayoutId(): Int = R.layout.recent_search_fragment
 
     override fun onItemClick(v: View?, item: Any) {
+
         (activity as SearchActivity).setQuery(keyWord = item as String)
     }
 

@@ -12,6 +12,8 @@ import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.databinding.Observable
+import androidx.lifecycle.Observer
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.CheckLogin
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -26,6 +28,7 @@ import com.ditclear.paonet.model.data.User
 import com.ditclear.paonet.view.base.BaseActivity
 import com.ditclear.paonet.view.code.CodeListFragment
 import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModel
+import com.ditclear.paonet.view.home.viewmodel.CategoryItemViewModelWrapper
 import com.ditclear.paonet.view.home.viewmodel.MainViewModel
 import com.ditclear.paonet.view.mine.MyArticleFragment
 import com.ditclear.paonet.view.mine.MyCollectFragment
@@ -33,27 +36,27 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 
 class MainActivity : BaseActivity<MainActivityBinding>(),
-        ItemClickPresenter<CategoryItemViewModel> {
+        ItemClickPresenter<CategoryItemViewModelWrapper> {
 
 
     override fun getLayoutId(): Int = R.layout.main_activity
 
-    private val mViewModel :MainViewModel by viewModel()
+    private val mViewModel: MainViewModel by viewModel()
 
     val adapter by lazy {
-        SingleTypeAdapter<CategoryItemViewModel>(mContext, R.layout.code_category_list_item,
+        SingleTypeAdapter<CategoryItemViewModelWrapper>(mContext, R.layout.code_category_list_item,
                 mViewModel.categories).apply {
             itemPresenter = this@MainActivity
         }
     }
 
 
-    override fun onItemClick(v: View?, item: CategoryItemViewModel) {
+    override fun onItemClick(v: View?, item: CategoryItemViewModelWrapper) {
         closeDrawer()
-        changeFragment(CodeListFragment.newInstance(item.value), item.catename!!)
+        changeFragment(CodeListFragment.newInstance(item.value), item.catename)
     }
 
-    var temp: androidx.fragment.app.Fragment? = null
+    var temp: Fragment? = null
 
     val defaultEmptyUser by lazy { User() }
 
@@ -100,10 +103,10 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
         setSupportActionBar(mBinding.toolbar)
         syncToolBar(mBinding.toolbar)
         mBinding.vm = mViewModel
-        mBinding.navMainLayout.navCodeLayout?.recyclerView?.run {
+        mBinding.navMainLayout.navCodeLayout?.recyclerView?.apply {
             adapter = this@MainActivity.adapter
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(mContext)
-            addItemDecoration(androidx.recyclerview.widget.DividerItemDecoration(mContext, androidx.recyclerview.widget.DividerItemDecoration.VERTICAL))
+            layoutManager = LinearLayoutManager(mContext)
+            addItemDecoration(DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL))
         }
         mBinding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabUnselected(p0: TabLayout.Tab?) {
@@ -124,13 +127,6 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
                 .bindLifeCycle(this)
                 .subscribe()
 
-        mViewModel.cateVisible.toFlowable()
-                .doOnNext {
-                    mBinding.navMainLayout.navCodeLayout.recyclerView.visibility = if (it) View.VISIBLE else View.GONE
-                    mBinding.navMainLayout.navCodeLayout.toggleCateBtn.rotation = if (it) 180f else 0f
-                }
-                .bindLifeCycle(this)
-                .subscribe()
 
     }
 
@@ -197,31 +193,29 @@ class MainActivity : BaseActivity<MainActivityBinding>(),
     /**
      * 切换fragment
      */
-    private fun changeFragment(fragment: androidx.fragment.app.Fragment, title: String = "泡在网上的日子") {
+    private fun changeFragment(fragment: Fragment, title: String = "WanAndroid") {
         supportActionBar?.title = title
         switchFragment(temp, fragment, fragment.javaClass.simpleName)
         temp = fragment
     }
 
     override fun onClick(v: View?) {
-        v?.run {
-            when (id) {
-                R.id.toggle_btn -> toggleLog(this)
-                R.id.code_tv, R.id.toggle_cate_btn -> {
-                    mViewModel.toggleCategory()
-                }
-                R.id.home_tv -> {
-                    closeDrawer()
-                    changeFragment(homeFragment)
-                }
-                R.id.my_article_tv -> {
-                    switchMyArticle(this)
-                }
-                R.id.my_collect_tv -> {
-                    switchMyCollect(this)
-                }
-
+        when (v?.id) {
+            R.id.toggle_btn -> toggleLog(v)
+            R.id.code_tv, R.id.toggle_cate_btn -> {
+                mViewModel.toggleCategory()
+                mBinding.navMainLayout.navCodeLayout.recyclerView.visibility = if (mViewModel.cateVisible.get()) View.VISIBLE else View.GONE
+                mBinding.navMainLayout.navCodeLayout.toggleCateBtn.rotation = if (mViewModel.cateVisible.get()) 180f else 0f
+                loadData(true)
             }
+            R.id.home_tv -> {
+                closeDrawer()
+                changeFragment(homeFragment)
+            }
+            R.id.my_article_tv ->  switchMyArticle(v)
+            R.id.my_collect_tv -> switchMyCollect(v)
+
         }
+
     }
 }

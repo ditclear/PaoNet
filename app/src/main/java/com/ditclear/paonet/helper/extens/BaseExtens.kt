@@ -118,7 +118,11 @@ fun <T> Flowable<T>.async(withDelay: Long = 0): Flowable<T> =
         this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
 
 fun <T> Single<T>.async(withDelay: Long = 0): Single<T> =
-        this.subscribeOn(Schedulers.io()).delay(withDelay, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread())
+        this.subscribeOn(Schedulers.io()).apply {
+            if (withDelay>0){
+                delay(withDelay, TimeUnit.MILLISECONDS)
+            }
+        }.observeOn(AndroidSchedulers.mainThread())
 
 fun <R : BaseResponse> Single<R>.getOriginData(): Single<R> {
     return this.compose { upstream ->

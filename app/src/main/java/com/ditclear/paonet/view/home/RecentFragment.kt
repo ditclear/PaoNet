@@ -16,6 +16,8 @@ import com.ditclear.paonet.helper.extens.dpToPx
 import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
 import com.ditclear.paonet.view.base.BaseFragment
+import com.ditclear.paonet.view.home.viewmodel.ArticleItemViewModelWrapper
+import com.ditclear.paonet.view.home.viewmodel.BannerItemViewModel
 import com.ditclear.paonet.view.home.viewmodel.RecentViewModel
 import com.ditclear.paonet.view.home.viewmodel.ToTopOrRefreshContract
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -29,17 +31,21 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
 
 
     override fun onItemClick(v: View?, t: Any) {
-        if (t is ArticleItemViewModel) {
+        if (t is ArticleItemViewModelWrapper ) {
             activity?.let {
-                navigateToArticleDetail(it, v, t.article)
+                navigateToArticleDetail(it, v,t.url,t.title)
+            }
+        }else if (t is BannerItemViewModel){
+            activity?.let {
+                navigateToArticleDetail(it, v,t.url,t.title)
             }
         }
     }
 
     private val mVieModel: RecentViewModel by viewModel()
 
-    val sliderAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.slider_item, mVieModel.sliders).apply { itemPresenter = this@RecentFragment }
+    val sliderAdapter: SingleTypeAdapter<BannerItemViewModel> by lazy {
+        SingleTypeAdapter<BannerItemViewModel>(mContext, R.layout.slider_item, mVieModel.sliders).apply { itemPresenter = this@RecentFragment }
     }
 
     val mAdapter: MultiTypeAdapter by lazy {
@@ -48,7 +54,7 @@ class RecentFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresente
                     if (item is Dummy) ItemType.HEADER else ItemType.ITEM
         }).apply {
             addViewTypeToLayoutMap(ItemType.HEADER, R.layout.slider)
-            addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item)
+            addViewTypeToLayoutMap(ItemType.ITEM, R.layout.article_list_item_v2)
             itemPresenter = this@RecentFragment
             itemDecorator = object : ItemDecorator {
                 override fun decorator(holder: BindingViewHolder<ViewDataBinding>?, position: Int, viewType: Int) {

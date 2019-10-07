@@ -1,9 +1,7 @@
 package com.ditclear.paonet.view.code
 
-import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.ditclear.paonet.R
 import com.ditclear.paonet.aop.annotation.SingleClick
@@ -12,11 +10,11 @@ import com.ditclear.paonet.helper.adapter.recyclerview.ItemClickPresenter
 import com.ditclear.paonet.helper.adapter.recyclerview.SingleTypeAdapter
 import com.ditclear.paonet.helper.extens.bindLifeCycle
 import com.ditclear.paonet.helper.extens.dpToPx
-import com.ditclear.paonet.helper.extens.navigateToActivity
-import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
+import com.ditclear.paonet.helper.navigateToArticleDetail
 import com.ditclear.paonet.view.base.BaseFragment
 import com.ditclear.paonet.view.code.viewmodel.CodeListViewModel
 import com.ditclear.paonet.view.home.MainActivity
+import com.ditclear.paonet.view.home.viewmodel.ArticleItemViewModelWrapper
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -25,12 +23,11 @@ import org.koin.core.parameter.parametersOf
  *
  * Created by ditclear on 2017/10/3.
  */
-class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModel> {
+class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresenter<ArticleItemViewModelWrapper> {
 
 
-
-    private val mAdapter: SingleTypeAdapter<ArticleItemViewModel> by lazy {
-        SingleTypeAdapter<ArticleItemViewModel>(mContext, R.layout.code_list_item, mViewModel.list).apply {
+    private val mAdapter: SingleTypeAdapter<ArticleItemViewModelWrapper> by lazy {
+        SingleTypeAdapter<ArticleItemViewModelWrapper>(mContext, R.layout.code_list_item, mViewModel.list).apply {
             itemPresenter = this@CodeListFragment
         }
     }
@@ -41,7 +38,7 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     val keyWord by lazy { autoWired<String>(KEY_KEYWORD) }
 
-    private val mViewModel: CodeListViewModel by viewModel { parametersOf(cate,keyWord)}
+    private val mViewModel: CodeListViewModel by viewModel { parametersOf(cate, keyWord) }
 
 
     companion object {
@@ -70,23 +67,25 @@ class CodeListFragment : BaseFragment<RefreshFragmentBinding>(), ItemClickPresen
 
     override fun loadData(isRefresh: Boolean) {
         mViewModel.loadData(isRefresh).bindLifeCycle(this)
-                .subscribe({},{toastFailure(it)})
+                .subscribe({}, { toastFailure(it) })
     }
 
     @SingleClick
-    override fun onItemClick(v: View?, item: ArticleItemViewModel) {
-        activity?.navigateToActivity(CodeDetailActivity::class.java, item.article)
+    override fun onItemClick(v: View?, item: ArticleItemViewModelWrapper) {
+        activity?.let {
+            navigateToArticleDetail(it, v, item.url, item.title)
+        }
     }
 
     override fun initView() {
-        mBinding.vm=mViewModel
+        mBinding.vm = mViewModel
         mBinding.run {
             recyclerView.apply {
                 adapter = mAdapter
                 addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
                     override fun getItemOffsets(outRect: Rect, view: View, parent: androidx.recyclerview.widget.RecyclerView, state: androidx.recyclerview.widget.RecyclerView.State) {
                         super.getItemOffsets(outRect, view, parent, state)
-                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0)?:0
+                        outRect.top = activity?.dpToPx(R.dimen.xdp_12_0) ?: 0
                     }
                 })
 

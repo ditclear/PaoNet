@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
  */
 class RecentViewModel constructor(private val repo: PaoRepository) : PagedViewModel() {
 
-    val sliders = ObservableArrayList<ArticleItemViewModel>()
+    val sliders = ObservableArrayList<BannerItemViewModel>()
     val list = ObservableArrayList<Any>()
 
     fun loadData(isRefresh: Boolean) =
@@ -30,7 +30,7 @@ class RecentViewModel constructor(private val repo: PaoRepository) : PagedViewMo
                             list.clear()
                         }
 
-                        it.items?.map { ArticleItemViewModel(it) }?.let {
+                        it.data?.map { BannerItemViewModel(it) }?.let {
                             list.add(Dummy())
                             sliders.addAll(it)
                         }
@@ -38,13 +38,11 @@ class RecentViewModel constructor(private val repo: PaoRepository) : PagedViewMo
                     }
                     .observeOn(Schedulers.io())
                     .flatMap {
-                        Log.d("thread------", Thread.currentThread().name)
-                        repo.getArticleList(page = 0)
+                        repo.getTopList()
                     }
                     .observeOn(AndroidSchedulers.mainThread())
                     .doOnSuccess {
-                        Log.d("thread------", Thread.currentThread().name)
-                        it.items?.map { ArticleItemViewModel(it) }?.let {
+                        it.data?.map { ArticleItemViewModelWrapper(it) }?.let {
                             list.addAll(it)
                         }
                     }

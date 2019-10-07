@@ -3,6 +3,7 @@ package com.ditclear.paonet.view.home.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.databinding.ObservableArrayList
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableField
 import com.ditclear.paonet.helper.extens.*
 import com.ditclear.paonet.model.data.Category
 import com.ditclear.paonet.model.data.User
@@ -19,16 +20,16 @@ import com.ditclear.paonet.viewmodel.BaseViewModel
 
 class MainViewModel(private val repo: PaoRepository) : BaseViewModel() {
 
-    val user = MutableLiveData<User>().init(User())
-    val categories = ObservableArrayList<CategoryItemViewModel>()
+    val user = ObservableField<User>(User())
+    val categories = ObservableArrayList<CategoryItemViewModelWrapper>()
 
-    val cateVisible = MutableLiveData<Boolean>().init(false)
+    val cateVisible = ObservableBoolean(false)
 
-    val face = MutableLiveData<String>()
+    val face = ObservableField<String>()
 
-    var qianming = MutableLiveData<String>()
-    var navHeaderName = MutableLiveData<String>()
-    var loginBtnText = MutableLiveData<String>().init("LOG IN")
+    var qianming = ObservableField<String>()
+    var navHeaderName = ObservableField<String>()
+    var loginBtnText = ObservableField<String>("LOG IN")
 
     val exitEvent = ObservableBoolean(false)
 
@@ -50,9 +51,11 @@ class MainViewModel(private val repo: PaoRepository) : BaseViewModel() {
      * 获取代码分类
      */
     fun getCodeCategories() = repo.getCodeCategory().async()
-            .map {
-                categories.add(CategoryItemViewModel(Category("全部(All)")))
-                categories.addAll(it.map { CategoryItemViewModel(it) })
+            .doOnSuccess {
+                it.data?.let {
+                    categories.clear()
+                    categories.addAll(it.map { item -> CategoryItemViewModelWrapper(item) })
+                }
             }
 
     fun toggleCategory() {

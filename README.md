@@ -1,9 +1,11 @@
 # PaoNet
-泡网第三方客户端（待完善）
+泡网第三方客户端（WanAndroid版本）
+
+由于泡网的api不稳定，所以适配了一下wanandroid版本的api和数据模型
 
 技术栈 : MVVM/Kotlin/DataBinding/Rxjava2/Retrofit2/Room/Koin/AOP/Navigation
 
-[demo下载](https://github.com/ditclear/PaoNet/releases/download/1.0/app-release.apk)
+[demo下载](https://github.com/ditclear/PaoNet/releases/download/wanandroid/demo.apk)
 
 ##### 项目介绍
 
@@ -11,6 +13,7 @@
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | [master](https://github.com/ditclear/PaoNet)                 | 稳定版本                                                     |
 | [develop](https://github.com/ditclear/PaoNet/tree/develop)   | 开发分支                                                     |
+| [wanandroid](https://github.com/ditclear/PaoNet/tree/wanandroid)   | wanandroid 版本                                                      |
 | [modularization](https://github.com/ditclear/PaoNet/tree/modularization) | 伪·模块化(工程化)分支，基于BuildType和SourceSet进行的工程化改造 |
 | [sinlge_page](https://github.com/ditclear/PaoNet/tree/single_page) | 基于[Navigation](https://developer.android.google.cn/topic/libraries/architecture/navigation/navigation-implementing)组件，对PaoNet进行了单页面(单Activity+多Fragment)改造 |
 | [multi_module](https://github.com/ditclear/PaoNet/tree/multi_module) [WIP] | 基于[sinlge_page](https://github.com/ditclear/PaoNet/tree/single_page)分支进行的模块化改造 |

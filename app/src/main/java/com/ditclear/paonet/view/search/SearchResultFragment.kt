@@ -21,19 +21,20 @@ class SearchResultFragment : BaseFragment<ContentMainBinding>() {
 
     val keyWord by lazy { autoWired(KEY_KEYWORD,"")?:"" }
 
-    private val pagerAdapter: androidx.fragment.app.FragmentStatePagerAdapter by lazy {
-        object : AbstractPagerAdapter(childFragmentManager, arrayOf("文章", "代码")) {
+    private val pagerAdapter: FragmentStatePagerAdapter by lazy {
+        object : AbstractPagerAdapter(childFragmentManager, arrayOf("搜索结果")) {
             override fun getItem(pos: Int): androidx.fragment.app.Fragment? {
                 if (list[pos] == null) {
                     when (pos) {
                         0 -> list[pos] = ArticleListFragment.newInstance(keyWord)
-                        1 -> list[pos] = CodeListFragment.newInstance(keyWord)
+//                        1 -> list[pos] = CodeListFragment.newInstance(keyWord)
                     }
                 }
                 return list[pos]
             }
 
         }
+
     }
 
     companion object {

@@ -1,10 +1,10 @@
 package com.ditclear.paonet.view.code.viewmodel
 
 import androidx.databinding.ObservableArrayList
-import com.ditclear.paonet.helper.annotation.ArticleType
 import com.ditclear.paonet.helper.extens.async
 import com.ditclear.paonet.model.repository.PaoRepository
 import com.ditclear.paonet.view.article.viewmodel.ArticleItemViewModel
+import com.ditclear.paonet.view.home.viewmodel.ArticleItemViewModelWrapper
 import com.ditclear.paonet.viewmodel.PagedViewModel
 
 
@@ -14,29 +14,29 @@ import com.ditclear.paonet.viewmodel.PagedViewModel
  *
  * Created by ditclear on 2017/10/3.
  */
-class CodeListViewModel constructor(private val category: Int?=null,private val keyWord: String? = null, private val repo: PaoRepository) : PagedViewModel() {
+class CodeListViewModel constructor(private val category: Int? = null, private val keyWord: String? = null, private val repo: PaoRepository) : PagedViewModel() {
 
-    val list = ObservableArrayList<ArticleItemViewModel>()
+    val list = ObservableArrayList<ArticleItemViewModelWrapper>()
 
 
-
-    fun loadData(isRefresh: Boolean) = if (keyWord != null) {
-        repo.getSearchCode(getPage(isRefresh), key = keyWord ?: "")
-    } else {
-        repo.getCodeList(category, getPage(isRefresh))
-    }.async(1000)
-            .map { articleList ->
-                with(articleList) {
-                    if (isRefresh) {
-                        list.clear()
+    fun loadData(isRefresh: Boolean) =
+            repo.getCodeList(category, getPage(isRefresh))
+                    .async(1000)
+                    .doOnSuccess {
+                        if (isRefresh) {
+                            list.clear()
+                        }
+                        it.data.let {respnse ->
+                            loadMore.set(!(respnse?.over?:false))
+                            respnse?.datas?.let {
+                                list.addAll(it.map { ArticleItemViewModelWrapper(it) })
+                            }
+                        }
+                    }.doOnSubscribe { startLoad() }
+                    .doAfterTerminate {
+                        stopLoad()
+                        empty.set(list.isEmpty())
                     }
-                    loadMore.set(!incomplete_results)
-                    return@map items?.map { ArticleItemViewModel(it) }?.let { list.addAll(it) }
-                }
-            }.doOnSubscribe { startLoad() }.doAfterTerminate {
-                stopLoad()
-                empty.set(list.isEmpty())
-            }
 
-    private fun getPage(isRefresh: Boolean)=if (isRefresh) 0 else list.size/20
+    private fun getPage(isRefresh: Boolean) = (if (isRefresh) 0 else list.size / 20)+1
 }

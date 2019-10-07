@@ -19,15 +19,14 @@ class RecentSearchViewModel constructor( val repo: PaoRepository) : PagedViewMod
     fun loadData(isRefresh: Boolean) =
             repo.getHotSearch()
                     .async()
-                    .map { t ->
-                        t.items?.map { tag -> tag.keyword }
-                    }
-                    .doOnSuccess { t ->
+                    .doOnSuccess {
                         if (isRefresh) {
                             list.clear()
                         }
                         list.add("热门搜索:")
-                        t?.let { list.addAll(it) }
+                        it.data?.map { it.name }?.let {
+                            list.addAll(it)
+                        }
                     }
 
 

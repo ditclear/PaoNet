@@ -29,7 +29,7 @@ import retrofit2.Retrofit
 
 val viewModelModule = module {
 
-    viewModel { (article: Article) -> ArticleDetailViewModel(article, get(), get()) }
+    viewModel { (title:String)-> ArticleDetailViewModel(title) }
     viewModel { (article: Article, nameDate: String) -> CodeDetailViewModel(article, nameDate, get(), get()) }
     viewModel { MainViewModel(get()) }
     viewModel { RecentViewModel(get()) }

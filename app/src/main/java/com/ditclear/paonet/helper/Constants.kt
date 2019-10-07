@@ -9,8 +9,10 @@ package com.ditclear.paonet.helper
 object Constants {
 
     val KEY_SERIALIZABLE = "serializable"
+    val KEY_DATA = "data"
+    val KEY_OTHER = "other"
 
-    val HOST_API="http://api.jcodecraeer.com/"
+    val HOST_API="https://www.wanandroid.com/"
 
     val HOST_PAO="http://jcodecraeer.com"
 

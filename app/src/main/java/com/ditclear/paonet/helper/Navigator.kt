@@ -35,6 +35,16 @@ fun navigateToArticleDetail(activity: Activity, v: View?=null, article: Article)
     activity.startActivity(intent,options)
 }
 
+fun navigateToArticleDetail(activity: Activity, v: View?=null, url: String?,title:String) {
+    val intent = Intent(activity, ArticleDetailActivity::class.java)
+    val bundle = Bundle()
+    bundle.putSerializable(Constants.KEY_DATA, url)
+    bundle.putSerializable(Constants.KEY_OTHER, title)
+    intent.putExtras(bundle)
+    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity).toBundle()
+    activity.startActivity(intent,options)
+}
+
 //登录
 fun needsLogin(@ColorRes color: Int, triggeringView: View,activity: Activity?=null,radius:Int= (triggeringView.height / 2)) {
     var startActivity :Activity?=null

@@ -22,19 +22,19 @@ class HomeFragment : BaseFragment<HomeFragmentBinding>() {
 
 
     private val pagerAdapter: androidx.fragment.app.FragmentStatePagerAdapter by lazy {
-        object : AbstractPagerAdapter(childFragmentManager, arrayOf("Recent", "ANDROID", "程序设计", "前端开发", "IOS", "数据库", "开发日志", "应用推荐", "每日一站")) {
+        object : AbstractPagerAdapter(childFragmentManager, arrayOf("Recent", "鸿洋", "郭霖", "玉刚说", "承香墨影", "Android群英传", "谷歌开发者", "美团技术团队", "Gityuan")) {
             override fun getItem(pos: Int): androidx.fragment.app.Fragment? {
                 if (list[pos] == null) {
                     when (pos) {
                         0 -> list[pos] = RecentFragment.newInstance()
-                        1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.ANDROID)
-                        2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.PROGRAME)
-                        3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.FRONT_END)
-                        4 -> list[pos] = ArticleListFragment.newInstance(ArticleType.IOS)
-                        5 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DB)
-                        6 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DEVLOG)
-                        7 -> list[pos] = ArticleListFragment.newInstance(ArticleType.RECOMMAND)
-                        8 -> list[pos] = ArticleListFragment.newInstance(ArticleType.DAILY)
+                        1 -> list[pos] = ArticleListFragment.newInstance(ArticleType.HONGYANG)
+                        2 -> list[pos] = ArticleListFragment.newInstance(ArticleType.GUOLIN)
+                        3 -> list[pos] = ArticleListFragment.newInstance(ArticleType.YUGANG)
+                        4 -> list[pos] = ArticleListFragment.newInstance(ArticleType.CXMY)
+                        5 -> list[pos] = ArticleListFragment.newInstance(ArticleType.XIA)
+                        6 -> list[pos] = ArticleListFragment.newInstance(ArticleType.GOOGLE)
+                        7 -> list[pos] = ArticleListFragment.newInstance(ArticleType.MEITUAN)
+                        8 -> list[pos] = ArticleListFragment.newInstance(ArticleType.GITYUAN)
                     }
                 }
                 return list[pos]
